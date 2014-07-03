@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2013 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,15 +13,13 @@
      limitations under the License.
 -->
 
-<android.support.v7.internal.widget.NativeActionModeAwareLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.internal.widget.NativeActionModeAwareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/action_bar_root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <include layout="@layout/abc_action_bar_decor_include" />
 
-</android.support.v7.internal.widget.NativeActionModeAwareLayout>
-<!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout-v11/abc_action_bar_decor.xml -->
+</android.support.v7.internal.widget.NativeActionModeAwareLayout><!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout-v11/abc_action_bar_decor.xml -->

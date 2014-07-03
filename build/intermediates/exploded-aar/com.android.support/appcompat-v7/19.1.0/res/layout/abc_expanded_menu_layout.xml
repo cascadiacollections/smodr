@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2013 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,9 +13,7 @@
      limitations under the License.
 -->
 
-<android.support.v7.internal.view.menu.ExpandedMenuView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/expanded_menu"
-        android:layout_width="?attr/panelMenuListWidth"
-        android:layout_height="wrap_content"/>
-<!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout/abc_expanded_menu_layout.xml -->
+<android.support.v7.internal.view.menu.ExpandedMenuView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expanded_menu"
+    android:layout_width="?attr/panelMenuListWidth"
+    android:layout_height="wrap_content" /><!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout/abc_expanded_menu_layout.xml -->

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"App versuchte, defekte Google Play-Dienste-Version zu verwenden"</string>
     <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"App erfordert aktivierte Google Play-Dienste"</string>
     <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"App erfordert die Installation von Google Play-Diensten"</string>

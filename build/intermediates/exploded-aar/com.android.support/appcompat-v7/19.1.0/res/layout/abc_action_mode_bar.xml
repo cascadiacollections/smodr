@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 ** Copyright 2012, The Android Open Source Project
 **
@@ -16,10 +15,8 @@
 ** limitations under the License.
 */
 -->
-<android.support.v7.internal.widget.ActionBarContextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="?attr/actionModeStyle"/>
-<!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout/abc_action_mode_bar.xml -->
+<android.support.v7.internal.widget.ActionBarContextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/actionModeStyle"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone" /><!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/klp-ub-dev/frameworks/support/v7/appcompat/res/layout/abc_action_mode_bar.xml -->
