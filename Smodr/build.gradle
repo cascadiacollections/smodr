@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'android'
+apply plugin: 'hugo'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        dev {
+            applicationIdSuffix '.dev'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.google.apis:google-api-services-analytics:v3-rev96-1.18.0-rc'
+    compile 'com.google.android.gms:play-services:4.4.52'
+    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.android.support:gridlayout-v7:19.1.0'
+    compile 'com.android.support:mediarouter-v7:19.1.0'
+    compile 'com.android.support:support-v13:19.1.0'
+
+    compile 'com.jakewharton:butterknife:5.1.+'
+    compile 'com.jakewharton.timber:timber:2.4.+'
+    compile 'com.squareup.picasso:picasso:2.3.+'
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.+'
+    compile 'com.squareup.retrofit:retrofit:1.6.+'
+    compile ('com.squareup.retrofit:converter-simplexml:1.6.+') {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
+}
