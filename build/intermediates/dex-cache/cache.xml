@@ -44,12 +44,6 @@
         revision="19.1.0"
         sha1="af4cc326e6cd92f88db12298767e521743aedd36"/>
     <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/classes-9f7f001dc8f707b3aa3b92ac35134e5cac6cded6.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/build/intermediates/exploded-aar/com.jakewharton.hugo/hugo-runtime/1.1.0/classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="25bac7a5db190df4dabc9e282b0cb57d400c415b"/>
-    <item
         dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/timber-2.4.1-7e5cdb00fe9accae099a438cb429bf058312c853.jar"
         jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton.timber/timber/2.4.1/a220494292c6e32a3a10d66fc6bc56fd2416c163/timber-2.4.1.jar"
         jumboMode="false"
@@ -92,12 +86,6 @@
         revision="19.1.0"
         sha1="44a1b22f8f3a27109d6cefc355ecfbfed98f1917"/>
     <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/hugo-annotations-1.1.0-7bce73bcb7372d02564bc30ce091fd96540a1f86.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton.hugo/hugo-annotations/1.1.0/e67a622a9034c9e995750528180b8e19434f6e02/hugo-annotations-1.1.0.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="e67a622a9034c9e995750528180b8e19434f6e02"/>
-    <item
         dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/gson-2.2.4-777b8306b9cb7f9b53d59d91d2c78a5d54d329e9.jar"
         jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
         jumboMode="false"
@@ -115,12 +103,6 @@
         jumboMode="false"
         revision="19.1.0"
         sha1="02534c458682c73f5b9871131ab3098d3f987ca3"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/aspectjrt-1.7.4-be0a68771ded5b33b55a00ec4e03eb60e38f4725.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.7.4/e49a5c0acee8fd66225dc1d031692d132323417f/aspectjrt-1.7.4.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="e49a5c0acee8fd66225dc1d031692d132323417f"/>
     <item
         dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/internal_impl-19.1.0-c6560ce5361a048c0f7fea224893b3ae209ef8ee.jar"
         jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/19.1.0/libs/internal_impl-19.1.0.jar"
