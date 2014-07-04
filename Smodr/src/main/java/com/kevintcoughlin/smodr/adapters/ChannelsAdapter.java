@@ -46,11 +46,11 @@ public class ChannelsAdapter extends ArrayAdapter<Channel> {
 
         Channel channel = channels.get(position);
 
-        Picasso p = new Picasso.Builder(getContext()).loggingEnabled(true).indicatorsEnabled(true).build();
-
-        p.with(this.context)
+        Picasso.with(this.context)
                 .load(channel.getImageUrl())
+                .placeholder(R.drawable.placeholder)
                 .fit()
+                .centerInside()
                 .into(vh.image);
 
         return convertView;
