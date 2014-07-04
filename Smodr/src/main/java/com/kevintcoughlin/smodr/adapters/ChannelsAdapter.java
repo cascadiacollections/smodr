@@ -50,7 +50,7 @@ public class ChannelsAdapter extends ArrayAdapter<Channel> {
                 .load(channel.getImageUrl())
                 .placeholder(R.drawable.placeholder)
                 .fit()
-                .centerInside()
+                .centerCrop()
                 .into(vh.image);
 
         return convertView;

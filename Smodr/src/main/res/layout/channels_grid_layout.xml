@@ -13,7 +13,7 @@
         android:id="@+id/grid_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:columnWidth="174dp"
+        android:columnWidth="150dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="4dp"
