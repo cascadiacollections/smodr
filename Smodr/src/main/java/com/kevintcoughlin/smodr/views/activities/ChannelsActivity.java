@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr.views;
+package com.kevintcoughlin.smodr.views.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,11 +10,13 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
+import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
+import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
 /**
  * SModcast Channels Activity
  */
-public class ChannelsView extends FragmentActivity implements GridFragment.Callbacks, FragmentManager.OnBackStackChangedListener {
+public class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager.OnBackStackChangedListener {
     private static final String TAG = "ChannelsView";
 
     @Override
@@ -28,11 +30,12 @@ public class ChannelsView extends FragmentActivity implements GridFragment.Callb
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         shouldDisplayHomeUp();
 
-        final FragmentManager fm = getSupportFragmentManager();
-
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            final GridFragment fragment = new GridFragment();
-            fm.beginTransaction().add(R.id.channels_container, fragment).commit();
+        if (savedInstanceState == null) {
+            final FragmentManager fm = getSupportFragmentManager();
+            final ChannelsFragment fragment = new ChannelsFragment();
+            fm.beginTransaction()
+                    .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
+                    .commit();
         }
 
         loadAd();
@@ -52,7 +55,7 @@ public class ChannelsView extends FragmentActivity implements GridFragment.Callb
         getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.channels_container, fragment)
-            .addToBackStack(GridFragment.TAG)
+            .addToBackStack(ChannelsFragment.TAG)
             .commit();
     }
 
@@ -79,8 +82,8 @@ public class ChannelsView extends FragmentActivity implements GridFragment.Callb
     }
 
     private void track() {
-        Tracker t = ((SmodrApplication) getApplication()).getTracker(
-                SmodrApplication.TrackerName.APP_TRACKER);
+        Tracker t = ((SmodrApplication) getApplication())
+                .getTracker(SmodrApplication.TrackerName.APP_TRACKER);
 
         t.setScreenName(TAG);
         t.send(new HitBuilders.AppViewBuilder().build());

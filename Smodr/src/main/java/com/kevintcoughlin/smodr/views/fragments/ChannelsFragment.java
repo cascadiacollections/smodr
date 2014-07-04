@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr.views;
+package com.kevintcoughlin.smodr.views.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Fragment that displays SModcast Channels in a GridView
  */
-public class GridFragment extends Fragment implements GridView.OnItemClickListener {
+public class ChannelsFragment extends Fragment implements GridView.OnItemClickListener {
     public static final String TAG = "ChannelsGridViewFragment";
 
     private Callbacks mCallbacks = sChannelCallbacks;

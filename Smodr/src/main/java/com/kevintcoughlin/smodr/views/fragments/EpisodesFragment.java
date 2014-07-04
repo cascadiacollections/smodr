@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr.views;
+package com.kevintcoughlin.smodr.views.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -60,7 +60,7 @@ public class EpisodesFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.episodes_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.episodes_list_layout, container, false);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setColorScheme(
