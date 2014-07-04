@@ -50,8 +50,6 @@ public class ChannelsAdapter extends ArrayAdapter<Channel> {
 
         p.with(this.context)
                 .load(channel.getImageUrl())
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.error)
                 .fit()
                 .into(vh.image);
 
