@@ -40,7 +40,6 @@ public class EpisodesFragment extends ListFragment {
     public static final String ARG_CHANNEL_PHOTO_URL = "COVER_PHOTO_URL";
 
     private static final String TAG = "EpisodesFragment";
-    private ImageView mCoverPhotoView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<Item> mItems;
     private ArrayAdapter<Item> mItemsAdapter;
@@ -70,17 +69,6 @@ public class EpisodesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.episodes_list_layout, container, false);
-
-        /*
-        mCoverPhotoView = (ImageView) rootView.findViewById(R.id.cover_photo);
-
-        Picasso.with(getActivity())
-                .load(mCoverPhotoUrl)
-                .centerCrop()
-                .fit()
-                .error(R.drawable.placeholder)
-                .into(mCoverPhotoView);
-        */
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setColorScheme(
