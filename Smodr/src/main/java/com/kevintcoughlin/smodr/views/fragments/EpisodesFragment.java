@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -19,6 +20,8 @@ import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
+import com.kevintcoughlin.smodr.services.MediaPlaybackService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -30,16 +33,21 @@ import retrofit.client.Response;
  * Fragment that displays SModcast Channel's episodes in a ListView
  */
 public class EpisodesFragment extends ListFragment {
-
+    public static final String INTENT_EPISODE_URL = "intent_episode_url";
+    public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
+    public static final String INTENT_EPISODE_DESCRIPTION = "intent_episode_description";
     public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
+    public static final String ARG_CHANNEL_PHOTO_URL = "COVER_PHOTO_URL";
+
     private static final String TAG = "EpisodesFragment";
+    private ImageView mCoverPhotoView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<Item> mItems;
     private ArrayAdapter<Item> mItemsAdapter;
-    private String channelShortName;
+    private String mChannelShortName;
+    private String mCoverPhotoUrl;
 
     public EpisodesFragment() {
-
     }
 
     @Override
@@ -47,12 +55,13 @@ public class EpisodesFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        channelShortName = bundle.getString(ARG_CHANNEL_NAME, "smodcast");
+        mChannelShortName = bundle.getString(ARG_CHANNEL_NAME, "smodcast");
+        mCoverPhotoUrl = bundle.getString(ARG_CHANNEL_PHOTO_URL, "http://smodcast.com/wp-content/blogs.dir/1/files_mf/smodcast1400.jpg");
 
         mItems = new ArrayList<>();
         mItemsAdapter = new EpisodesAdapter(getActivity(), mItems);
 
-        getEpisodes(channelShortName);
+        getEpisodes(mChannelShortName);
         setListAdapter(mItemsAdapter);
 
         track();
@@ -61,6 +70,17 @@ public class EpisodesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.episodes_list_layout, container, false);
+
+        /*
+        mCoverPhotoView = (ImageView) rootView.findViewById(R.id.cover_photo);
+
+        Picasso.with(getActivity())
+                .load(mCoverPhotoUrl)
+                .centerCrop()
+                .fit()
+                .error(R.drawable.placeholder)
+                .into(mCoverPhotoView);
+        */
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setColorScheme(
@@ -73,7 +93,7 @@ public class EpisodesFragment extends ListFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getEpisodes(channelShortName);
+                getEpisodes(mChannelShortName);
             }
         });
 
@@ -88,10 +108,13 @@ public class EpisodesFragment extends ListFragment {
 
         trackEpisodeSelected(i.getTitle());
 
-        Uri uri = Uri.parse(i.getEnclosure().getUrl());
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "audio/*");
-        startActivity(intent);
+        Intent intent = new Intent(getActivity(), MediaPlaybackService.class);
+        intent.setAction(MediaPlaybackService.ACTION_PLAY);
+        intent.putExtra(INTENT_EPISODE_URL, i.getEnclosure().getUrl());
+        intent.putExtra(INTENT_EPISODE_TITLE, i.getTitle());
+        intent.putExtra(INTENT_EPISODE_DESCRIPTION, i.getDescription());
+
+        getActivity().startService(intent);
     }
 
     /**

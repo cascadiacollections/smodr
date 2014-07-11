@@ -43,11 +43,12 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     }
 
     @Override
-    public void onChannelSelected(String shortName) {
+    public void onChannelSelected(String shortName, String photoUrl) {
         trackChannelSelected(shortName);
 
         Bundle arguments = new Bundle();
         arguments.putString(EpisodesFragment.ARG_CHANNEL_NAME, shortName);
+        arguments.putString(EpisodesFragment.ARG_CHANNEL_PHOTO_URL, photoUrl);
 
         EpisodesFragment fragment = new EpisodesFragment();
         fragment.setArguments(arguments);
