@@ -4,12 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/swipe_layout"
     android:background="#F7F7F7">
-<!--
-    <ImageView
-        android:id="@+id/cover_photo"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
--->
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

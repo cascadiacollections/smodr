@@ -1,7 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,19 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Rss;
-import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
+import com.kevintcoughlin.smodr.http.SmodcastClient;
+import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
