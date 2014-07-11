@@ -45,8 +45,10 @@ public class EpisodesAdapter extends ArrayAdapter<Item> {
 
         final ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         final Item item = getItem(position);
+        String mTitle = item.getTitle();
+        String[] mTitleParts = mTitle.split(": ");
 
-        viewHolder.title.setText(item.getTitle());
+        viewHolder.title.setText(mTitleParts[1]);
         viewHolder.description.setText(item.getDescription());
 
         return convertView;

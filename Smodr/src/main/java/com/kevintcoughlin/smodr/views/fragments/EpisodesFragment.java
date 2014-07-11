@@ -1,7 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,12 +12,13 @@ import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Rss;
-import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
+import com.kevintcoughlin.smodr.http.SmodcastClient;
+import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.models.Rss;
+import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 
 import java.util.ArrayList;
 
@@ -30,16 +30,20 @@ import retrofit.client.Response;
  * Fragment that displays SModcast Channel's episodes in a ListView
  */
 public class EpisodesFragment extends ListFragment {
-
+    public static final String INTENT_EPISODE_URL = "intent_episode_url";
+    public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
+    public static final String INTENT_EPISODE_DESCRIPTION = "intent_episode_description";
     public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
+    public static final String ARG_CHANNEL_PHOTO_URL = "COVER_PHOTO_URL";
+
     private static final String TAG = "EpisodesFragment";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<Item> mItems;
     private ArrayAdapter<Item> mItemsAdapter;
-    private String channelShortName;
+    private String mChannelShortName;
+    private String mCoverPhotoUrl;
 
     public EpisodesFragment() {
-
     }
 
     @Override
@@ -47,12 +51,13 @@ public class EpisodesFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        channelShortName = bundle.getString(ARG_CHANNEL_NAME, "smodcast");
+        mChannelShortName = bundle.getString(ARG_CHANNEL_NAME, "smodcast");
+        mCoverPhotoUrl = bundle.getString(ARG_CHANNEL_PHOTO_URL, "http://smodcast.com/wp-content/blogs.dir/1/files_mf/smodcast1400.jpg");
 
         mItems = new ArrayList<>();
         mItemsAdapter = new EpisodesAdapter(getActivity(), mItems);
 
-        getEpisodes(channelShortName);
+        getEpisodes(mChannelShortName);
         setListAdapter(mItemsAdapter);
 
         track();
@@ -73,7 +78,7 @@ public class EpisodesFragment extends ListFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getEpisodes(channelShortName);
+                getEpisodes(mChannelShortName);
             }
         });
 
@@ -88,10 +93,13 @@ public class EpisodesFragment extends ListFragment {
 
         trackEpisodeSelected(i.getTitle());
 
-        Uri uri = Uri.parse(i.getEnclosure().getUrl());
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "audio/*");
-        startActivity(intent);
+        Intent intent = new Intent(getActivity(), MediaPlaybackService.class);
+        intent.setAction(MediaPlaybackService.ACTION_PLAY);
+        intent.putExtra(INTENT_EPISODE_URL, i.getEnclosure().getUrl());
+        intent.putExtra(INTENT_EPISODE_TITLE, i.getTitle());
+        intent.putExtra(INTENT_EPISODE_DESCRIPTION, i.getDescription());
+
+        getActivity().startService(intent);
     }
 
     /**

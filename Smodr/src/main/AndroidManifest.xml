@@ -32,6 +32,12 @@
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+
+        <service
+            android:enabled="true"
+            android:label="Playback Service"
+            android:name=".services.MediaPlaybackService" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
