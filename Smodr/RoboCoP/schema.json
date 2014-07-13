@@ -1,0 +1,65 @@
+{
+    "packageName": "com.kevintcoughlin.smodr.data",
+    "providerName": "smodr",
+    "databaseVersion": 4,
+    "tables": [
+    {
+        "name": "episodes",
+        "members" : [
+        {
+            "type" : "string",
+            "name" : "title"
+        },
+        {
+            "type" : "string",
+            "name" : "link"
+        },
+        {
+            "type" : "string",
+            "name" : "guid"
+        },
+        {
+            "type" : "string",
+            "name" : "pubDate"
+        },
+        {
+            "type" : "string",
+            "name" : "description"
+        },
+        {
+            "type" : "string",
+            "name" : "enclosure_link"
+        },
+        {
+            "type" : "string",
+            "name" : "url"
+        }
+        ]
+    },
+    {
+        "name": "channel",
+        "members": [
+            {
+                "type" : "string",
+                "name" : "short_name"
+            },
+            {
+                "type" : "string",
+                "name" : "title"
+            },
+            {
+                "type" : "string",
+                "name" : "cover_photo_url"
+            }
+        ]
+    }
+    ],
+    "relationships" : [
+        {
+            "name" : "agenda_calendar_item",
+            "left_table" : "channel",
+            "right_table" : "episodes",
+            "type" : "to_many"
+        }
+    ]
+}
