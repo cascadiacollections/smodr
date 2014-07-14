@@ -44,7 +44,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     }
 
     @Override
-    public void onChannelSelected(String shortName, String photoUrl, long channelId) {
+    public void onChannelSelected(String shortName, String photoUrl, long channelId, String title) {
         trackChannelSelected(shortName);
 
         Bundle arguments = new Bundle();
@@ -61,7 +61,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
 
-        setTitle(shortName);
+        setTitle(title);
     }
 
     @Override
@@ -71,6 +71,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
 
     public void shouldDisplayHomeUp() {
         boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        if (!canback) setTitle("Smodr"); // @TODO: Move this
         getActionBar().setDisplayHomeAsUpEnabled(canback);
     }
 

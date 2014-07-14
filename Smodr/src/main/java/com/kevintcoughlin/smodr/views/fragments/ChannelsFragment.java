@@ -38,12 +38,12 @@ public class ChannelsFragment extends Fragment implements GridView.OnItemClickLi
     private ChannelsAdapter mAdapter;
 
     public interface Callbacks {
-        public void onChannelSelected(String shortName, String photoUrl, long channelId);
+        public void onChannelSelected(String shortName, String photoUrl, long channelId, String title);
     }
 
     private static Callbacks sChannelCallbacks = new Callbacks() {
         @Override
-        public void onChannelSelected(String id, String photoUrl, long channelId) {
+        public void onChannelSelected(String id, String photoUrl, long channelId, String title) {
         }
     };
 
@@ -85,7 +85,8 @@ public class ChannelsFragment extends Fragment implements GridView.OnItemClickLi
         String shortName = cursor.getString(cursor.getColumnIndex(ChannelTable.SHORT_NAME));
         String coverImageUrl = cursor.getString(cursor.getColumnIndex(ChannelTable.COVER_PHOTO_URL));
         long channelId = cursor.getLong(cursor.getColumnIndex(ChannelTable._ID));
-        mCallbacks.onChannelSelected(shortName, coverImageUrl, channelId);
+        String title = cursor.getString(cursor.getColumnIndex(ChannelTable.TITLE));
+        mCallbacks.onChannelSelected(shortName, coverImageUrl, channelId, title);
     }
 
     @Override
