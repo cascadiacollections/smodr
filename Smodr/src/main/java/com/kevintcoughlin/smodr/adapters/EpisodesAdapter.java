@@ -27,8 +27,10 @@ public class EpisodesAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.episodes_list_item_layout, parent, false);
         final ViewHolder holder;
+
         holder = new ViewHolder(view);
         view.setTag(holder);
+
         return view;
     }
 

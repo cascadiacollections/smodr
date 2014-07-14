@@ -1,13 +1,9 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.app.Activity;
-import android.content.ContentProviderOperation;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -36,7 +32,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -55,13 +50,18 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
 
     public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
     public static final String ARG_CHANNEL_PHOTO_URL = "COVER_PHOTO_URL";
+    public static final String ARG_CHANNEL_ID = "CHANNEL_ID";
 
     private static final String TAG = "EpisodesFragment";
+    public static final int LOADER_ID = 1;
+
+    private long mChannelId = 0;
     private ListView mListView;
     private FadingActionBarHelper mFadingHelper;
     private EpisodesAdapter mAdapter;
     private String mChannelShortName;
     private String mCoverPhotoUrl;
+    private final DateTimeFormatter mDateFormat = DateTimeFormat.forPattern("E, dd MMM yyyy HH:mm:ss Z");
 
     public EpisodesFragment() {
     }
@@ -73,6 +73,12 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         Bundle bundle = this.getArguments();
         mChannelShortName = bundle.getString(ARG_CHANNEL_NAME, "smodcast");
         mCoverPhotoUrl = bundle.getString(ARG_CHANNEL_PHOTO_URL, "http://smodcast.com/wp-content/blogs.dir/1/files_mf/smodcast1400.jpg");
+        mChannelId = bundle.getLong(ARG_CHANNEL_ID);
+
+        mAdapter = new EpisodesAdapter(getActivity(), null, false);
+
+        // @TODO: Is there a better way to refresh this when re-creating fragment?
+        getActivity().getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
 
         getEpisodes(mChannelShortName);
 
@@ -84,9 +90,7 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         View view = mFadingHelper.createView(inflater);
 
         mListView = (ListView) view.findViewById(R.id.episodes_list);
-        mAdapter = new EpisodesAdapter(getActivity(), null, false);
         mListView.setAdapter(mAdapter);
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
         mListView.setOnItemClickListener(this);
 
         return view;
@@ -128,44 +132,65 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void consumeFeed(Rss rss) {
-        boolean needsToUpdate = true;
-        Cursor c = mAdapter.getCursor();
-        String mDate = null;
-
-        // @TODO: only if right channel
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            mDate = c.getString(c.getColumnIndex(EpisodesTable.PUB_DATE));
-        }
-
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("E, dd MMM yyyy HH:mm:ss Z");
-        DateTime topDate = formatter.parseDateTime(mDate);
-
         List<Item> items = rss.getChannel().getItems();
 
+        DateTime mostRecentDate;
+        DateTime currentItemDate;
+
         for (int i = 0; i < items.size(); i++) {
-            if (!needsToUpdate) return;
 
             Item item = items.get(i);
-            Episodes episode = new Episodes();
 
-            DateTime newDate = formatter.parseDateTime(item.getPubDate());
+            Cursor c = mAdapter.getCursor();
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                final String dateString = c.getString(c.getColumnIndex(EpisodesTable.PUB_DATE));
 
-            if (newDate.isAfter(topDate.toInstant())) {
-                episode.setTitle(item.getTitle());
-                episode.setDescription(item.getDescription());
-                episode.setGuid(item.getGuid());
-                episode.setPubdate(item.getPubDate());
-                episode.setEnclosureLink(item.getEnclosure().getUrl());
-                episode.setLink(item.getLink());
-                episode.setUrl(item.getUrl());
+                mostRecentDate = mDateFormat.parseDateTime(dateString);
+                currentItemDate = mDateFormat.parseDateTime(item.getPubDate());
+
+                if (
+                        currentItemDate.isEqual(mostRecentDate.toInstant()) ||
+                        currentItemDate.isBefore(mostRecentDate.toInstant())
+                ) {
+                    return;
+                } else {
+                    Episodes episode = new Episodes();
+                    try {
+                        episode.setTitle(item.getTitle());
+                        episode.setDescription(item.getDescription());
+                        episode.setGuid(item.getGuid());
+                        episode.setPubdate(item.getPubDate());
+                        episode.setEnclosureLink(item.getEnclosure().getUrl());
+                        episode.setLink(item.getLink());
+                        episode.setUrl(item.getUrl());
+                        episode.setChannelId(mChannelId);
+                    } catch (NullPointerException e) {
+
+                    }
+
+                    // @TODO: Batch
+                    getActivity().getContentResolver()
+                            .insert(SmodrProvider.EPISODES_CONTENT_URI, episode.getContentValues());
+                }
+            } else {
+                Episodes episode = new Episodes();
+                try {
+                    episode.setTitle(item.getTitle());
+                    episode.setDescription(item.getDescription());
+                    episode.setGuid(item.getGuid());
+                    episode.setPubdate(item.getPubDate());
+                    episode.setEnclosureLink(item.getEnclosure().getUrl());
+                    episode.setLink(item.getLink());
+                    episode.setUrl(item.getUrl());
+                    episode.setChannelId(mChannelId);
+                } catch (NullPointerException e) {
+
+                }
 
                 // @TODO: Batch
-                getActivity()
-                        .getContentResolver()
+                getActivity().getContentResolver()
                         .insert(SmodrProvider.EPISODES_CONTENT_URI, episode.getContentValues());
-            } else {
-                needsToUpdate = false;
             }
         }
     }
@@ -203,10 +228,11 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String channelId = String.valueOf(mChannelId);
         return new CursorLoader(getActivity(),
                 SmodrProvider.EPISODES_CONTENT_URI,
                 null,
-                null,
+                EpisodesTable.CHANNEL_ID + " = " + channelId,
                 null,
                 EpisodesTable._ID + " ASC");
     }
@@ -214,6 +240,7 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

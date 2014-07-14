@@ -1,7 +1,7 @@
 {
     "packageName": "com.kevintcoughlin.smodr.data",
     "providerName": "smodr",
-    "databaseVersion": 4,
+    "databaseVersion": 5,
     "tables": [
     {
         "name": "episodes",
@@ -56,7 +56,7 @@
     ],
     "relationships" : [
         {
-            "name" : "agenda_calendar_item",
+            "name" : "channel_episodes",
             "left_table" : "channel",
             "right_table" : "episodes",
             "type" : "to_many"

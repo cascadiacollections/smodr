@@ -1,59 +1,58 @@
 package com.kevintcoughlin.smodr.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.data.model.Channel;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class ChannelsAdapter extends ArrayAdapter<Channel> {
+public class ChannelsAdapter extends CursorAdapter {
 
-    private static final String TAG = "ChannelsAdapter";
-    private final Context context;
-    private final ArrayList<Channel> channels;
+    private Context mContext;
 
-    static class ViewHolder {
-        ImageView image;
-    }
-
-    private final LayoutInflater mLayoutInflater;
-
-    public ChannelsAdapter(final Context context, final int textViewResourceId, ArrayList<Channel> channels) {
-        super(context, textViewResourceId, channels);
-        mLayoutInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.channels = channels;
+    public ChannelsAdapter(Context context, Cursor c, boolean autoRequery) {
+        super(context, c, autoRequery);
+        mContext = context;
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder vh;
-        if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.channels_grid_item_layout, parent, false);
-            vh = new ViewHolder();
-            vh.image = (ImageView) convertView.findViewById(R.id.image);
-            convertView.setTag(vh);
-        } else {
-            vh = (ViewHolder) convertView.getTag();
-        }
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.channels_grid_item_layout, parent, false);
+        final ViewHolder holder;
+        holder = new ViewHolder(view);
+        view.setTag(holder);
+        return view;
+    }
 
-        Channel channel = channels.get(position);
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        final ViewHolder holder = (ViewHolder) view.getTag();
 
-        Picasso.with(this.context)
-                .load(channel.getImageUrl())
+        Channel channel = new Channel(cursor);
+
+        Picasso.with(context)
+                .load(channel.getCoverPhotoUrl())
                 .placeholder(R.drawable.placeholder)
                 .fit()
                 .centerCrop()
-                .into(vh.image);
-
-        return convertView;
+                .into(holder.mImage);
     }
 
+    static class ViewHolder {
+        @InjectView(R.id.image)
+        ImageView mImage;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
 }
