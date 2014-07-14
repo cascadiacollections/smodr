@@ -20,6 +20,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
+import com.kevintcoughlin.smodr.data.database.table.ChannelTable;
 import com.kevintcoughlin.smodr.data.database.table.EpisodesTable;
 import com.kevintcoughlin.smodr.data.model.Episodes;
 import com.kevintcoughlin.smodr.data.provider.SmodrProvider;
@@ -250,16 +251,20 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Item i = (Item) mListView.getItemAtPosition(position);
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
-        trackEpisodeSelected(i.getTitle());
+        String title = cursor.getString(cursor.getColumnIndex(EpisodesTable.TITLE));
+        String url = cursor.getString(cursor.getColumnIndex(EpisodesTable.ENCLOSURE_LINK));
+        String description = cursor.getString(cursor.getColumnIndex(EpisodesTable.DESCRIPTION));
+
+        trackEpisodeSelected(title);
 
         Intent intent = new Intent(getActivity(), MediaPlaybackService.class);
         intent.setAction(MediaPlaybackService.ACTION_PLAY);
-        intent.putExtra(INTENT_EPISODE_URL, i.getEnclosure().getUrl());
-        intent.putExtra(INTENT_EPISODE_TITLE, i.getTitle());
-        intent.putExtra(INTENT_EPISODE_DESCRIPTION, i.getDescription());
+        intent.putExtra(INTENT_EPISODE_URL, url);
+        intent.putExtra(INTENT_EPISODE_TITLE, title);
+        intent.putExtra(INTENT_EPISODE_DESCRIPTION, description);
 
         getActivity().startService(intent);
     }
