@@ -17,6 +17,12 @@ public class SmodrApplication extends Application {
     public synchronized Tracker getTracker(TrackerName trackerId) {
         if (!mTrackers.containsKey(trackerId)) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+
+            // Don't log in debug.
+            if (BuildConfig.DEBUG) {
+                analytics.setDryRun(true);
+            }
+
             Tracker t = analytics.newTracker(PROPERTY_ID);
             mTrackers.put(trackerId, t);
         }

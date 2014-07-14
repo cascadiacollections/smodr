@@ -1,9 +1,13 @@
+apply plugin: 'android'
+import com.rain.utils.android.robocop.generator.*;
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath files('RoboCoP/RoboCoP-0.5-jar-with-dependencies.jar')
     }
 }
 
@@ -11,7 +15,15 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'android'
+task contentProviderGen {
+    description = 'Generating Smodr ContentProvider.'
+    doLast {
+        System.out.println("Generating ContentProvider...")
+        String schemaFilename = 'RoboCoP/schema.json';
+        String baseOutputDir = 'src/main/java/';
+        ContentProviderGenerator.generateContentProvider(schemaFilename, baseOutputDir);
+    }
+}
 
 android {
     compileSdkVersion 19
@@ -42,7 +54,8 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:19.1.0'
     compile 'com.android.support:mediarouter-v7:19.1.0'
     compile 'com.android.support:support-v13:19.1.0'
-
+    compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:3.1.2'
+    compile 'joda-time:joda-time:2.3'
     compile 'com.jakewharton:butterknife:5.1.+'
     compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.squareup.picasso:picasso:2.3.+'

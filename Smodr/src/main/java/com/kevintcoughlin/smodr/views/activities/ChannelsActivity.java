@@ -18,6 +18,7 @@ import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
  */
 public class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager.OnBackStackChangedListener {
     private static final String TAG = "ChannelsView";
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
 
         setContentView(R.layout.channels_view_layout);
 
-        setTitle("Smodr");
+        mTitle = getTitle();
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         shouldDisplayHomeUp();
@@ -43,11 +44,13 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     }
 
     @Override
-    public void onChannelSelected(String shortName) {
+    public void onChannelSelected(String shortName, String photoUrl, long channelId, String title) {
         trackChannelSelected(shortName);
 
         Bundle arguments = new Bundle();
         arguments.putString(EpisodesFragment.ARG_CHANNEL_NAME, shortName);
+        arguments.putString(EpisodesFragment.ARG_CHANNEL_PHOTO_URL, photoUrl);
+        arguments.putLong(EpisodesFragment.ARG_CHANNEL_ID, channelId);
 
         EpisodesFragment fragment = new EpisodesFragment();
         fragment.setArguments(arguments);
@@ -57,6 +60,8 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
+
+        setTitle(title);
     }
 
     @Override
@@ -66,7 +71,14 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
 
     public void shouldDisplayHomeUp() {
         boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        if (!canback) setTitle("Smodr"); // @TODO: Move this
         getActionBar().setDisplayHomeAsUpEnabled(canback);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     @Override
