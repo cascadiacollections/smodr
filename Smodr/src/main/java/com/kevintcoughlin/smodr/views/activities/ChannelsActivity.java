@@ -18,6 +18,7 @@ import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
  */
 public class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager.OnBackStackChangedListener {
     private static final String TAG = "ChannelsView";
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
 
         setContentView(R.layout.channels_view_layout);
 
-        setTitle("Smodr");
+        mTitle = getTitle();
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         shouldDisplayHomeUp();
@@ -59,6 +60,8 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
+
+        setTitle(shortName);
     }
 
     @Override
@@ -69,6 +72,12 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     public void shouldDisplayHomeUp() {
         boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
         getActionBar().setDisplayHomeAsUpEnabled(canback);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     @Override

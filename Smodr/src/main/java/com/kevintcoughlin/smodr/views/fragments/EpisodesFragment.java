@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -27,6 +28,7 @@ import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -89,7 +91,7 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = mFadingHelper.createView(inflater);
 
-        mListView = (ListView) view.findViewById(R.id.episodes_list);
+        mListView = (ListView) view.findViewById(R.id.list);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
@@ -101,7 +103,7 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         super.onAttach(activity);
 
         mFadingHelper = new FadingActionBarHelper()
-                .actionBarBackground(R.color.ab_background)
+                .actionBarBackground(android.R.color.transparent)
                 .headerLayout(R.layout.header)
                 .contentLayout(R.layout.episode_listview)
                 .lightActionBar(true);
@@ -228,11 +230,10 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String channelId = String.valueOf(mChannelId);
         return new CursorLoader(getActivity(),
                 SmodrProvider.EPISODES_CONTENT_URI,
                 null,
-                EpisodesTable.CHANNEL_ID + " = " + channelId,
+                EpisodesTable.CHANNEL_ID + " = " + mChannelId,
                 null,
                 EpisodesTable._ID + " ASC");
     }
