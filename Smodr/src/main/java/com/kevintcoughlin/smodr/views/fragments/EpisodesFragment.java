@@ -1,26 +1,20 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
-import com.kevintcoughlin.smodr.data.database.table.ChannelTable;
 import com.kevintcoughlin.smodr.data.database.table.EpisodesTable;
 import com.kevintcoughlin.smodr.data.model.Episodes;
 import com.kevintcoughlin.smodr.data.provider.SmodrProvider;
@@ -28,8 +22,6 @@ import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
-import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
-import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -44,8 +36,7 @@ import retrofit.client.Response;
 /**
  * Fragment that displays SModcast Channel's episodes in a ListView
  */
-public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener {
+public class EpisodesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String INTENT_EPISODE_URL = "intent_episode_url";
     public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
@@ -59,8 +50,6 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int LOADER_ID = 1;
 
     private long mChannelId = 0;
-    private ListView mListView;
-    private FadingActionBarHelper mFadingHelper;
     private EpisodesAdapter mAdapter;
     private String mChannelShortName;
     private String mCoverPhotoUrl;
@@ -85,31 +74,9 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
 
         getEpisodes(mChannelShortName);
 
+        setListAdapter(mAdapter);
+
         track();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = mFadingHelper.createView(inflater);
-
-        mListView = (ListView) view.findViewById(R.id.list);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(this);
-
-        return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        mFadingHelper = new FadingActionBarHelper()
-                .actionBarBackground(android.R.color.transparent)
-                .headerLayout(R.layout.header)
-                .contentLayout(R.layout.episode_listview)
-                .lightActionBar(true);
-
-        mFadingHelper.initActionBar(activity);
     }
 
     /**
@@ -251,8 +218,10 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
 
         String title = cursor.getString(cursor.getColumnIndex(EpisodesTable.TITLE));
         String url = cursor.getString(cursor.getColumnIndex(EpisodesTable.ENCLOSURE_LINK));

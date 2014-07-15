@@ -21,41 +21,63 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     public static final int NOTIFICATION_ID = 37;
     public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
     public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
+    public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
+    public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
 
     private final String SERVICE_NAME = "Smodr";
     private String mTitle = "";
     private String mDescription = "";
 
+    // State
+    private boolean mIsPlaying = false;
+    private boolean mPrepared = false;
+
     MediaPlayer mMediaPlayer = null;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction().equals(ACTION_PLAY)) {
-            String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
-            mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
-            mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
+        super.onStartCommand(intent, flags, startId);
 
-            try {
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MediaPlayer();
-                    mMediaPlayer.setOnPreparedListener(this);
+        if (intent == null && intent.getAction() == null) {
+            stopPlayback();
+        } else {
+            if (intent.getAction().equals(ACTION_PLAY)) {
+                String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
+                mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
+                mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
+                if (url != null) {
+                    try {
+                        if (mMediaPlayer == null) {
+                            mMediaPlayer = new MediaPlayer();
+                            mMediaPlayer.setOnPreparedListener(this);
+                        } else {
+                            stopPlayback();
+                        }
+                        mMediaPlayer.setDataSource(url);
+                        mMediaPlayer.prepareAsync();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     stopPlayback();
                 }
-                mMediaPlayer.setDataSource(url);
-                mMediaPlayer.prepareAsync();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else if (intent.getAction().equals(ACTION_PAUSE)) {
+                pausePlayback();
+                createNotification();
+            } else if (intent.getAction().equals(ACTION_RESUME)) {
+                if (mPrepared) {
+                    mMediaPlayer.start();
+                    mIsPlaying = true;
+                } else {
+                    stopPlayback();
+                }
+                createNotification();
+            } else if (intent.getAction().equals(ACTION_STOP)) {
+                stopPlayback();
+                createNotification();
             }
-        } else if (intent.getAction().equals(ACTION_PAUSE)) {
-            stopPlayback();
         }
 
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_REDELIVER_INTENT;
     }
 
     @Override
@@ -66,31 +88,56 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         stopPlayback();
+        mIsPlaying = false;
+        mPrepared = false;
+
         return true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mIsPlaying = false;
+        mPrepared = false;
+    }
+
+    private void pausePlayback() {
+       mMediaPlayer.pause();
+       mIsPlaying = false;
     }
 
     private void stopPlayback() {
         mMediaPlayer.reset();
+        mIsPlaying = false;
+        mPrepared = false;
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         mNotificationManager.cancel(NOTIFICATION_ID);
         stopForeground(true);
     }
 
     private void createNotification() {
-        Intent mPauseIntent = new Intent(this, MediaPlaybackService.class);
-        mPauseIntent.setAction(ACTION_PAUSE);
+        final String action;
+        if (!mIsPlaying && !mPrepared) {
+            action = ACTION_PLAY;
+        } else if (!mIsPlaying && mPrepared) {
+            action = ACTION_RESUME;
+        } else if (mIsPlaying && mPrepared) {
+            action = ACTION_PAUSE;
+        } else {
+            action = ACTION_STOP;
+        }
 
-        PendingIntent mPendingPauseIntent = PendingIntent.getService(
+        Intent mIntent = new Intent(this, MediaPlaybackService.class);
+        mIntent.setAction(action);
+
+        PendingIntent mPendingIntent = PendingIntent.getService(
                 this,
                 0,
-                mPauseIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT
+                mIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         NotificationCompat.Builder mBuilder =
@@ -100,7 +147,10 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
                         .setPriority(Notification.PRIORITY_HIGH)
                         .setContentTitle(SERVICE_NAME)
                         .setContentText(mTitle)
-                        .addAction(R.drawable.ic_action_stop, "Stop", mPendingPauseIntent);
+                        .addAction(
+                                (mIsPlaying) ? R.drawable.ic_action_pause : R.drawable.ic_action_play,
+                                (mIsPlaying) ? "Pause" : "Play",
+                                mPendingIntent);
 
         Intent resultIntent = new Intent(this, ChannelsActivity.class);
 
@@ -109,10 +159,7 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
         stackBuilder.addNextIntent(resultIntent);
 
         PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -123,6 +170,9 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
+        mIsPlaying = true;
+        mPrepared = true;
+
         createNotification();
     }
 

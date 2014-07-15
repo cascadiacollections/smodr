@@ -1,4 +1,5 @@
 apply plugin: 'android'
+
 import com.rain.utils.android.robocop.generator.*;
 
 buildscript {
@@ -13,6 +14,10 @@ buildscript {
 
 repositories {
     mavenCentral()
+}
+
+configurations {
+    patch
 }
 
 task contentProviderGen {
@@ -54,17 +59,63 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:19.1.0'
     compile 'com.android.support:mediarouter-v7:19.1.0'
     compile 'com.android.support:support-v13:19.1.0'
-    compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:3.1.2'
+    //compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:3.1.2'
     compile 'joda-time:joda-time:2.3'
     compile 'com.jakewharton:butterknife:5.1.+'
     compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.squareup.picasso:picasso:2.3.+'
-    compile 'com.squareup.okhttp:okhttp:2.0.+'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.+'
-    compile 'com.squareup.retrofit:retrofit:1.6.+'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile ('com.squareup.retrofit:converter-simplexml:1.6.+') {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+
+    compile files('lib/okhttp-urlconnection-2.0.0.patched.jar')
+
+    //compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'javax.annotation:jsr250-api:1.0'
+
+    patch 'com.squareup.okio:okio:1.0.0'
+    patch 'com.googlecode.jarjar:jarjar:1.3'
+    patch 'com.squareup.okhttp:okhttp:2.0.0'
+    patch 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 }
+project.ext.set("shouldBuildPatch", { !new File('lib/okhttp-urlconnection-2.0.0.patched.jar').exists() })
+
+task downloadPatchLibs(type: Copy) {
+    into('lib')
+    from(configurations.patch)
+    exclude('jarjar*')
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+downloadPatchLibs.doFirst {
+    if(!shouldBuildPatch()) { throw new StopExecutionException() }
+}
+
+task applyPatch(dependsOn: 'downloadPatchLibs') << {
+    if (shouldBuildPatch()) {
+        project.ant {
+            taskdef name: "jarjar", classname: "com.tonicsystems.jarjar.JarJarTask", classpath: configurations.patch.asPath
+            jarjar(jarfile: 'lib/okhttp-urlconnection-2.0.0.patched.jar', filesetmanifest: "merge") {
+                zipfileset(src: 'lib/okio-1.0.0.jar')
+                zipfileset(src: 'lib/okhttp-2.0.0.jar')
+                zipfileset(src: 'lib/okhttp-urlconnection-2.0.0.jar')
+                rule pattern: "okio.**", result: "custom.okio.@1"
+            }
+        }
+    }
+}
+
+task cleanupDownloadPatchLibs(type: Delete, dependsOn: 'applyPatch') {
+    delete 'lib/okio-1.0.0.jar'
+    delete 'lib/okhttp-2.0.0.jar'
+    delete 'lib/okhttp-urlconnection-2.0.0.jar'
+}
+
+assemble.dependsOn(cleanupDownloadPatchLibs)
+
+task cleanPatch(type: Delete) {
+    delete 'lib'
+}
+clean.dependsOn(cleanPatch)
