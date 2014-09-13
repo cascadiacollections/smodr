@@ -26,7 +26,8 @@ public class ChannelsAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        final View view = LayoutInflater.from(mContext).inflate(R.layout.channels_grid_item_layout, parent, false);
+        final View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.channels_grid_item_layout, parent, false);
         final ViewHolder holder;
         holder = new ViewHolder(view);
         view.setTag(holder);
@@ -39,8 +40,12 @@ public class ChannelsAdapter extends CursorAdapter {
 
         Channel channel = new Channel(cursor);
 
+        // @TODO: cleanup and db properly
+        int coverPhotoResource = mContext.getResources()
+                .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
+
         Picasso.with(context)
-                .load(channel.getCoverPhotoUrl())
+                .load(coverPhotoResource)
                 .placeholder(R.drawable.placeholder)
                 .fit()
                 .centerCrop()

@@ -115,30 +115,30 @@ public class ChannelsFragment extends Fragment implements GridView.OnItemClickLi
 
     private void bootstrapChannelsData() {
         ArrayList<Channel> mChannels = new ArrayList<>();
-        mChannels.add(new Channel("hollywood-babble-on", "Hollywood Babble-On", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/babbleon140063.jpg"));
-        mChannels.add(new Channel("smodcast", "Smodcast", "http://i1.sndcdn.com/artworks-000031871422-hgbyb8-original.jpg?30a2558"));
-        mChannels.add(new Channel("jay-silent-bob-get-old", "Jay & Silent-Bob Get Old", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/getold1400.jpg"));
-        mChannels.add(new Channel("tell-em-steve-dave", "Tell ‘Em Steve-Dave!", "http://i1.sndcdn.com/artworks-000037405000-3krh8k-crop.jpg?30a2558"));
-        mChannels.add(new Channel("fatman-on-batman", "Fatman on Batman", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/fatmanbatman1400.jpg"));
-        mChannels.add(new Channel("edumacation-2", "Edumacation", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/1400x1400itunes.jpg"));
-        mChannels.add(new Channel("i-sell-comics", "I Sell Comics", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/iscitunes.jpg"));
-        mChannels.add(new Channel("plus-one", "Plus One", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/plusone1400.jpg"));
-        mChannels.add(new Channel("fsf", "Film School Fridays", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/itunes.jpg"));
-        mChannels.add(new Channel("last-week-on-earth-with-ben-gleib", "Last Week on Earth", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/lastweekitunes88.jpg"));
-        mChannels.add(new Channel("the-secret-stash", "The Secret Stash", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/secretstash59.jpg"));
-        mChannels.add(new Channel("netheads", "Netheads", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/itunes1400.jpg"));
-        mChannels.add(new Channel("get-up-on-this", "Get Up on This", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/getuponthisitunes91.png"));
-        mChannels.add(new Channel("team-jack", "Team Jack", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/teamjackitunes75.jpg"));
-        mChannels.add(new Channel("tha-breaks", "Tha Breaks", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/thabreaks37.png"));
-        mChannels.add(new Channel("having-sex", "Having Sex w/ Katie Morgan", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/havingsexitunes18.png"));
-        mChannels.add(new Channel("feab", "Four Eyes and a Beard", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/feabitunes74.jpg"));
-        mChannels.add(new Channel("highlands-a-peephole-history", "Highlands: A Peephole History", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/peepholeitunes36.jpg"));
-        mChannels.add(new Channel("waking-from-the-american-dream", "Waking From The American Dream", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/wakingitunes64.jpg"));
-        mChannels.add(new Channel("smodco-smorning-show", "SModCo SMorning Show", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/smorningitunes78.jpg"));
-        mChannels.add(new Channel("smoviemakers", "SMoviemakers", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/smoviemakersitunes85.jpg"));
-        mChannels.add(new Channel("sound-bite-nation", "Soundbite Nation", "http://smodcast.com/wp-content/blogs.dir/1/files/2011/08/featured1.jpg"));
-        mChannels.add(new Channel("sminterview", "SMinterview", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/sminterviewitunes59.jpg"));
-        mChannels.add(new Channel("bagged-boarded-live", "Bagged & Boarded Live", "http://smodcast.com/wp-content/blogs.dir/1/files_mf/600x600itunes.jpg"));
+        mChannels.add(new Channel("hollywood-babble-on", "Hollywood Babble-On"));
+        mChannels.add(new Channel("smodcast", "Smodcast"));
+        mChannels.add(new Channel("jay-silent-bob-get-old", "Jay & Silent-Bob Get Old"));
+        mChannels.add(new Channel("tell-em-steve-dave", "Tell ‘Em Steve-Dave!"));
+        mChannels.add(new Channel("fatman-on-batman", "Fatman on Batman"));
+        mChannels.add(new Channel("edumacation-2", "Edumacation"));
+        mChannels.add(new Channel("i-sell-comics", "I Sell Comics"));
+        mChannels.add(new Channel("plus-one", "Plus One"));
+        mChannels.add(new Channel("fsf", "Film School Fridays"));
+        mChannels.add(new Channel("last-week-on-earth-with-ben-gleib", "Last Week on Earth"));
+        mChannels.add(new Channel("the-secret-stash", "The Secret Stash"));
+        mChannels.add(new Channel("netheads", "Netheads"));
+        mChannels.add(new Channel("get-up-on-this", "Get Up on This"));
+        mChannels.add(new Channel("team-jack", "Team Jack"));
+        mChannels.add(new Channel("tha-breaks", "Tha Breaks"));
+        mChannels.add(new Channel("having-sex", "Having Sex w/ Katie Morgan"));
+        mChannels.add(new Channel("feab", "Four Eyes and a Beard"));
+        mChannels.add(new Channel("highlands-a-peephole-history", "Highlands: A Peephole History"));
+        mChannels.add(new Channel("waking-from-the-american-dream", "Waking From The American Dream"));
+        mChannels.add(new Channel("smodco-smorning-show", "SModCo SMorning Show"));
+        mChannels.add(new Channel("smoviemakers", "SMoviemakers"));
+        mChannels.add(new Channel("sound-bite-nation", "Soundbite Nation"));
+        mChannels.add(new Channel("sminterview", "SMinterview"));
+        mChannels.add(new Channel("bagged-boarded-live", "Bagged & Boarded Live"));
 
         for (Channel c : mChannels) {
             com.kevintcoughlin.smodr.data.model.Channel dbChannel = new com.kevintcoughlin.smodr.data.model.Channel();

@@ -12,10 +12,17 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.SmodrApplication;
+import com.kevintcoughlin.smodr.jobs.UpdateEpisodeJob;
 import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+import com.path.android.jobqueue.JobManager;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
     public static final int NOTIFICATION_ID = 37;
@@ -25,14 +32,31 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
 
     private final String SERVICE_NAME = "Smodr";
+    private int mId;
     private String mTitle = "";
     private String mDescription = "";
+    private int mPosition = 0;
 
-    // State
+    private final int POOL_SIZE = 2;
+    private final int SAVE_PLAYBACK_POSITION_INTERVAL = 5000;
+    private ScheduledThreadPoolExecutor mScheduledExecutor;
+    private ScheduledFuture mSavePlaybackPositionFuture;
+    private Context mContext;
+    private Timer mAddEpisodeUpdateJobTimer;
+    private JobManager mJobManager;
+
     private boolean mIsPlaying = false;
     private boolean mPrepared = false;
 
     MediaPlayer mMediaPlayer = null;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mContext = getApplicationContext();
+        mJobManager = SmodrApplication.getInstance().getJobManager();
+    }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -41,9 +65,12 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
             stopPlayback();
         } else {
             if (intent.getAction().equals(ACTION_PLAY)) {
+                mId = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_ID, -1);
                 String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
                 mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
                 mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
+                mPosition = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_POSITION, 0);
+
                 if (url != null) {
                     try {
                         if (mMediaPlayer == null) {
@@ -73,7 +100,6 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
                 createNotification();
             } else if (intent.getAction().equals(ACTION_STOP)) {
                 stopPlayback();
-                createNotification();
             }
         }
 
@@ -97,16 +123,18 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopPlayback();
         mIsPlaying = false;
         mPrepared = false;
     }
 
     private void pausePlayback() {
-       mMediaPlayer.pause();
-       mIsPlaying = false;
+        mMediaPlayer.pause();
+        mIsPlaying = false;
     }
 
     private void stopPlayback() {
+        stopUpdateEpisodeTimer();
         mMediaPlayer.reset();
         mIsPlaying = false;
         mPrepared = false;
@@ -119,19 +147,8 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     }
 
     private void createNotification() {
-        final String action;
-        if (!mIsPlaying && !mPrepared) {
-            action = ACTION_PLAY;
-        } else if (!mIsPlaying && mPrepared) {
-            action = ACTION_RESUME;
-        } else if (mIsPlaying && mPrepared) {
-            action = ACTION_PAUSE;
-        } else {
-            action = ACTION_STOP;
-        }
-
         Intent mIntent = new Intent(this, MediaPlaybackService.class);
-        mIntent.setAction(action);
+        mIntent.setAction(ACTION_STOP);
 
         PendingIntent mPendingIntent = PendingIntent.getService(
                 this,
@@ -148,9 +165,10 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
                         .setContentTitle(SERVICE_NAME)
                         .setContentText(mTitle)
                         .addAction(
-                                (mIsPlaying) ? R.drawable.ic_action_pause : R.drawable.ic_action_play,
-                                (mIsPlaying) ? "Pause" : "Play",
-                                mPendingIntent);
+                                R.drawable.ic_action_pause,
+                                getString(R.string.notification_action_pause),
+                                mPendingIntent
+                        );
 
         Intent resultIntent = new Intent(this, ChannelsActivity.class);
 
@@ -160,20 +178,57 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
         mBuilder.setContentIntent(resultPendingIntent);
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        Notification notification = mBuilder.build();
+
+        mNotificationManager.notify(NOTIFICATION_ID, notification);
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
+
+        // At the end of the episode, seek to the beginning.
+        if (mPosition >= mediaPlayer.getDuration())
+            mPosition = 0;
+
+        mediaPlayer.seekTo(mPosition);
+        createNotification();
+        startUpdateEpisodeTimer();
+
         mIsPlaying = true;
         mPrepared = true;
-
-        createNotification();
     }
 
+    private int getCurrentPosition() {
+        return mMediaPlayer.getCurrentPosition();
+    }
+
+    private int getDuration() {
+        return mMediaPlayer.getDuration();
+    }
+
+    private synchronized void startUpdateEpisodeTimer() {
+        mAddEpisodeUpdateJobTimer = new Timer();
+        mAddEpisodeUpdateJobTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                int position = getCurrentPosition();
+                int duration = getDuration();
+                mJobManager.addJobInBackground(new UpdateEpisodeJob(mId, position, duration));
+            }
+        }, 0, UpdateEpisodeJob.UPDATE_INTERVAL);
+    }
+
+    private synchronized void stopUpdateEpisodeTimer() {
+        if (mAddEpisodeUpdateJobTimer != null) {
+            mAddEpisodeUpdateJobTimer.cancel();
+        }
+    }
 }

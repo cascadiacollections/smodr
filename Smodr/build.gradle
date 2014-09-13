@@ -1,23 +1,23 @@
 apply plugin: 'android'
+apply plugin: 'crashlytics'
 
 import com.rain.utils.android.robocop.generator.*;
 
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
         classpath files('RoboCoP/RoboCoP-0.5-jar-with-dependencies.jar')
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    patch
+    maven { url 'http://download.crashlytics.com/maven' }
 }
 
 task contentProviderGen {
@@ -32,7 +32,7 @@ task contentProviderGen {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '19.1'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -47,6 +47,10 @@ android {
     buildTypes {
         dev {
             applicationIdSuffix '.dev'
+        }
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }
@@ -63,59 +67,17 @@ dependencies {
     compile 'joda-time:joda-time:2.3'
     compile 'com.jakewharton:butterknife:5.1.+'
     compile 'com.jakewharton.timber:timber:2.4.+'
+    compile 'com.squareup:otto:1.3.5'
     compile 'com.squareup.picasso:picasso:2.3.+'
+    compile 'com.squareup.okio:okio:1.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile ('com.squareup.retrofit:converter-simplexml:1.6.+') {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
-
-    compile files('lib/okhttp-urlconnection-2.0.0.patched.jar')
-
-    //compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    compile 'javax.annotation:jsr250-api:1.0'
-
-    patch 'com.squareup.okio:okio:1.0.0'
-    patch 'com.googlecode.jarjar:jarjar:1.3'
-    patch 'com.squareup.okhttp:okhttp:2.0.0'
-    patch 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.path:android-priority-jobqueue:1.1.2'
+    compile 'com.crashlytics.android:crashlytics:1.+'
 }
-project.ext.set("shouldBuildPatch", { !new File('lib/okhttp-urlconnection-2.0.0.patched.jar').exists() })
-
-task downloadPatchLibs(type: Copy) {
-    into('lib')
-    from(configurations.patch)
-    exclude('jarjar*')
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-}
-downloadPatchLibs.doFirst {
-    if(!shouldBuildPatch()) { throw new StopExecutionException() }
-}
-
-task applyPatch(dependsOn: 'downloadPatchLibs') << {
-    if (shouldBuildPatch()) {
-        project.ant {
-            taskdef name: "jarjar", classname: "com.tonicsystems.jarjar.JarJarTask", classpath: configurations.patch.asPath
-            jarjar(jarfile: 'lib/okhttp-urlconnection-2.0.0.patched.jar', filesetmanifest: "merge") {
-                zipfileset(src: 'lib/okio-1.0.0.jar')
-                zipfileset(src: 'lib/okhttp-2.0.0.jar')
-                zipfileset(src: 'lib/okhttp-urlconnection-2.0.0.jar')
-                rule pattern: "okio.**", result: "custom.okio.@1"
-            }
-        }
-    }
-}
-
-task cleanupDownloadPatchLibs(type: Delete, dependsOn: 'applyPatch') {
-    delete 'lib/okio-1.0.0.jar'
-    delete 'lib/okhttp-2.0.0.jar'
-    delete 'lib/okhttp-urlconnection-2.0.0.jar'
-}
-
-assemble.dependsOn(cleanupDownloadPatchLibs)
-
-task cleanPatch(type: Delete) {
-    delete 'lib'
-}
-clean.dependsOn(cleanPatch)

@@ -32,10 +32,10 @@ public class Channel implements Parcelable {
 
     }
 
-    public Channel(String shortName, String title, String imageUrl) {
+    public Channel(String shortName, String title) {
         this.shortName = shortName;
         this.title = title;
-        this.imageUrl = imageUrl;
+        this.imageUrl = shortName.replace("-", "") + ".jpg";
     }
 
     public String getTitle() {
