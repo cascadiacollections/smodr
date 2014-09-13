@@ -1,7 +1,7 @@
 {
     "packageName": "com.kevintcoughlin.smodr.data",
     "providerName": "smodr",
-    "databaseVersion": 5,
+    "databaseVersion": 6,
     "tables": [
     {
         "name": "episodes",
@@ -33,6 +33,14 @@
         {
             "type" : "string",
             "name" : "url"
+        },
+        {
+            "type" : "int",
+            "name" : "position"
+        },
+        {
+            "type" : "int",
+            "name" : "duration"
         }
         ]
     },

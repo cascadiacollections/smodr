@@ -41,4 +41,7 @@
     <string name="player_buffering_msg">Buffering</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
     <string name="playbackservice_notification_content">Tap here for more info</string>
+
+    <!-- Notification action strings -->
+    <string name="notification_action_pause">Pause</string>
 </resources>

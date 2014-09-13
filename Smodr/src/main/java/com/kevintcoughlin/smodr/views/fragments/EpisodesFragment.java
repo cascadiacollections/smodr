@@ -1,26 +1,20 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
-import com.kevintcoughlin.smodr.data.database.table.ChannelTable;
 import com.kevintcoughlin.smodr.data.database.table.EpisodesTable;
 import com.kevintcoughlin.smodr.data.model.Episodes;
 import com.kevintcoughlin.smodr.data.provider.SmodrProvider;
@@ -28,13 +22,12 @@ import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
-import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
-import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -44,12 +37,13 @@ import retrofit.client.Response;
 /**
  * Fragment that displays SModcast Channel's episodes in a ListView
  */
-public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener {
+public class EpisodesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String INTENT_EPISODE_ID = "intent_episode_id";
     public static final String INTENT_EPISODE_URL = "intent_episode_url";
     public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
     public static final String INTENT_EPISODE_DESCRIPTION = "intent_episode_description";
+    public static final String INTENT_EPISODE_POSITION = "intent_episode_position";
 
     public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
     public static final String ARG_CHANNEL_PHOTO_URL = "COVER_PHOTO_URL";
@@ -59,8 +53,6 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int LOADER_ID = 1;
 
     private long mChannelId = 0;
-    private ListView mListView;
-    private FadingActionBarHelper mFadingHelper;
     private EpisodesAdapter mAdapter;
     private String mChannelShortName;
     private String mCoverPhotoUrl;
@@ -84,38 +76,18 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         getActivity().getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
 
         getEpisodes(mChannelShortName);
+        setListAdapter(mAdapter);
 
         track();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = mFadingHelper.createView(inflater);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mListView = (ListView) view.findViewById(R.id.list);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(this);
-
-        return view;
+        setListShown(false);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        mFadingHelper = new FadingActionBarHelper()
-                .actionBarBackground(android.R.color.transparent)
-                .headerLayout(R.layout.header)
-                .contentLayout(R.layout.episode_listview)
-                .lightActionBar(true);
-
-        mFadingHelper.initActionBar(activity);
-    }
-
-    /**
-     * Fetch RSS feed and consume for episodes.
-     * @param shortName
-     */
     private void getEpisodes(String shortName) {
         SmodcastClient.getClient().getFeed(shortName, new Callback<Rss>() {
             @Override
@@ -134,8 +106,10 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         });
     }
 
+    // @TODO: This logic completely sucks. Fix ASAP.
     private void consumeFeed(Rss rss) {
         List<Item> items = rss.getChannel().getItems();
+        LinkedList<Episodes> episodesToInsert = new LinkedList<>();
 
         DateTime mostRecentDate;
         DateTime currentItemDate;
@@ -143,8 +117,8 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
         for (int i = 0; i < items.size(); i++) {
 
             Item item = items.get(i);
-
             Cursor c = mAdapter.getCursor();
+
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 final String dateString = c.getString(c.getColumnIndex(EpisodesTable.PUB_DATE));
@@ -153,9 +127,10 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
                 currentItemDate = mDateFormat.parseDateTime(item.getPubDate());
 
                 if (
-                        currentItemDate.isEqual(mostRecentDate.toInstant()) ||
-                        currentItemDate.isBefore(mostRecentDate.toInstant())
+                    currentItemDate.isEqual(mostRecentDate.toInstant()) ||
+                    currentItemDate.isBefore(mostRecentDate.toInstant())
                 ) {
+                    // @TODO: FIX THIS. ITS A HUGE PROBLEM.
                     return;
                 } else {
                     Episodes episode = new Episodes();
@@ -163,18 +138,16 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
                         episode.setTitle(item.getTitle());
                         episode.setDescription(item.getDescription());
                         episode.setGuid(item.getGuid());
-                        episode.setPubdate(item.getPubDate());
+                        episode.setPubdate(String.valueOf(currentItemDate.getMillis()));
                         episode.setEnclosureLink(item.getEnclosure().getUrl());
                         episode.setLink(item.getLink());
                         episode.setUrl(item.getUrl());
                         episode.setChannelId(mChannelId);
+
+                        episodesToInsert.push(episode);
                     } catch (NullPointerException e) {
 
                     }
-
-                    // @TODO: Batch
-                    getActivity().getContentResolver()
-                            .insert(SmodrProvider.EPISODES_CONTENT_URI, episode.getContentValues());
                 }
             } else {
                 Episodes episode = new Episodes();
@@ -187,15 +160,21 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
                     episode.setLink(item.getLink());
                     episode.setUrl(item.getUrl());
                     episode.setChannelId(mChannelId);
+
+                    episodesToInsert.push(episode);
                 } catch (NullPointerException e) {
 
                 }
-
-                // @TODO: Batch
-                getActivity().getContentResolver()
-                        .insert(SmodrProvider.EPISODES_CONTENT_URI, episode.getContentValues());
             }
         }
+
+        // @TODO: Batch
+        for (Episodes e : episodesToInsert) {
+            getActivity().getContentResolver()
+                    .insert(SmodrProvider.EPISODES_CONTENT_URI, e.getContentValues());
+        }
+
+        setListShown(true);
     }
 
     private void track() {
@@ -236,11 +215,14 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
                 null,
                 EpisodesTable.CHANNEL_ID + " = " + mChannelId,
                 null,
-                EpisodesTable._ID + " ASC");
+                EpisodesTable._ID + " DESC");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.getCount() > 0)
+            setListShown(true);
+
         mAdapter.swapCursor(data);
         mAdapter.notifyDataSetChanged();
     }
@@ -251,20 +233,28 @@ public class EpisodesFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
 
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
+
+        int _id = cursor.getInt(cursor.getColumnIndex(EpisodesTable._ID));
         String title = cursor.getString(cursor.getColumnIndex(EpisodesTable.TITLE));
         String url = cursor.getString(cursor.getColumnIndex(EpisodesTable.ENCLOSURE_LINK));
         String description = cursor.getString(cursor.getColumnIndex(EpisodesTable.DESCRIPTION));
+        int playbackPosition = cursor.getInt(cursor.getColumnIndex(EpisodesTable.POSITION));
 
         trackEpisodeSelected(title);
 
         Intent intent = new Intent(getActivity(), MediaPlaybackService.class);
         intent.setAction(MediaPlaybackService.ACTION_PLAY);
+        intent.putExtra(INTENT_EPISODE_ID, _id);
         intent.putExtra(INTENT_EPISODE_URL, url);
         intent.putExtra(INTENT_EPISODE_TITLE, title);
         intent.putExtra(INTENT_EPISODE_DESCRIPTION, description);
+        intent.putExtra(INTENT_EPISODE_POSITION, playbackPosition);
+
+        Toast.makeText(getActivity(), "Hold tight, loading the episode", Toast.LENGTH_LONG).show();
 
         getActivity().startService(intent);
     }

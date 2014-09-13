@@ -3,15 +3,19 @@ package com.kevintcoughlin.smodr.views.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
+import com.kevintcoughlin.smodr.events.PlaybackEvent;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+import com.squareup.otto.Subscribe;
 
 /**
  * SModcast Channels Activity
@@ -23,6 +27,7 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
 
         setContentView(R.layout.channels_view_layout);
 
@@ -38,6 +43,8 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
                     .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
+
+        //SmodrApplication.getEventBus().register(this);
 
         loadAd();
         track();
@@ -71,7 +78,10 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
 
     public void shouldDisplayHomeUp() {
         boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
-        if (!canback) setTitle("Smodr"); // @TODO: Move this
+        if (!canback) {
+            // @TODO: Move this
+            setTitle(getText(R.string.app_name));
+        }
         getActionBar().setDisplayHomeAsUpEnabled(canback);
     }
 
@@ -85,6 +95,11 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     public boolean onNavigateUp() {
         getSupportFragmentManager().popBackStack();
         return true;
+    }
+
+    @Subscribe
+    public void onPlaybackEvent(PlaybackEvent event) {
+
     }
 
     private void loadAd() {
