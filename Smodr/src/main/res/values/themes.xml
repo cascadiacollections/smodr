@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.MyTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/darkOrange</item>
+    </style>
+</resources>

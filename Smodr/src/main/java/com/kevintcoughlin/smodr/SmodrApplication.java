@@ -1,6 +1,6 @@
 package com.kevintcoughlin.smodr;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -14,10 +14,7 @@ import com.squareup.otto.ThreadEnforcer;
 
 import java.util.HashMap;
 
-/**
- * Smodr App
- */
-public class SmodrApplication extends Application {
+public class SmodrApplication extends MultiDexApplication {
     private static final String PROPERTY_ID = "UA-28569939-11";
     HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
     private static Bus mEventBus;
@@ -47,33 +44,34 @@ public class SmodrApplication extends Application {
 
     private void configureJobManager() {
         Configuration configuration = new Configuration.Builder(this)
-                .customLogger(new CustomLogger() {
-                    private static final String TAG = "JOBS";
-                    @Override
-                    public boolean isDebugEnabled() {
-                        return true;
-                    }
+        .customLogger(new CustomLogger() {
+            private static final String TAG = "JOBS";
 
-                    @Override
-                    public void d(String text, Object... args) {
-                        Log.d(TAG, String.format(text, args));
-                    }
+            @Override
+            public boolean isDebugEnabled() {
+                return true;
+            }
 
-                    @Override
-                    public void e(Throwable t, String text, Object... args) {
-                        Log.e(TAG, String.format(text, args), t);
-                    }
+            @Override
+            public void d(String text, Object... args) {
+                Log.d(TAG, String.format(text, args));
+            }
 
-                    @Override
-                    public void e(String text, Object... args) {
-                        Log.e(TAG, String.format(text, args));
-                    }
-                })
-                .minConsumerCount(1)//always keep at least one consumer alive
-                .maxConsumerCount(3)//up to 3 consumers at a time
-                .loadFactor(3)//3 jobs per consumer
-                .consumerKeepAlive(120)//wait 2 minute
-                .build();
+            @Override
+            public void e(Throwable t, String text, Object... args) {
+                Log.e(TAG, String.format(text, args), t);
+            }
+
+            @Override
+            public void e(String text, Object... args) {
+                Log.e(TAG, String.format(text, args));
+            }
+        })
+        .minConsumerCount(1)//always keep at least one consumer alive
+        .maxConsumerCount(3)//up to 3 consumers at a time
+        .loadFactor(3)//3 jobs per consumer
+        .consumerKeepAlive(120)//wait 2 minute
+        .build();
 
         jobManager = new JobManager(this, configuration);
     }

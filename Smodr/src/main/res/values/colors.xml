@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ab_background">#FE7F01</color>
+    <color name="orange">#FE7F01</color>
+    <color name="darkOrange">#BE5F01</color>
 </resources>
