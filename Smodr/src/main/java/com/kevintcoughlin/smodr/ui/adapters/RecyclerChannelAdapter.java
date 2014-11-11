@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -26,22 +27,18 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
 
     @Override
     public RecyclerChannelAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
-        ViewHolder vh = new ViewHolder(v, this);
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
+        final ViewHolder vh = new ViewHolder(v, this);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String name = mChannels[position];
-
-        // @TODO: cleanup and db properly
-        int coverPhotoResource = mContext
+        final String name = mChannels[position];
+        final int coverPhotoResource = mContext
                 .getResources()
-                .getIdentifier(
-                        name.replace("-", ""), "drawable", mContext.getPackageName()
-                );
+                .getIdentifier(name.replace("-", ""), "drawable", mContext.getPackageName());
 
         Picasso.with(mContext)
                 .load(coverPhotoResource)
@@ -49,6 +46,10 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
                 .fit()
                 .centerCrop()
                 .into(holder.mCoverPhoto);
+    }
+
+    public String getItem(int position) {
+        return mChannels[position];
     }
 
     @Override

@@ -5,36 +5,43 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelAdapter;
+import com.kevintcoughlin.smodr.http.SmodcastClient;
+import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.models.Rss;
+import com.kevintcoughlin.smodr.ui.adapters.RecyclerEpisodeAdapter;
 
-public class ChannelsFragment extends Fragment {
-    public static final String TAG = "ChannelsGridViewFragment";
-    private static final int NUM_COLUMNS = 2;
+import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class EpisodesFragment extends Fragment {
+    public static final String TAG = "EpisodesListViewFragment";
     private Context mAppContext;
     private RecyclerView mRecyclerView;
-    private RecyclerChannelAdapter mAdapter;
+    private RecyclerEpisodeAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public interface Callbacks {
-        public void onChannelSelected(String channel);
+        public void onEpisodeSelected(String channel);
     }
 
-    private static Callbacks sChannelCallbacks = new Callbacks() {
+    private static Callbacks sEpisodesCallbacks = new Callbacks() {
         @Override
-        public void onChannelSelected(String channel) {}
+        public void onEpisodeSelected(String channel) {}
     };
 
-    private Callbacks mCallbacks = sChannelCallbacks;
+    private Callbacks mCallbacks = sEpisodesCallbacks;
 
-    public void ChannelsFragment() {}
+    public void EpisodesFramgnet() {}
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -47,29 +54,28 @@ public class ChannelsFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.channels_layout, container, false);
 
-        String[] coverPhotoUrls = {
-                "tellemstevedave",
-                "feab",
-                "edumacation2",
-                "hollywoodbabbleon",
-                "smodcast"
-        };
-
+        final ArrayList<Item> items = new ArrayList<>();
         mRecyclerView = (RecyclerView) root.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(mAppContext, NUM_COLUMNS);
+        mLayoutManager = new LinearLayoutManager(mAppContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new RecyclerChannelAdapter(mAppContext, coverPhotoUrls);
+        mAdapter = new RecyclerEpisodeAdapter(items);
         mAdapter.setHasStableIds(true);
-        mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mRecyclerView.setAdapter(mAdapter);
+
+        SmodcastClient.getClient().getFeed("smodcast", new Callback<Rss>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String channel = mAdapter.getItem(position);
-                mCallbacks.onChannelSelected(channel);
+            public void success(Rss rss, Response response) {
+                items.addAll(rss.getChannel().getItems());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
             }
         });
-        mRecyclerView.setAdapter(mAdapter);
 
         return root;
     }
@@ -88,6 +94,7 @@ public class ChannelsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = sChannelCallbacks;
+        mCallbacks = sEpisodesCallbacks;
     }
 }
+

@@ -7,10 +7,13 @@ import android.view.View;
 
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.ui.fragments.ChannelsFragment;
+import com.kevintcoughlin.smodr.ui.fragments.EpisodesFragment;
 
-public class ChannelsActivity extends ActionBarActivity implements ChannelsFragment.Callbacks {
+public class ChannelsActivity extends ActionBarActivity implements ChannelsFragment.Callbacks,
+    EpisodesFragment.Callbacks {
+
     private static final String TAG = "ChannelsView";
-    private Toolbar mActionBarToolbar;
+    private Toolbar mToolbar;
     private int mThemedStatusBarColor;
     private int mNormalStatusBarColor;
 
@@ -22,8 +25,15 @@ public class ChannelsActivity extends ActionBarActivity implements ChannelsFragm
         //mThemedStatusBarColor = getResources().getColor(R.color.theme_primary_dark);
         //mNormalStatusBarColor = mThemedStatusBarColor;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        ChannelsFragment channelsFragment = new ChannelsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, channelsFragment, channelsFragment.TAG)
+                .commit();
     }
 
     public int getThemedStatusBarColor() {
@@ -35,18 +45,19 @@ public class ChannelsActivity extends ActionBarActivity implements ChannelsFragm
     }
 
     @Override
-    public void onChannelSelected(String shortName, String photoUrl, long channelId, String title) {
+    public void onChannelSelected(String channel) {
+        EpisodesFragment episodesFragment = new EpisodesFragment();
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("channels")
+                .replace(R.id.container, episodesFragment)
+                .commit();
     }
 
-    protected Toolbar getActionBarToolbar() {
-        if (mActionBarToolbar == null) {
-            mActionBarToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-            if (mActionBarToolbar != null) {
-                setSupportActionBar(mActionBarToolbar);
-            }
-        }
-        return mActionBarToolbar;
+    @Override
+    public void onEpisodeSelected(String episode) {
+
     }
 
 }
