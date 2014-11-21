@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelAdapter;
 
 public class ChannelsFragment extends Fragment {
@@ -24,12 +25,12 @@ public class ChannelsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     public interface Callbacks {
-        public void onChannelSelected(String channel);
+        public void onChannelSelected(Channel channel);
     }
 
     private static Callbacks sChannelCallbacks = new Callbacks() {
         @Override
-        public void onChannelSelected(String channel) {}
+        public void onChannelSelected(Channel channel) {}
     };
 
     private Callbacks mCallbacks = sChannelCallbacks;
@@ -47,12 +48,9 @@ public class ChannelsFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.channels_layout, container, false);
 
-        String[] coverPhotoUrls = {
-                "tellemstevedave",
-                "feab",
-                "edumacation2",
-                "hollywoodbabbleon",
-                "smodcast"
+        Channel[] channels = {
+                new Channel("tellemstevedave", "Tell Em Steve Dave"),
+                new Channel("smodcast", "Smodcast")
         };
 
         mRecyclerView = (RecyclerView) root.findViewById(R.id.list);
@@ -60,13 +58,12 @@ public class ChannelsFragment extends Fragment {
         mLayoutManager = new GridLayoutManager(mAppContext, NUM_COLUMNS);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new RecyclerChannelAdapter(mAppContext, coverPhotoUrls);
+        mAdapter = new RecyclerChannelAdapter(mAppContext, channels);
         mAdapter.setHasStableIds(true);
         mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String channel = mAdapter.getItem(position);
-                mCallbacks.onChannelSelected(channel);
+                mCallbacks.onChannelSelected(mAdapter.getItem(position));
             }
         });
         mRecyclerView.setAdapter(mAdapter);

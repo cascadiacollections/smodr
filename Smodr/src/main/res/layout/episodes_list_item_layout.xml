@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingRight="20dip"
-    android:paddingLeft="20dip"
-    android:paddingTop="10dip"
-    android:paddingBottom="10dip"
+    android:paddingRight="10dip"
+    android:paddingLeft="10dip"
+    android:paddingTop="15dip"
+    android:paddingBottom="15dip"
     android:background="#ffffff"
     android:orientation="vertical">
 
@@ -12,18 +12,15 @@
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SModcast 241: Another Episode"
-        android:textSize="14dip"
-        android:textColor="#343434"
+        android:textColor="#444444"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Episode description."
-        android:textSize="12dip"
-        android:maxLines="2"
+        android:maxLines="1"
+        android:textColor="#343434"
         android:ellipsize="end"/>
 
 </LinearLayout>

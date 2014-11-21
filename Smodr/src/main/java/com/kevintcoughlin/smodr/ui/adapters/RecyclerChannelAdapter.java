@@ -16,11 +16,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannelAdapter.ViewHolder> {
-    private String[] mChannels;
+    private Channel[] mChannels;
     private Context mContext;
     private AdapterView.OnItemClickListener mOnItemClickListener;
 
-    public RecyclerChannelAdapter(Context context, String[] channels) {
+    public RecyclerChannelAdapter(Context context, Channel[] channels) {
         mContext = context;
         mChannels = channels;
     }
@@ -35,20 +35,19 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String name = mChannels[position];
+        final Channel channel = mChannels[position];
         final int coverPhotoResource = mContext
                 .getResources()
-                .getIdentifier(name.replace("-", ""), "drawable", mContext.getPackageName());
+                .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
 
         Picasso.with(mContext)
                 .load(coverPhotoResource)
-                .placeholder(R.drawable.placeholder)
                 .fit()
                 .centerCrop()
                 .into(holder.mCoverPhoto);
     }
 
-    public String getItem(int position) {
+    public Channel getItem(int position) {
         return mChannels[position];
     }
 

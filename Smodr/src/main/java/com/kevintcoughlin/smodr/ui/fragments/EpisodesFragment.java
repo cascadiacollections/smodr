@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
@@ -31,17 +32,15 @@ public class EpisodesFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     public interface Callbacks {
-        public void onEpisodeSelected(String channel);
+        public void onEpisodeSelected(Item episode);
     }
 
     private static Callbacks sEpisodesCallbacks = new Callbacks() {
         @Override
-        public void onEpisodeSelected(String channel) {}
+        public void onEpisodeSelected(Item episode) {}
     };
 
     private Callbacks mCallbacks = sEpisodesCallbacks;
-
-    public void EpisodesFramgnet() {}
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,9 +51,10 @@ public class EpisodesFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.channels_layout, container, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.episodes_layout, container, false);
 
         final ArrayList<Item> items = new ArrayList<>();
+
         mRecyclerView = (RecyclerView) root.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(mAppContext);
@@ -63,6 +63,13 @@ public class EpisodesFragment extends Fragment {
         mAdapter = new RecyclerEpisodeAdapter(items);
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Item episode = mAdapter.getItem(position);
+                mCallbacks.onEpisodeSelected(episode);
+            }
+        });
 
         SmodcastClient.getClient().getFeed("smodcast", new Callback<Rss>() {
             @Override

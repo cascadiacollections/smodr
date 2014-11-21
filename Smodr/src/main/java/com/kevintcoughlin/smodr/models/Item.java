@@ -11,7 +11,6 @@ import org.simpleframework.xml.Root;
 public class Item implements Parcelable {
 
     public Item() {
-
     }
 
     @Element(name = "title")
