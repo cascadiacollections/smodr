@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaController;
@@ -79,6 +80,7 @@ public class MediaPlayerService extends Service {
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle(mEpisode.getTitle())
                 .setContentText(mEpisode.getDescription())
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.smodcast))
                 .setDeleteIntent(pendingIntent)
                 .setStyle(style)
                 .addAction(action);
@@ -118,9 +120,7 @@ public class MediaPlayerService extends Service {
             @Override
             public void onPlay() {
                 super.onPlay();
-                Log.e("MediaPlayerService", "onPlay");
                 try {
-                    mMediaPlayer.stop();
                     mMediaPlayer.setDataSource(getApplicationContext(), Uri.parse(mEpisode.getEnclosure().getUrl()));
                     mMediaPlayer.prepareAsync();
                     buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
@@ -132,35 +132,8 @@ public class MediaPlayerService extends Service {
             @Override
             public void onPause() {
                 super.onPause();
-                Log.e("MediaPlayerService", "onPause");
                 mMediaPlayer.pause();
                 buildNotification(generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY));
-            }
-
-            @Override
-            public void onSkipToNext() {
-                super.onSkipToNext();
-                Log.e("MediaPlayerService", "onSkipToNext");
-                buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
-            }
-
-            @Override
-            public void onSkipToPrevious() {
-                super.onSkipToPrevious();
-                Log.e("MediaPlayerService", "onSkipToPrevious");
-                buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
-            }
-
-            @Override
-            public void onFastForward() {
-                super.onFastForward();
-                Log.e("MediaPlayerService", "onFastForward");
-            }
-
-            @Override
-            public void onRewind() {
-                super.onRewind();
-                Log.e("MediaPlayerService", "onRewind");
             }
 
             @Override
@@ -184,8 +157,6 @@ public class MediaPlayerService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         mSession.release();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
         return super.onUnbind(intent);
     }
 }

@@ -1,90 +1,90 @@
 package com.kevintcoughlin.smodr.ui.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Channel;
+import com.kevintcoughlin.smodr.ui.ChannelsView;
 import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelAdapter;
+import com.kevintcoughlin.smodr.ui.presenters.ChannelsPresenter;
+import com.kevintcoughlin.smodr.ui.presenters.ChannelsPresenterImpl;
+import com.kevintcoughlin.smodr.ui.presenters.mapper.ChannelMapper;
 
-public class ChannelsFragment extends Fragment {
-    public static final String TAG = "ChannelsGridViewFragment";
-    private static final int NUM_COLUMNS = 2;
-    private Context mAppContext;
+public class ChannelsFragment extends Fragment implements ChannelsView, ChannelMapper {
+    public static final String TAG = ChannelsFragment.class.getSimpleName();
+    private static final int NUM_COLUMNS = 3;
+    private ChannelsPresenter mChannelsPresenter;
     private RecyclerView mRecyclerView;
-    private RecyclerChannelAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public interface Callbacks {
-        public void onChannelSelected(Channel channel);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        mChannelsPresenter = new ChannelsPresenterImpl(this, this);
     }
 
-    private static Callbacks sChannelCallbacks = new Callbacks() {
-        @Override
-        public void onChannelSelected(Channel channel) {}
-    };
-
-    private Callbacks mCallbacks = sChannelCallbacks;
-
-    public void ChannelsFragment() {}
-
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mAppContext = getActivity().getApplicationContext();
-    }
-
-
-    @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.channels_layout, container, false);
-
-        Channel[] channels = {
-                new Channel("tellemstevedave", "Tell Em Steve Dave"),
-                new Channel("smodcast", "Smodcast")
-        };
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.channels_layout, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.list);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(mAppContext, NUM_COLUMNS);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new RecyclerChannelAdapter(mAppContext, channels);
-        mAdapter.setHasStableIds(true);
-        mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mCallbacks.onChannelSelected(mAdapter.getItem(position));
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-
         return root;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (!(activity instanceof Callbacks)) {
-            throw new ClassCastException("Activity must implement fragment's callbacks.");
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mChannelsPresenter.restoreState(savedInstanceState);
         }
-
-        mAppContext = getActivity().getApplicationContext();
-        mCallbacks = (Callbacks) activity;
+        mChannelsPresenter.initializeViews();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = sChannelCallbacks;
+    public void onDestroy() {
+        super.onDestroy();
+        mChannelsPresenter.releaseAllResources();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mChannelsPresenter.saveState(outState);
+    }
+
+    @Override
+    public void initializeToolbar() {
+        if (getActivity() instanceof ActionBarActivity) {
+            ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name);
+        }
+    }
+
+    @Override
+    public void initializeRecyclerView() {
+        if (mRecyclerView != null) {
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new GridLayoutManager(this.getContext(), NUM_COLUMNS);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
+
+    @Override
+    public void registerAdapter(RecyclerChannelAdapter adapter) {
+        mRecyclerView.setAdapter(adapter);
     }
 }

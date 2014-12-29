@@ -1,16 +1,17 @@
 package com.kevintcoughlin.smodr.models;
 
+import org.parceler.Parcel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "rss", strict = false)
+@Parcel
 public class Rss {
 
-    public Rss() {
-    }
+    public Rss() {}
 
-    @Element(name="channel")
+    @Element(name = "channel")
     private Channel channel;
 
     @Attribute
