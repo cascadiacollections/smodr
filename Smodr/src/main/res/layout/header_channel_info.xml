@@ -20,13 +20,6 @@
                 android:layout_height="@dimen/manga_header_thumbnail_height"
                 android:id="@+id/headerImageView"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.4"
-                android:background="@color/orange"
-                android:id="@+id/maskImageView" />
-
         </FrameLayout>
 
         <TextView
@@ -64,9 +57,9 @@
         android:layout_marginLeft="@dimen/manga_header_fab_margin_left"
         android:layout_marginStart="@dimen/manga_header_fab_margin_left"
         android:layout_gravity="top|start"
-        android:src="@drawable/ic_favourite_outline_white_24dp"
+        android:src="@drawable/ic_action_play"
         fab:fab_colorNormal="@color/orange"
         fab:fab_colorPressed="@color/darkOrange"
-        android:id="@+id/favouriteButton" />
+        android:id="@+id/playbackButton" />
 
 </FrameLayout>

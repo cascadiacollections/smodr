@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.ui.ChannelsView;
-import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelAdapter;
+import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelsAdapter;
 import com.kevintcoughlin.smodr.ui.presenters.ChannelsPresenter;
 import com.kevintcoughlin.smodr.ui.presenters.ChannelsPresenterImpl;
 import com.kevintcoughlin.smodr.ui.presenters.mapper.ChannelMapper;
@@ -71,8 +71,8 @@ public class ChannelsFragment extends Fragment implements ChannelsView, ChannelM
     @Override
     public void initializeRecyclerView() {
         if (mRecyclerView != null) {
-            mRecyclerView.setHasFixedSize(true);
             mLayoutManager = new GridLayoutManager(this.getContext(), NUM_COLUMNS);
+            mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         }
@@ -84,7 +84,7 @@ public class ChannelsFragment extends Fragment implements ChannelsView, ChannelM
     }
 
     @Override
-    public void registerAdapter(RecyclerChannelAdapter adapter) {
+    public void registerAdapter(RecyclerChannelsAdapter adapter) {
         mRecyclerView.setAdapter(adapter);
     }
 }

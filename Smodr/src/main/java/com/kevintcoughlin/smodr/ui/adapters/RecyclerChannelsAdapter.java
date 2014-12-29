@@ -1,9 +1,7 @@
 package com.kevintcoughlin.smodr.ui.adapters;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,28 +24,28 @@ import com.kevintcoughlin.smodr.util.PaletteUtils;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannelAdapter.ViewHolder> {
-    private Channel[] mChannels;
+public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChannelsAdapter.ViewHolder> {
     private Context mContext;
+    private Channel[] mChannels;
     private AdapterView.OnItemClickListener mOnItemClickListener;
 
-    public RecyclerChannelAdapter(Context context, Channel[] channels) {
+    public RecyclerChannelsAdapter(Context context, Channel[] channels) {
         mContext = context;
         mChannels = channels;
     }
 
     @Override
-    public RecyclerChannelAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
-        final ViewHolder vh = new ViewHolder(v, this);
+    public RecyclerChannelsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
+        ViewHolder vh = new ViewHolder(v, this);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Channel channel = mChannels[position];
-        final int coverPhotoResource = mContext
+        Channel channel = mChannels[position];
+        int coverPhotoResource = mContext
                 .getResources()
                 .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
 
@@ -58,7 +56,6 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .animate(android.R.anim.fade_in)
                 .into(new PaletteBitmapTarget(holder.mCoverPhoto) {
-                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onResourceReady(PaletteBitmapWrapper resource, GlideAnimation<? super PaletteBitmapWrapper> glideAnimation) {
                         super.onResourceReady(resource, glideAnimation);
@@ -91,8 +88,7 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
 
     private void onItemHolderClick(ViewHolder viewHolder) {
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(null, viewHolder.itemView,
-                    viewHolder.getPosition(), viewHolder.getItemId());
+            mOnItemClickListener.onItemClick(null, viewHolder.itemView, viewHolder.getPosition(), viewHolder.getItemId());
         }
     }
 
@@ -106,9 +102,9 @@ public class RecyclerChannelAdapter extends RecyclerView.Adapter<RecyclerChannel
         @InjectView(R.id.footer)
         LinearLayout mFooter;
 
-        private RecyclerChannelAdapter mAdapter;
+        private RecyclerChannelsAdapter mAdapter;
 
-        public ViewHolder(View v, RecyclerChannelAdapter adapter) {
+        public ViewHolder(View v, RecyclerChannelsAdapter adapter) {
             super(v);
             mAdapter = adapter;
             v.setOnClickListener(this);

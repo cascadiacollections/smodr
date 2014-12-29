@@ -28,7 +28,7 @@ public class MainPresenterImpl implements MainPresenter {
             mFragment = new ChannelsFragment();
         }
 
-        ((FragmentActivity)mMainView.getContext()).getSupportFragmentManager().beginTransaction()
+        ((FragmentActivity) mMainView.getContext()).getSupportFragmentManager().beginTransaction()
                 .add(mMainView.getMainLayoutId(), mFragment)
                 .commit();
     }

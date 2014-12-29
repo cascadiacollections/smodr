@@ -31,9 +31,11 @@ public class ChannelPresenterImpl implements ChannelPresenter {
         mChannelView.initializeToolbar();
         mChannelView.initializeSwipeRefreshLayout();
         mChannelView.initializeRecyclerView();
+        mChannelView.setFABPlaybackIcon(false); // @TODO: call service
         mChannelView.setTitle(mChannel.getTitle());
+        mChannelView.setName(mChannel.getTitle());
         mChannelView.setDescription(mChannel.getDescription());
-        mChannelView.setThumbnail(mChannel.getImageUrl());
+        mChannelView.setThumbnail(mChannel.getShortName());
     }
 
     @Override
@@ -58,11 +60,13 @@ public class ChannelPresenterImpl implements ChannelPresenter {
             public void success(Rss rss, Response response) {
                 EpisodesListAdapter adapter = new EpisodesListAdapter(mChannelView.getContext(), rss.getChannel().getItems());
                 mChannelMapper.registerAdapter(adapter);
+                mChannelView.hideRefreshing();
             }
 
             @Override
             public void failure(RetrofitError retrofitError) {
                 mChannelView.toastMangaError();
+                mChannelView.hideRefreshing();
             }
         });
     }

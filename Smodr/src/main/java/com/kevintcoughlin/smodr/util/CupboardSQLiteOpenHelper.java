@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr;
+package com.kevintcoughlin.smodr.util;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 import android.content.Context;

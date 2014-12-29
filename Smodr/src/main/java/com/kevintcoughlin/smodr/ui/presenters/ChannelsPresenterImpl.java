@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.ui.ChannelsView;
 import com.kevintcoughlin.smodr.ui.activities.ChannelActivity;
-import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelAdapter;
+import com.kevintcoughlin.smodr.ui.adapters.RecyclerChannelsAdapter;
 import com.kevintcoughlin.smodr.ui.presenters.mapper.ChannelMapper;
 
 import org.parceler.Parcels;
@@ -16,11 +16,11 @@ import org.parceler.Parcels;
 public class ChannelsPresenterImpl implements ChannelsPresenter, AdapterView.OnItemClickListener {
     public static final String TAG = ChannelsPresenterImpl.class.getSimpleName();
     private ChannelsView mChannelsView;
-    private RecyclerChannelAdapter mChannelAdapter;
+    private RecyclerChannelsAdapter mChannelAdapter;
     private ChannelMapper mChannelMapper;
 
-    public ChannelsPresenterImpl(ChannelsView catalogueView, ChannelMapper channelMapper) {
-        mChannelsView = catalogueView;
+    public ChannelsPresenterImpl(ChannelsView channelsView, ChannelMapper channelMapper) {
+        mChannelsView = channelsView;
         mChannelMapper = channelMapper;
     }
 
@@ -57,7 +57,7 @@ public class ChannelsPresenterImpl implements ChannelsPresenter, AdapterView.OnI
             new Channel("bagged-boarded-live", "Bagged & Boarded Live"),
         };
 
-        mChannelAdapter = new RecyclerChannelAdapter(mChannelsView.getContext(), channels);
+        mChannelAdapter = new RecyclerChannelsAdapter(mChannelsView.getContext(), channels);
         mChannelAdapter.setHasStableIds(true);
         mChannelAdapter.setOnItemClickListener(this);
         mChannelMapper.registerAdapter(mChannelAdapter);
@@ -80,10 +80,8 @@ public class ChannelsPresenterImpl implements ChannelsPresenter, AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mChannelAdapter != null) {
-            Intent intent = new Intent(mChannelsView.getContext(), ChannelActivity.class);
-            intent.putExtra("channel", Parcels.wrap(mChannelAdapter.getItem(position)));
-            mChannelsView.getContext().startActivity(intent);
-        }
+        Intent intent = new Intent(mChannelsView.getContext(), ChannelActivity.class);
+        intent.putExtra("channel", Parcels.wrap(mChannelAdapter.getItem(position)));
+        mChannelsView.getContext().startActivity(intent);
     }
 }

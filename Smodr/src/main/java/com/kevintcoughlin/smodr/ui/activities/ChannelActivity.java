@@ -26,7 +26,6 @@ import com.kevintcoughlin.smodr.ui.presenters.mapper.IndividualChannelMapper;
 import com.kevintcoughlin.smodr.util.PaletteBitmapTarget;
 import com.kevintcoughlin.smodr.util.PaletteBitmapTranscoder;
 import com.kevintcoughlin.smodr.util.PaletteBitmapWrapper;
-import com.kevintcoughlin.smodr.util.PaletteUtils;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.parceler.Parcels;
@@ -39,8 +38,9 @@ public class ChannelActivity extends ActionBarActivity implements ChannelView, I
     private ListView mListView;
     private View mHeaderInfoView;
     private ImageView mHeaderImageView;
+    private TextView mNameTextView;
     private TextView mDescriptionTextView;
-    private FloatingActionButton mFavouriteButton;
+    private FloatingActionButton mPlaybackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,15 @@ public class ChannelActivity extends ActionBarActivity implements ChannelView, I
 
         mHeaderInfoView = LayoutInflater.from(this).inflate(R.layout.header_channel_info, null);
         mHeaderImageView = (ImageView) mHeaderInfoView.findViewById(R.id.headerImageView);
+        mNameTextView = (TextView) mHeaderInfoView.findViewById(R.id.nameTextView);
         mDescriptionTextView = (TextView) mHeaderInfoView.findViewById(R.id.descriptionTextView);
-        mFavouriteButton = (FloatingActionButton) mHeaderInfoView.findViewById(R.id.favouriteButton);
+        mPlaybackButton = (FloatingActionButton) mHeaderInfoView.findViewById(R.id.playbackButton);
+        mPlaybackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mChannelPresenter.onFavourite();
+            }
+        });
 
         mChannelPresenter.handleInitialData(getIntent());
         mChannelPresenter.initializeViews();
@@ -83,18 +90,8 @@ public class ChannelActivity extends ActionBarActivity implements ChannelView, I
     }
 
     @Override
-    public void initializeFavouriteButton(boolean isFavourite) {
-        if (isFavourite) {
-            mFavouriteButton.setImageResource(R.drawable.ic_favourite_white_24dp);
-        } else {
-            mFavouriteButton.setImageResource(R.drawable.ic_favourite_outline_white_24dp);
-        }
-        mFavouriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mChannelPresenter.onFavourite();
-            }
-        });
+    public void setFABPlaybackIcon(final boolean isPlaying) {
+        mPlaybackButton.setImageResource((isPlaying) ? R.drawable.ic_action_pause : R.drawable.ic_action_play);
     }
 
     @Override
@@ -113,16 +110,19 @@ public class ChannelActivity extends ActionBarActivity implements ChannelView, I
     }
 
     @Override
+    public void setName(String name) {
+        mNameTextView.setText(name);
+    }
+
+    @Override
     public void setDescription(String description) {
         mDescriptionTextView.setText(description);
     }
 
     @Override
-    public void setThumbnail(String url) {
+    public void setThumbnail(String shortName) {
         if (mHeaderImageView != null) {
-            // @TODO: Fix and move this channel access
-            final Channel channel = Parcels.unwrap(getIntent().getParcelableExtra("channel"));
-            final int coverPhotoResource = getResources().getIdentifier(channel.getShortName().replace("-", ""), "drawable", getPackageName());
+            final int coverPhotoResource = getResources().getIdentifier(shortName.replace("-", ""), "drawable", getPackageName());
             Glide.with(this)
                     .load(coverPhotoResource)
                     .asBitmap()
@@ -136,15 +136,6 @@ public class ChannelActivity extends ActionBarActivity implements ChannelView, I
                             mHeaderImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                     });
-        }
-    }
-
-    @Override
-    public void setFavouriteButton(boolean isFavourite) {
-        if (isFavourite) {
-            mFavouriteButton.setImageResource(R.drawable.ic_action_pause);
-        } else {
-            mFavouriteButton.setImageResource(R.drawable.ic_action_play);
         }
     }
 
