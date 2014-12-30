@@ -25,27 +25,27 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChannelsAdapter.ViewHolder> {
-    private Context mContext;
-    private Channel[] mChannels;
+    private final Context mContext;
+    private final Channel[] mChannels;
     private AdapterView.OnItemClickListener mOnItemClickListener;
 
-    public RecyclerChannelsAdapter(Context context, Channel[] channels) {
+    public RecyclerChannelsAdapter(final Context context, final Channel[] channels) {
         mContext = context;
         mChannels = channels;
     }
 
     @Override
-    public RecyclerChannelsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
-        ViewHolder vh = new ViewHolder(v, this);
+    public RecyclerChannelsAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View v = inflater.inflate(R.layout.channels_item_layout, parent, false);
+        final ViewHolder vh = new ViewHolder(v, this);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        Channel channel = mChannels[position];
-        int coverPhotoResource = mContext
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Channel channel = mChannels[position];
+        final int coverPhotoResource = mContext
                 .getResources()
                 .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
 
@@ -59,9 +59,10 @@ public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChanne
                     @Override
                     public void onResourceReady(PaletteBitmapWrapper resource, GlideAnimation<? super PaletteBitmapWrapper> glideAnimation) {
                         super.onResourceReady(resource, glideAnimation);
-                        int color = PaletteUtils.getColorWithDefault(resource.getPalette(), R.color.orange);
 
-                        GradientDrawable footer = new GradientDrawable();
+                        final int color = PaletteUtils.getColorWithDefault(resource.getPalette(), R.color.orange);
+                        final GradientDrawable footer = new GradientDrawable();
+
                         footer.setCornerRadii(new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 4.0f, 4.0f, 4.0f, 4.0f });
                         footer.setColor(color);
 
@@ -69,11 +70,15 @@ public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChanne
                         holder.mFooter.setBackground(footer);
                     }
                 });
-
         holder.mChannelName.setText(channel.getTitle());
     }
 
-    public Channel getItem(int position) {
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).getId();
+    }
+
+    public Channel getItem(final int position) {
         return mChannels[position];
     }
 
@@ -82,17 +87,19 @@ public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChanne
         return mChannels.length;
     }
 
-    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(final AdapterView.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
-    private void onItemHolderClick(ViewHolder viewHolder) {
+    private void onItemHolderClick(final ViewHolder viewHolder) {
         if (mOnItemClickListener != null) {
             mOnItemClickListener.onItemClick(null, viewHolder.itemView, viewHolder.getPosition(), viewHolder.getItemId());
         }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final RecyclerChannelsAdapter mAdapter;
+
         @InjectView(R.id.image)
         ImageView mCoverPhoto;
 
@@ -102,9 +109,7 @@ public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChanne
         @InjectView(R.id.footer)
         LinearLayout mFooter;
 
-        private RecyclerChannelsAdapter mAdapter;
-
-        public ViewHolder(View v, RecyclerChannelsAdapter adapter) {
+        public ViewHolder(final View v, final RecyclerChannelsAdapter adapter) {
             super(v);
             mAdapter = adapter;
             v.setOnClickListener(this);
@@ -112,7 +117,7 @@ public class RecyclerChannelsAdapter extends RecyclerView.Adapter<RecyclerChanne
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             mAdapter.onItemHolderClick(this);
         }
     }

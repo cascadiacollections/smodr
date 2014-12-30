@@ -71,7 +71,7 @@ public class ChannelsFragment extends Fragment implements ChannelsView, ChannelM
     @Override
     public void initializeRecyclerView() {
         if (mRecyclerView != null) {
-            mLayoutManager = new GridLayoutManager(this.getContext(), NUM_COLUMNS);
+            mLayoutManager = new GridLayoutManager(this.getContext(), NUM_COLUMNS, GridLayoutManager.VERTICAL, false);
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());

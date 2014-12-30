@@ -28,7 +28,9 @@ public class Channel {
 
     public Channel() {}
 
-    public Channel(String shortName, String title) {
+    // @TODO: fix with database id
+    public Channel(int _id, String shortName, String title) {
+        this._id = Long.valueOf(_id);
         this.shortName = shortName;
         this.title = title;
     }
