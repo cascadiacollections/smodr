@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Smodr/Smodr.iml" filepath="$PROJECT_DIR$/Smodr/Smodr.iml" />
       <module fileurl="file://$PROJECT_DIR$/Smodr-Android.iml" filepath="$PROJECT_DIR$/Smodr-Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmodrProject.iml" filepath="$PROJECT_DIR$/SmodrProject.iml" />
     </modules>
   </component>
 </project>
-
