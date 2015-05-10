@@ -1,6 +1,8 @@
 package com.kevintcoughlin.smodr.adapters;
 
+import android.support.v7.internal.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -39,7 +41,8 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+	    final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.episodes_list_item_layout, parent, false);
+	    return new ItemViewHolder(v);
     }
 
     /**
@@ -63,7 +66,10 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+		final Item item = mItems.get(position);
+		final ItemViewHolder vh = (ItemViewHolder) holder;
+	    vh.mTitle.setText(item.getTitle());
+	    vh.mDescription.setText(item.getDescription());
     }
 
     /**
@@ -84,11 +90,11 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		notifyDataSetChanged();
 	}
 
-	private static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ItemViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.title) TextView mTitle;
         @InjectView(R.id.description) TextView mDescription;
 
-        public ViewHolder(View itemView) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
         }

@@ -16,7 +16,7 @@ import org.parceler.Parcels;
  * SModcast Channels Activity
  */
 public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks {
-    private static final String TAG = "ChannelsView";
+    public static final String TAG = ChannelsActivity.class.getSimpleName();
     private CharSequence mTitle;
 
     @Override
@@ -39,10 +39,8 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
         trackChannelSelected(channel);
 
         final Bundle bundle = new Bundle();
+	    final EpisodesFragment fragment = new EpisodesFragment();
 	    bundle.putParcelable(EpisodesFragment.ARG_CHANNEL_NAME, Parcels.wrap(channel));
-
-
-        final EpisodesFragment fragment = new EpisodesFragment();
         fragment.setArguments(bundle);
 
         getFragmentManager()
@@ -50,14 +48,6 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
-    }
-
-    public void shouldDisplayHomeUp() {
-        boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
-        if (!canback) {
-            // @TODO: Move this
-            setTitle(getText(R.string.app_name));
-        }
     }
 
     @Override

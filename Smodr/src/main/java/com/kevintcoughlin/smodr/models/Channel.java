@@ -10,8 +10,7 @@ import java.util.ArrayList;
 @Parcel
 @Root(name = "channel", strict = false)
 public final class Channel {
-
-    private String shortName;
+	private String shortName;
 
     @Element(name = "title", required = false)
     private String title;
@@ -26,6 +25,9 @@ public final class Channel {
 
     @ElementList(name = "item", required = false, inline = true)
     private ArrayList<Item> items = new ArrayList<>();
+
+	public Channel() {
+	}
 
     public Channel(String shortName, String title) {
         this.shortName = shortName;

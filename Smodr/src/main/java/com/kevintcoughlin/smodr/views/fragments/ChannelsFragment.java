@@ -3,9 +3,13 @@ package com.kevintcoughlin.smodr.views.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
@@ -22,6 +26,7 @@ public final class ChannelsFragment extends Fragment {
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
     private Callbacks mCallbacks = sChannelCallbacks;
     private ChannelsAdapter mAdapter = new ChannelsAdapter();
+	@InjectView(R.id.list) RecyclerView mRecyclerView;
 
     public interface Callbacks {
         void onChannelSelected(Channel channel);
@@ -53,8 +58,14 @@ public final class ChannelsFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
+	    ButterKnife.inject(this, view);
 	    mAdapter.setResults(getChannels());
-        track();
+		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+	    mRecyclerView.setLayoutManager(layoutManager);
+	    mRecyclerView.setHasFixedSize(true);
+		mRecyclerView.setAdapter(mAdapter);
+
+	    track();
         return view;
     }
 

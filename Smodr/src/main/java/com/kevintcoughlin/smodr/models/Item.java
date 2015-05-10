@@ -29,7 +29,10 @@ public final class Item {
     @Attribute(name="url", required = false)
     private String url;
 
-    public Enclosure getEnclosure() {
+	public Item() {
+	}
+
+	public Enclosure getEnclosure() {
         return enclosure;
     }
 

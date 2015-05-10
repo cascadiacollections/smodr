@@ -7,12 +7,11 @@ import org.simpleframework.xml.Root;
 @Parcel
 @Root(name = "enclosure", strict = false)
 public final class Enclosure {
-
     @Attribute(name = "url", required = false)
     private String url;
 
-    public Enclosure() {
-    }
+	public Enclosure() {
+	}
 
     public String getUrl() {
         return url;

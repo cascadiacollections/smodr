@@ -11,7 +11,10 @@ public final class Rss {
     @Element(name="channel") private Channel channel;
     @Attribute private String version;
 
-    public Channel getChannel() {
+	public Rss() {
+	}
+
+	public Channel getChannel() {
         return channel;
     }
 
