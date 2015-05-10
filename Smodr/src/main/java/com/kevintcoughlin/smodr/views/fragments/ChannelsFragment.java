@@ -1,26 +1,16 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
-import com.kevintcoughlin.smodr.data.database.table.ChannelTable;
-
-import com.kevintcoughlin.smodr.data.provider.SmodrProvider;
 import com.kevintcoughlin.smodr.models.Channel;
 
 import java.util.ArrayList;
@@ -28,13 +18,10 @@ import java.util.ArrayList;
 /**
  * Fragment that displays SModcast Channels in a GridView
  */
-public class ChannelsFragment extends Fragment implements GridView.OnItemClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+public final class ChannelsFragment extends Fragment {
 
     public static final String TAG = "ChannelsGridViewFragment";
-    private static final int LOADER_ID = 0;
     private Callbacks mCallbacks = sChannelCallbacks;
-    private GridView mGridView;
     private ChannelsAdapter mAdapter;
 
     public interface Callbacks {
@@ -66,91 +53,41 @@ public class ChannelsFragment extends Fragment implements GridView.OnItemClickLi
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
-
-        mGridView = (GridView) view.findViewById(R.id.grid_view);
-        mAdapter = new ChannelsAdapter(getActivity(), null, false);
-        mGridView.setAdapter(mAdapter);
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
-        mGridView.setOnItemClickListener(this);
+        final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
 
         track();
 
         return view;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-        String shortName = cursor.getString(cursor.getColumnIndex(ChannelTable.SHORT_NAME));
-        String coverImageUrl = cursor.getString(cursor.getColumnIndex(ChannelTable.COVER_PHOTO_URL));
-        long channelId = cursor.getLong(cursor.getColumnIndex(ChannelTable._ID));
-        String title = cursor.getString(cursor.getColumnIndex(ChannelTable.TITLE));
-        mCallbacks.onChannelSelected(shortName, coverImageUrl, channelId, title);
-    }
+    private ArrayList<Channel> bootstrapChannelsData() {
+        final ArrayList<Channel> channels = new ArrayList<>();
+        channels.add(new Channel("hollywood-babble-on", "Hollywood Babble-On"));
+        channels.add(new Channel("smodcast", "Smodcast"));
+        channels.add(new Channel("jay-silent-bob-get-old", "Jay & Silent-Bob Get Old"));
+        channels.add(new Channel("tell-em-steve-dave", "Tell ‘Em Steve-Dave!"));
+        channels.add(new Channel("fatman-on-batman", "Fatman on Batman"));
+        channels.add(new Channel("edumacation-2", "Edumacation"));
+        channels.add(new Channel("i-sell-comics", "I Sell Comics"));
+        channels.add(new Channel("plus-one", "Plus One"));
+        channels.add(new Channel("fsf", "Film School Fridays"));
+        channels.add(new Channel("last-week-on-earth-with-ben-gleib", "Last Week on Earth"));
+        channels.add(new Channel("the-secret-stash", "The Secret Stash"));
+        channels.add(new Channel("netheads", "Netheads"));
+        channels.add(new Channel("get-up-on-this", "Get Up on This"));
+        channels.add(new Channel("team-jack", "Team Jack"));
+        channels.add(new Channel("tha-breaks", "Tha Breaks"));
+        channels.add(new Channel("having-sex", "Having Sex w/ Katie Morgan"));
+        channels.add(new Channel("feab", "Four Eyes and a Beard"));
+        channels.add(new Channel("highlands-a-peephole-history", "Highlands: A Peephole History"));
+        channels.add(new Channel("waking-from-the-american-dream", "Waking From The American Dream"));
+        channels.add(new Channel("smodco-smorning-show", "SModCo SMorning Show"));
+        channels.add(new Channel("smoviemakers", "SMoviemakers"));
+        channels.add(new Channel("sound-bite-nation", "Soundbite Nation"));
+        channels.add(new Channel("sminterview", "SMinterview"));
+        channels.add(new Channel("bagged-boarded-live", "Bagged & Boarded Live"));
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
-                SmodrProvider.CHANNEL_CONTENT_URI,
-                null,
-                null,
-                null,
-                ChannelTable._ID + " ASC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // If no channels in the DB then bootstrap it!
-        if (data.getCount() == 0) {
-            bootstrapChannelsData();
-        }
-        mAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
-
-    private void bootstrapChannelsData() {
-        ArrayList<Channel> mChannels = new ArrayList<>();
-        mChannels.add(new Channel("hollywood-babble-on", "Hollywood Babble-On"));
-        mChannels.add(new Channel("smodcast", "Smodcast"));
-        mChannels.add(new Channel("jay-silent-bob-get-old", "Jay & Silent-Bob Get Old"));
-        mChannels.add(new Channel("tell-em-steve-dave", "Tell ‘Em Steve-Dave!"));
-        mChannels.add(new Channel("fatman-on-batman", "Fatman on Batman"));
-        mChannels.add(new Channel("edumacation-2", "Edumacation"));
-        mChannels.add(new Channel("i-sell-comics", "I Sell Comics"));
-        mChannels.add(new Channel("plus-one", "Plus One"));
-        mChannels.add(new Channel("fsf", "Film School Fridays"));
-        mChannels.add(new Channel("last-week-on-earth-with-ben-gleib", "Last Week on Earth"));
-        mChannels.add(new Channel("the-secret-stash", "The Secret Stash"));
-        mChannels.add(new Channel("netheads", "Netheads"));
-        mChannels.add(new Channel("get-up-on-this", "Get Up on This"));
-        mChannels.add(new Channel("team-jack", "Team Jack"));
-        mChannels.add(new Channel("tha-breaks", "Tha Breaks"));
-        mChannels.add(new Channel("having-sex", "Having Sex w/ Katie Morgan"));
-        mChannels.add(new Channel("feab", "Four Eyes and a Beard"));
-        mChannels.add(new Channel("highlands-a-peephole-history", "Highlands: A Peephole History"));
-        mChannels.add(new Channel("waking-from-the-american-dream", "Waking From The American Dream"));
-        mChannels.add(new Channel("smodco-smorning-show", "SModCo SMorning Show"));
-        mChannels.add(new Channel("smoviemakers", "SMoviemakers"));
-        mChannels.add(new Channel("sound-bite-nation", "Soundbite Nation"));
-        mChannels.add(new Channel("sminterview", "SMinterview"));
-        mChannels.add(new Channel("bagged-boarded-live", "Bagged & Boarded Live"));
-
-        for (Channel c : mChannels) {
-            com.kevintcoughlin.smodr.data.model.Channel dbChannel = new com.kevintcoughlin.smodr.data.model.Channel();
-            dbChannel.setShortName(c.getShortName());
-            dbChannel.setTitle(c.getTitle());
-            dbChannel.setCoverPhotoUrl(c.getImageUrl());
-
-            // @TODO: Batch
-            getActivity()
-                    .getContentResolver()
-                    .insert(SmodrProvider.CHANNEL_CONTENT_URI, dbChannel.getContentValues());
-        }
+        return channels;
     }
 
     private void track() {

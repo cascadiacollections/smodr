@@ -3,11 +3,6 @@ package com.kevintcoughlin.smodr.views.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
-
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
@@ -20,14 +15,14 @@ import com.squareup.otto.Subscribe;
 /**
  * SModcast Channels Activity
  */
-public class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager.OnBackStackChangedListener {
+public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager
+        .OnBackStackChangedListener {
     private static final String TAG = "ChannelsView";
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
 
         setContentView(R.layout.channels_view_layout);
 
@@ -43,10 +38,6 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
                     .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
-
-        //SmodrApplication.getEventBus().register(this);
-
-        loadAd();
         track();
     }
 
@@ -100,12 +91,6 @@ public class ChannelsActivity extends FragmentActivity implements ChannelsFragme
     @Subscribe
     public void onPlaybackEvent(PlaybackEvent event) {
 
-    }
-
-    private void loadAd() {
-        AdView adView = (AdView) this.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
     }
 
     private void track() {

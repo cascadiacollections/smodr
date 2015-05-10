@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private final ArrayList<Item> mItems = new ArrayList<>();
 
-    /**
+	/**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
      * an item.
      * <p/>
@@ -76,7 +76,15 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return mItems.size();
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder {
+	public void setResults(ArrayList<Item> results) {
+		if (!mItems.isEmpty()) {
+			mItems.clear();
+		}
+		mItems.addAll(results);
+		notifyDataSetChanged();
+	}
+
+	private static class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.title) TextView mTitle;
         @InjectView(R.id.description) TextView mDescription;
 
