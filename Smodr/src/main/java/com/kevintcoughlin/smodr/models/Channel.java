@@ -1,16 +1,15 @@
 package com.kevintcoughlin.smodr.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
+import org.parceler.Parcel;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
 
+@Parcel
 @Root(name = "channel", strict = false)
-public class Channel implements Parcelable {
+public final class Channel {
 
     private String shortName;
 
@@ -26,11 +25,7 @@ public class Channel implements Parcelable {
     private String imageUrl;
 
     @ElementList(name = "item", required = false, inline = true)
-    private ArrayList<Item> items = new ArrayList<Item>();
-
-    public Channel() {
-
-    }
+    private ArrayList<Item> items = new ArrayList<>();
 
     public Channel(String shortName, String title) {
         this.shortName = shortName;
@@ -76,38 +71,6 @@ public class Channel implements Parcelable {
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(this.title);
-        out.writeString(this.description);
-        out.writeString(this.pubDate);
-        out.writeString(this.imageUrl);
-        out.writeTypedList(this.items);
-    }
-
-    public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
-        public Channel createFromParcel(Parcel in) {
-            return new Channel(in);
-        }
-
-        public Channel[] newArray(int size) {
-            return new Channel[size];
-        }
-    };
-
-    private Channel(Parcel in) {
-        this.title = in.readString();
-        this.description = in.readString();
-        this.pubDate = in.readString();
-        this.imageUrl = in.readString();
-        in.readTypedList(this.items, Item.CREATOR);
     }
 
     public String getShortName() {

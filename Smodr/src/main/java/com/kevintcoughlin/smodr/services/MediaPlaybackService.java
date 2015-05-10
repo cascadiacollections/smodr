@@ -10,21 +10,15 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.jobs.UpdateEpisodeJob;
 import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import com.path.android.jobqueue.JobManager;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
+public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer
+        .OnPreparedListener {
     public static final int NOTIFICATION_ID = 37;
     public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
     public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
@@ -37,26 +31,18 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     private String mDescription = "";
     private int mPosition = 0;
 
-    private final int POOL_SIZE = 2;
-    private final int SAVE_PLAYBACK_POSITION_INTERVAL = 5000;
-    private ScheduledThreadPoolExecutor mScheduledExecutor;
-    private ScheduledFuture mSavePlaybackPositionFuture;
-    private Context mContext;
-    private Timer mAddEpisodeUpdateJobTimer;
-    private JobManager mJobManager;
-
-    private boolean mIsPlaying = false;
+	private boolean mIsPlaying = false;
     private boolean mPrepared = false;
 
     MediaPlayer mMediaPlayer = null;
 
-    @Override
+	public MediaPlaybackService(ScheduledThreadPoolExecutor mScheduledExecutor) {
+	}
+
+	@Override
     public void onCreate() {
         super.onCreate();
-
-        mContext = getApplicationContext();
-        mJobManager = SmodrApplication.getInstance().getJobManager();
-    }
+	}
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -134,7 +120,6 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
     }
 
     private void stopPlayback() {
-        stopUpdateEpisodeTimer();
         mMediaPlayer.reset();
         mIsPlaying = false;
         mPrepared = false;
@@ -195,13 +180,12 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
         mediaPlayer.start();
 
         // At the end of the episode, seek to the beginning.
-        if (mPosition >= mediaPlayer.getDuration())
-            mPosition = 0;
+        if (mPosition >= mediaPlayer.getDuration()) {
+	        mPosition = 0;
+        }
 
         mediaPlayer.seekTo(mPosition);
         createNotification();
-        startUpdateEpisodeTimer();
-
         mIsPlaying = true;
         mPrepared = true;
     }
@@ -212,23 +196,5 @@ public class MediaPlaybackService extends Service implements MediaPlayer.OnError
 
     private int getDuration() {
         return mMediaPlayer.getDuration();
-    }
-
-    private synchronized void startUpdateEpisodeTimer() {
-        mAddEpisodeUpdateJobTimer = new Timer();
-        mAddEpisodeUpdateJobTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                int position = getCurrentPosition();
-                int duration = getDuration();
-                mJobManager.addJobInBackground(new UpdateEpisodeJob(mId, position, duration));
-            }
-        }, 0, UpdateEpisodeJob.UPDATE_INTERVAL);
-    }
-
-    private synchronized void stopUpdateEpisodeTimer() {
-        if (mAddEpisodeUpdateJobTimer != null) {
-            mAddEpisodeUpdateJobTimer.cancel();
-        }
     }
 }

@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:icon="@drawable/icon"
         android:allowBackup="true"
-        android:theme="@style/MyCustomTheme">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -25,19 +25,11 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-
         <service
             android:enabled="true"
             android:label="Playback Service"
             android:name=".services.MediaPlaybackService" />
 
-        <provider
-            android:name="com.kevintcoughlin.smodr.data.provider.SmodrProvider"
-            android:authorities="com.kevintcoughlin.smodr.data.provider"
-            android:exported="false" />
         <meta-data android:name="com.crashlytics.ApiKey" android:value="18b85511073de7110b693fd33f7ef96cb27ae1eb"/>
 
     </application>

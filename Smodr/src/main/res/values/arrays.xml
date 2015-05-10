@@ -1,17 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-
     <string-array name="podcasts">
         <item>@string/smodcast</item>
         <item>@string/tell_em_steve_dave</item>
         <item>@string/fatman_on_batman</item>
     </string-array>
-
     <string-array name="podcasts_urls">
         <item>@string/smodcast_url</item>
         <item>@string/tell_em_steve_dave_url</item>
         <item>@string/fatman_on_batman_url</item>
     </string-array>
-
 </resources>

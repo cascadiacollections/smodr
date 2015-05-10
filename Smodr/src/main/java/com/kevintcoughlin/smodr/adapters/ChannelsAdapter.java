@@ -1,63 +1,83 @@
 package com.kevintcoughlin.smodr.adapters;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.data.model.Channel;
-import com.squareup.picasso.Picasso;
-
+import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.kevintcoughlin.smodr.R;
 
-public class ChannelsAdapter extends CursorAdapter {
+public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
+	/**
+	 * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
+	 * an item.
+	 * <p/>
+	 * This new ViewHolder should be constructed with a new View that can represent the items
+	 * of the given type. You can either create a new View manually or inflate it from an XML
+	 * layout file.
+	 * <p/>
+	 * The new ViewHolder will be used to display items of the adapter using
+	 * {@link #onBindViewHolder(ViewHolder, int)}. Since it will be re-used to display different
+	 * items in the data set, it is a good idea to cache references to sub views of the View to
+	 * avoid unnecessary {@link View#findViewById(int)} calls.
+	 *
+	 * @param parent
+	 * 		The ViewGroup into which the new View will be added after it is bound to
+	 * 		an adapter position.
+	 * @param viewType
+	 * 		The view type of the new View.
+	 * @return A new ViewHolder that holds a View of the given view type.
+	 * @see #getItemViewType(int)
+	 * @see #onBindViewHolder(ViewHolder, int)
+	 */
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		return null;
+	}
 
-    public ChannelsAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-        mContext = context;
-    }
+	/**
+	 * Called by RecyclerView to display the data at the specified position. This method
+	 * should update the contents of the {@link ViewHolder#itemView} to reflect the item at
+	 * the given position.
+	 * <p/>
+	 * Note that unlike {@link ListView}, RecyclerView will not call this
+	 * method again if the position of the item changes in the data set unless the item itself
+	 * is invalidated or the new position cannot be determined. For this reason, you should only
+	 * use the <code>position</code> parameter while acquiring the related data item inside this
+	 * method and should not keep a copy of it. If you need the position of an item later on
+	 * (e.g. in a click listener), use {@link ViewHolder#getAdapterPosition()} which will have
+	 * the updated adapter position.
+	 *
+	 * @param holder
+	 * 		The ViewHolder which should be updated to represent the contents of the
+	 * 		item at the given position in the data set.
+	 * @param position
+	 * 		The position of the item within the adapter's data set.
+	 */
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        final View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.channels_grid_item_layout, parent, false);
-        final ViewHolder holder;
-        holder = new ViewHolder(view);
-        view.setTag(holder);
-        return view;
-    }
+	}
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        final ViewHolder holder = (ViewHolder) view.getTag();
+	/**
+	 * Returns the total number of items in the data set hold by the adapter.
+	 *
+	 * @return The total number of items in this adapter.
+	 */
+	@Override
+	public int getItemCount() {
+		return 0;
+	}
 
-        Channel channel = new Channel(cursor);
+	private static class ViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.image) ImageView mImage;
 
-        // @TODO: cleanup and db properly
-        int coverPhotoResource = mContext.getResources()
-                .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
-
-        Picasso.with(context)
-                .load(coverPhotoResource)
-                .placeholder(R.drawable.placeholder)
-                .fit()
-                .centerCrop()
-                .into(holder.mImage);
-    }
-
-    static class ViewHolder {
-        @InjectView(R.id.image)
-        ImageView mImage;
-
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
-    }
+		public ViewHolder(View itemView) {
+			super(itemView);
+			ButterKnife.inject(this, itemView);
+		}
+	}
 }

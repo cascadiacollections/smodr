@@ -1,6 +1,6 @@
 package com.kevintcoughlin.smodr.events;
 
-public class PlaybackEvent {
+public final class PlaybackEvent {
     public enum Type {
         STOPPED,
         PREPARED,

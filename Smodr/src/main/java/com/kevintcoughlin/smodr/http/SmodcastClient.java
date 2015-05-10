@@ -8,7 +8,7 @@ import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
-public class SmodcastClient {
+public final class SmodcastClient {
     private static SmodcastInterface sSmodcastService;
 
     public static SmodcastInterface getClient() {
