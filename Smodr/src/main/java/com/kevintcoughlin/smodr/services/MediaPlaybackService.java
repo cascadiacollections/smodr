@@ -12,9 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
-import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
-import java.io.IOException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer
@@ -47,47 +45,47 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        if (intent == null && intent.getAction() == null) {
-            stopPlayback();
-        } else {
-            if (intent.getAction().equals(ACTION_PLAY)) {
-                mId = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_ID, -1);
-                String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
-                mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
-                mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
-                mPosition = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_POSITION, 0);
-
-                if (url != null) {
-                    try {
-                        if (mMediaPlayer == null) {
-                            mMediaPlayer = new MediaPlayer();
-                            mMediaPlayer.setOnPreparedListener(this);
-                        } else {
-                            stopPlayback();
-                        }
-                        mMediaPlayer.setDataSource(url);
-                        mMediaPlayer.prepareAsync();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    stopPlayback();
-                }
-            } else if (intent.getAction().equals(ACTION_PAUSE)) {
-                pausePlayback();
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_RESUME)) {
-                if (mPrepared) {
-                    mMediaPlayer.start();
-                    mIsPlaying = true;
-                } else {
-                    stopPlayback();
-                }
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_STOP)) {
-                stopPlayback();
-            }
-        }
+//        if (intent == null && intent.getAction() == null) {
+//            stopPlayback();
+//        } else {
+//            if (intent.getAction().equals(ACTION_PLAY)) {
+//                mId = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_ID, -1);
+//                String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
+//                mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
+//                mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
+//                mPosition = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_POSITION, 0);
+//
+//                if (url != null) {
+//                    try {
+//                        if (mMediaPlayer == null) {
+//                            mMediaPlayer = new MediaPlayer();
+//                            mMediaPlayer.setOnPreparedListener(this);
+//                        } else {
+//                            stopPlayback();
+//                        }
+//                        mMediaPlayer.setDataSource(url);
+//                        mMediaPlayer.prepareAsync();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    stopPlayback();
+//                }
+//            } else if (intent.getAction().equals(ACTION_PAUSE)) {
+//                pausePlayback();
+//                createNotification();
+//            } else if (intent.getAction().equals(ACTION_RESUME)) {
+//                if (mPrepared) {
+//                    mMediaPlayer.start();
+//                    mIsPlaying = true;
+//                } else {
+//                    stopPlayback();
+//                }
+//                createNotification();
+//            } else if (intent.getAction().equals(ACTION_STOP)) {
+//                stopPlayback();
+//            }
+//        }
 
         return Service.START_REDELIVER_INTENT;
     }

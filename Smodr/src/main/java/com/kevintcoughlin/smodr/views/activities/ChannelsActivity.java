@@ -7,30 +7,23 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.events.PlaybackEvent;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import com.squareup.otto.Subscribe;
+import org.parceler.Parcels;
 
 /**
  * SModcast Channels Activity
  */
-public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks, FragmentManager
-        .OnBackStackChangedListener {
+public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks {
     private static final String TAG = "ChannelsView";
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.channels_view_layout);
-
         mTitle = getTitle();
-
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
-        shouldDisplayHomeUp();
-
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
             final ChannelsFragment fragment = new ChannelsFragment();
@@ -42,29 +35,21 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
     }
 
     @Override
-    public void onChannelSelected(String shortName, String photoUrl, long channelId, String title) {
-        trackChannelSelected(shortName);
+    public void onChannelSelected(final Channel channel) {
+        trackChannelSelected(channel);
 
-        Bundle arguments = new Bundle();
-        arguments.putString(EpisodesFragment.ARG_CHANNEL_NAME, shortName);
-        arguments.putString(EpisodesFragment.ARG_CHANNEL_PHOTO_URL, photoUrl);
-        arguments.putLong(EpisodesFragment.ARG_CHANNEL_ID, channelId);
+        final Bundle bundle = new Bundle();
+	    bundle.putParcelable(EpisodesFragment.ARG_CHANNEL_NAME, Parcels.wrap(channel));
 
-        EpisodesFragment fragment = new EpisodesFragment();
-        fragment.setArguments(arguments);
 
-        getSupportFragmentManager()
+        final EpisodesFragment fragment = new EpisodesFragment();
+        fragment.setArguments(bundle);
+
+        getFragmentManager()
             .beginTransaction()
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
-
-        setTitle(title);
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        shouldDisplayHomeUp();
     }
 
     public void shouldDisplayHomeUp() {
@@ -73,24 +58,20 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
             // @TODO: Move this
             setTitle(getText(R.string.app_name));
         }
-        getActionBar().setDisplayHomeAsUpEnabled(canback);
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
+	    if (getActionBar() != null) {
+		    mTitle = title;
+		    getActionBar().setTitle(mTitle);
+	    }
     }
 
     @Override
     public boolean onNavigateUp() {
         getSupportFragmentManager().popBackStack();
         return true;
-    }
-
-    @Subscribe
-    public void onPlaybackEvent(PlaybackEvent event) {
-
     }
 
     private void track() {
@@ -101,14 +82,14 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
         t.send(new HitBuilders.AppViewBuilder().build());
     }
 
-    private void trackChannelSelected(String shortName) {
+    private void trackChannelSelected(final Channel channel) {
         Tracker t = ((SmodrApplication) getApplication()).getTracker(
                 SmodrApplication.TrackerName.APP_TRACKER);
 
         t.send(new HitBuilders.EventBuilder()
                 .setCategory("CHANNEL")
                 .setAction("SELECTED")
-                .setLabel(shortName)
+                .setLabel(channel.getShortName())
                 .build());
     }
 }

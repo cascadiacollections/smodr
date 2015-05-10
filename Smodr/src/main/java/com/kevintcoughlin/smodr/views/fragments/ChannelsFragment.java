@@ -19,18 +19,17 @@ import java.util.ArrayList;
  * Fragment that displays SModcast Channels in a GridView
  */
 public final class ChannelsFragment extends Fragment {
-
-    public static final String TAG = "ChannelsGridViewFragment";
+	public static final String TAG = ChannelsFragment.class.getSimpleName();
     private Callbacks mCallbacks = sChannelCallbacks;
-    private ChannelsAdapter mAdapter;
+    private ChannelsAdapter mAdapter = new ChannelsAdapter();
 
     public interface Callbacks {
-        public void onChannelSelected(String shortName, String photoUrl, long channelId, String title);
+        void onChannelSelected(Channel channel);
     }
 
     private static Callbacks sChannelCallbacks = new Callbacks() {
         @Override
-        public void onChannelSelected(String id, String photoUrl, long channelId, String title) {
+        public void onChannelSelected(Channel channel) {
         }
     };
 
@@ -54,13 +53,12 @@ public final class ChannelsFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
-
+	    mAdapter.setResults(getChannels());
         track();
-
         return view;
     }
 
-    private ArrayList<Channel> bootstrapChannelsData() {
+    private ArrayList<Channel> getChannels() {
         final ArrayList<Channel> channels = new ArrayList<>();
         channels.add(new Channel("hollywood-babble-on", "Hollywood Babble-On"));
         channels.add(new Channel("smodcast", "Smodcast"));
@@ -86,7 +84,6 @@ public final class ChannelsFragment extends Fragment {
         channels.add(new Channel("sound-bite-nation", "Soundbite Nation"));
         channels.add(new Channel("sminterview", "SMinterview"));
         channels.add(new Channel("bagged-boarded-live", "Bagged & Boarded Live"));
-
         return channels;
     }
 

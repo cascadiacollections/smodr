@@ -8,8 +8,12 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Channel;
+
+import java.util.ArrayList;
 
 public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+	private final ArrayList<Channel> mItems = new ArrayList<>();
 
 	/**
 	 * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -69,7 +73,14 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 */
 	@Override
 	public int getItemCount() {
-		return 0;
+		return mItems.size();
+	}
+
+	public void setResults(final ArrayList<Channel> results) {
+		if (!mItems.isEmpty()) {
+			mItems.clear();
+		}
+		mItems.addAll(results);
 	}
 
 	private static class ViewHolder extends RecyclerView.ViewHolder {
