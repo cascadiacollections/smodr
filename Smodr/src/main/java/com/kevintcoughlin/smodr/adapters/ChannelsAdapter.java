@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.bumptech.glide.Glide;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -27,11 +27,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		final Channel channel = mItems.get(position);
 		final ChannelViewHolder vh = (ChannelViewHolder) holder;
 
-		Picasso.with(holder.itemView.getContext())
-				.load("http://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg")
-				.resize(350, 350)
-				.centerCrop()
-				.into(vh.mImage);
+		Glide.with(vh.mImage.getContext()).load("http://goo.gl/gEgYUd").into(vh.mImage);
 	}
 
 	@Override
@@ -39,11 +35,17 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		return mItems.size();
 	}
 
-	public void setResults(final ArrayList<Channel> results) {
+	public void setChannels(ArrayList<Channel> results) {
 		if (!mItems.isEmpty()) {
 			mItems.clear();
 		}
 		mItems.addAll(results);
+		notifyDataSetChanged();
+	}
+
+	public void addChannel(Channel channel) {
+		mItems.add(channel);
+		notifyDataSetChanged();
 	}
 
 	public static class ChannelViewHolder extends RecyclerView.ViewHolder {

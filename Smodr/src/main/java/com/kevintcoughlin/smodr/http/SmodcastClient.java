@@ -13,11 +13,10 @@ public final class SmodcastClient {
 
     public static SmodcastInterface getClient() {
         if (sSmodcastService == null) {
-            RestAdapter restAdapter = new RestAdapter.Builder()
+            final RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint("http://smodcast.com/channels")
                     .setConverter(new SimpleXMLConverter())
                     .build();
-
             sSmodcastService = restAdapter.create(SmodcastInterface.class);
         }
 

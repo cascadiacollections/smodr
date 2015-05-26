@@ -60,7 +60,10 @@ public final class ChannelsFragment extends TrackedFragment {
 			SmodcastClient.getClient().getFeed(channel, new Callback<Rss>() {
 				@Override
 				public void success(Rss rss, Response response) {
-
+                    mAdapter.addChannel(rss.getChannel());
+                    final Channel channel = rss.getChannel();
+					final String meta = channel.getItunesAuthor();
+					Timber.d(meta);
 				}
 
 				@Override

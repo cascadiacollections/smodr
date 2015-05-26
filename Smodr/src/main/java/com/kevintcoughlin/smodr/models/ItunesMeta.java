@@ -4,16 +4,18 @@ import org.parceler.Parcel;
 import org.simpleframework.xml.Attribute;
 
 @Parcel
-public final class ItunesImage {
-
+public final class ItunesMeta {
 	@Attribute(required = false)
 	private String href;
 
-	public ItunesImage() {
+	public ItunesMeta() {
 	}
 
 	public String getHref() {
 		return href;
 	}
 
+	public void setHref(String href) {
+		this.href = href;
+	}
 }

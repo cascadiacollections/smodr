@@ -16,23 +16,19 @@ public final class Channel {
     @Element(name = "description", required = false)
     private String description;
 
-    @Element(name = "pubDate", required = false)
-    private String pubDate;
-
-	@Namespace(prefix = "itunes")
-	@Element(name = "subtitle", required = false)
-	private String itunesSubtitle;
+    @ElementList(name = "item", required = false, inline = true)
+    private ArrayList<Item> items = new ArrayList<>();
 
 	@Namespace(prefix = "itunes")
 	@Element(name = "author", required = false)
 	private String itunesAuthor;
 
 	@Namespace(prefix = "itunes")
-	@Element(name = "image", required = false)
-	private ItunesImage itunesImage;
+	@Element(name = "duration", required = false)
+	private String itunesDuration;
 
-    @ElementList(name = "item", required = false, inline = true)
-    private ArrayList<Item> items = new ArrayList<>();
+	@Element(name ="pubDate", required = false)
+	private String pubDate;
 
 	public Channel() {
 	}
@@ -77,11 +73,19 @@ public final class Channel {
         this.shortName = shortName;
     }
 
-	public ItunesImage getmItunesImage() {
-		return itunesImage;
+	public String getItunesAuthor() {
+		return itunesAuthor;
 	}
 
-	public void setmItunesImage(ItunesImage mItunesImage) {
-		this.itunesImage = mItunesImage;
+	public void setItunesAuthor(String itunesAuthor) {
+		this.itunesAuthor = itunesAuthor;
+	}
+
+	public String getItunesDuration() {
+		return itunesDuration;
+	}
+
+	public void setItunesDuration(String itunesDuration) {
+		this.itunesDuration = itunesDuration;
 	}
 }
