@@ -12,11 +12,7 @@ import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import org.parceler.Parcels;
 
-/**
- * SModcast Channels Activity
- */
 public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks {
-    public static final String TAG = ChannelsActivity.class.getSimpleName();
     private CharSequence mTitle;
 
     @Override
@@ -31,7 +27,6 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
                     .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
-        track();
     }
 
     @Override
@@ -43,7 +38,7 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
 	    bundle.putParcelable(EpisodesFragment.ARG_CHANNEL_NAME, Parcels.wrap(channel));
         fragment.setArguments(bundle);
 
-        getFragmentManager()
+        getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
@@ -64,18 +59,9 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
         return true;
     }
 
-    private void track() {
-        Tracker t = ((SmodrApplication) getApplication())
-                .getTracker(SmodrApplication.TrackerName.APP_TRACKER);
-
-        t.setScreenName(TAG);
-        t.send(new HitBuilders.AppViewBuilder().build());
-    }
-
     private void trackChannelSelected(final Channel channel) {
-        Tracker t = ((SmodrApplication) getApplication()).getTracker(
+        final Tracker t = ((SmodrApplication) getApplication()).getTracker(
                 SmodrApplication.TrackerName.APP_TRACKER);
-
         t.send(new HitBuilders.EventBuilder()
                 .setCategory("CHANNEL")
                 .setAction("SELECTED")

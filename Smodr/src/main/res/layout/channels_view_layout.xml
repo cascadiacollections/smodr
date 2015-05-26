@@ -6,6 +6,6 @@
 
     <FrameLayout
         android:id="@+id/channels_container"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"/>
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 </RelativeLayout>

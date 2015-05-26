@@ -44,4 +44,5 @@
 
     <!-- Notification action strings -->
     <string name="notification_action_pause">Pause</string>
+    <string name="cover_art">Cover art</string>
 </resources>

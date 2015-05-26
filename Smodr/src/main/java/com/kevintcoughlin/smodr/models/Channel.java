@@ -1,9 +1,7 @@
 package com.kevintcoughlin.smodr.models;
 
 import org.parceler.Parcel;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import org.simpleframework.xml.*;
 
 import java.util.ArrayList;
 
@@ -21,19 +19,23 @@ public final class Channel {
     @Element(name = "pubDate", required = false)
     private String pubDate;
 
-    private String imageUrl;
+	@Namespace(prefix = "itunes")
+	@Element(name = "subtitle", required = false)
+	private String itunesSubtitle;
+
+	@Namespace(prefix = "itunes")
+	@Element(name = "author", required = false)
+	private String itunesAuthor;
+
+	@Namespace(prefix = "itunes")
+	@Element(name = "image", required = false)
+	private ItunesImage itunesImage;
 
     @ElementList(name = "item", required = false, inline = true)
     private ArrayList<Item> items = new ArrayList<>();
 
 	public Channel() {
 	}
-
-    public Channel(String shortName, String title) {
-        this.shortName = shortName;
-        this.title = title;
-        this.imageUrl = shortName.replace("-", "") + ".jpg";
-    }
 
     public String getTitle() {
         return title;
@@ -59,14 +61,6 @@ public final class Channel {
         this.pubDate = pubDate;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public ArrayList<Item> getItems() {
         return items;
     }
@@ -82,4 +76,12 @@ public final class Channel {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
+
+	public ItunesImage getmItunesImage() {
+		return itunesImage;
+	}
+
+	public void setmItunesImage(ItunesImage mItunesImage) {
+		this.itunesImage = mItunesImage;
+	}
 }

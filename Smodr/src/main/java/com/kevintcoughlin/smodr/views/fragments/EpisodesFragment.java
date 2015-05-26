@@ -1,8 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.widget.Toast;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.SmodrApplication;
@@ -12,15 +10,13 @@ import com.kevintcoughlin.smodr.models.Rss;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
-public final class EpisodesFragment extends Fragment {
+public final class EpisodesFragment extends TrackedFragment {
 	public static final String TAG = EpisodesFragment.class.getSimpleName();
     public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
 
     private final EpisodesAdapter mAdapter = new EpisodesAdapter();
-
-    public EpisodesFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,43 +24,34 @@ public final class EpisodesFragment extends Fragment {
 
 	    final Bundle bundle = getArguments();
 	    if (bundle != null) {
-		    refresh(bundle.getString(ARG_CHANNEL_NAME));
+            final String channel = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
+		    refresh(channel);
+            trackEpisodeSelected(channel);
 	    }
-
-        track();
     }
 
     private void refresh(final String shortName) {
         SmodcastClient.getClient().getFeed(shortName, new Callback<Rss>() {
-	        @Override
-	        public void success(Rss rss, Response response) {
-		        mAdapter.setResults(rss.getChannel().getItems());
-	        }
+            @Override
+            public void success(Rss rss, Response response) {
+                mAdapter.setResults(rss.getChannel().getItems());
+            }
 
-	        @Override
-	        public void failure(RetrofitError retrofitError) {
-		        Toast.makeText(getActivity(), retrofitError.getMessage(), Toast.LENGTH_SHORT).show();
-	        }
+            @Override
+            public void failure(RetrofitError error) {
+	            Timber.e(error, error.getMessage());
+            }
         });
     }
 
-    private void track() {
-        Tracker t = ((SmodrApplication) getActivity().getApplication()).getTracker(
-		        SmodrApplication.TrackerName.APP_TRACKER);
-
-        t.setScreenName(TAG);
-        t.send(new HitBuilders.AppViewBuilder().build());
+    private void trackEpisodeSelected(String episodeTitle) {
+	    final Tracker t = ((SmodrApplication) getActivity()
+			    .getApplication())
+			    .getTracker(SmodrApplication.TrackerName.APP_TRACKER);
+	    t.send(new HitBuilders.EventBuilder()
+			    .setCategory("EPISODE")
+			    .setAction("SELECTED")
+			    .setLabel(episodeTitle)
+			    .build());
     }
-
-//    private void trackEpisodeSelected(String episodeTitle) {
-//	    Tracker t = ((SmodrApplication) getActivity()
-//			    .getApplication())
-//			    .getTracker(SmodrApplication.TrackerName.APP_TRACKER);
-//
-//	    t.send(new HitBuilders.EventBuilder()
-//			    .setCategory("EPISODE")
-//			    .setAction("SELECTED")
-//			    .setLabel(episodeTitle)
-//			    .build());
-//    }
 }

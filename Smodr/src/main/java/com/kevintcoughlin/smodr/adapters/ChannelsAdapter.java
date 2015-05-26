@@ -27,13 +27,9 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		final Channel channel = mItems.get(position);
 		final ChannelViewHolder vh = (ChannelViewHolder) holder;
 
-		int coverPhotoResource = vh.itemView.getContext().getResources()
-				.getIdentifier(channel.getShortName().replace("-", ""), "drawable", vh.itemView.getContext().getPackageName());
-
 		Picasso.with(holder.itemView.getContext())
-				.load(coverPhotoResource)
-				.placeholder(R.drawable.placeholder)
-				.fit()
+				.load("http://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg")
+				.resize(350, 350)
 				.centerCrop()
 				.into(vh.mImage);
 	}
