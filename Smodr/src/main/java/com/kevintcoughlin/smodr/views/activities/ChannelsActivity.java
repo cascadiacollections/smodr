@@ -3,6 +3,7 @@ package com.kevintcoughlin.smodr.views.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
@@ -10,7 +11,6 @@ import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import org.parceler.Parcels;
 
 public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks {
     private CharSequence mTitle;
@@ -32,12 +32,7 @@ public final class ChannelsActivity extends FragmentActivity implements Channels
     @Override
     public void onChannelSelected(final Channel channel) {
         trackChannelSelected(channel);
-
-        final Bundle bundle = new Bundle();
 	    final EpisodesFragment fragment = new EpisodesFragment();
-	    bundle.putParcelable(EpisodesFragment.ARG_CHANNEL_NAME, Parcels.wrap(channel));
-        fragment.setArguments(bundle);
-
         getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.channels_container, fragment)
