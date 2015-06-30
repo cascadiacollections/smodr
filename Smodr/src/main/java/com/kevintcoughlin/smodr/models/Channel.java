@@ -1,11 +1,11 @@
 package com.kevintcoughlin.smodr.models;
 
-import org.parceler.Parcel;
-import org.simpleframework.xml.*;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
 
-@Parcel
 @Root(name = "channel", strict = false)
 public final class Channel {
 	private String shortName;
@@ -18,14 +18,6 @@ public final class Channel {
 
     @ElementList(name = "item", required = false, inline = true)
     private ArrayList<Item> items = new ArrayList<>();
-
-	@Namespace(prefix = "itunes")
-	@Element(name = "author", required = false)
-	private String itunesAuthor;
-
-	@Namespace(prefix = "itunes")
-	@Element(name = "duration", required = false)
-	private String itunesDuration;
 
 	@Element(name ="pubDate", required = false)
 	private String pubDate;
@@ -72,20 +64,4 @@ public final class Channel {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
-
-	public String getItunesAuthor() {
-		return itunesAuthor;
-	}
-
-	public void setItunesAuthor(String itunesAuthor) {
-		this.itunesAuthor = itunesAuthor;
-	}
-
-	public String getItunesDuration() {
-		return itunesDuration;
-	}
-
-	public void setItunesDuration(String itunesDuration) {
-		this.itunesDuration = itunesDuration;
-	}
 }

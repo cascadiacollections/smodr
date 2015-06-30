@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.bumptech.glide.Glide;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
@@ -49,11 +50,11 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	}
 
 	public static class ChannelViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.image) ImageView mImage;
+        @Bind(R.id.image) ImageView mImage;
 
 		public ChannelViewHolder(View itemView) {
 			super(itemView);
-			ButterKnife.inject(this, itemView);
+			ButterKnife.bind(this, itemView);
 		}
 	}
 }

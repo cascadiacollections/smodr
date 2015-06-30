@@ -1,10 +1,8 @@
 package com.kevintcoughlin.smodr.models;
 
-import org.parceler.Parcel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
-@Parcel
 @Root(name = "enclosure", strict = false)
 public final class Enclosure {
     @Attribute(name = "url", required = false)

@@ -15,8 +15,8 @@ import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer
-        .OnPreparedListener {
+public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener,
+        MediaPlayer.OnPreparedListener {
     public static final int NOTIFICATION_ID = 37;
     public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
     public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";

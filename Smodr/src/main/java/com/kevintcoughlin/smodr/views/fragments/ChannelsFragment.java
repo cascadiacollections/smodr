@@ -7,8 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
@@ -24,7 +25,7 @@ public final class ChannelsFragment extends TrackedFragment {
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
     private Callbacks mCallbacks = sChannelCallbacks;
     private ChannelsAdapter mAdapter = new ChannelsAdapter();
-	@InjectView(R.id.list) RecyclerView mRecyclerView;
+	@Bind(R.id.list) RecyclerView mRecyclerView;
 
 	public interface Callbacks {
         void onChannelSelected(Channel channel);
@@ -62,8 +63,6 @@ public final class ChannelsFragment extends TrackedFragment {
 				public void success(Rss rss, Response response) {
                     mAdapter.addChannel(rss.getChannel());
                     final Channel channel = rss.getChannel();
-					final String meta = channel.getItunesAuthor();
-					Timber.d(meta);
 				}
 
 				@Override
@@ -77,7 +76,7 @@ public final class ChannelsFragment extends TrackedFragment {
 	@Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
-	    ButterKnife.inject(this, view);
+	    ButterKnife.bind(this, view);
 
 		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
 	    mRecyclerView.setLayoutManager(layoutManager);
