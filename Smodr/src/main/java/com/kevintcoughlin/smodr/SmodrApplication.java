@@ -1,6 +1,8 @@
 package com.kevintcoughlin.smodr;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
@@ -8,15 +10,20 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Smodr App
  */
 public final class SmodrApplication extends Application {
-    private static final String PROPERTY_ID = "UA-28569939-11";
-    private final HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
-    private static Bus mEventBus;
-    private static SmodrApplication instance;
+	@NonNull
+	private static final String PROPERTY_ID = "UA-28569939-11";
+	@NonNull
+	private final Map<TrackerName, Tracker> mTrackers = new HashMap<>();
+	@NonNull
+	private static final Bus mEventBus = new Bus(ThreadEnforcer.ANY);
+	@Nullable
+	private static SmodrApplication instance;
 
     public static Bus getEventBus() {
         return mEventBus;
@@ -29,7 +36,6 @@ public final class SmodrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mEventBus = new Bus(ThreadEnforcer.ANY);
 
         if (BuildConfig.DEBUG) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -38,13 +44,14 @@ public final class SmodrApplication extends Application {
         }
     }
 
-    public static SmodrApplication getInstance() {
+	@Nullable
+	public static SmodrApplication getInstance() {
         return instance;
     }
 
-    public synchronized Tracker getTracker(TrackerName trackerId) {
-        if (!mTrackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+	public synchronized Tracker getTracker(@NonNull final TrackerName trackerId) {
+		if (!mTrackers.containsKey(trackerId)) {
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             Tracker t = analytics.newTracker(PROPERTY_ID);
             mTrackers.put(trackerId, t);
         }

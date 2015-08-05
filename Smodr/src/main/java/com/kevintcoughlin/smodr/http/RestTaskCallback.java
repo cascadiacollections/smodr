@@ -10,5 +10,5 @@ public abstract class RestTaskCallback {
      *
      * @param result The result of the HTTP request.
      */
-    public abstract void onTaskComplete(String result);
+    public abstract void onTaskComplete(final String result);
 }

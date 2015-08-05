@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -10,11 +11,12 @@ import com.kevintcoughlin.smodr.SmodrApplication;
  * Fragment that tracks analytics.
  * Created by kevincoughlin on 5/25/15.
  */
-public class TrackedFragment extends Fragment {
+public abstract class TrackedFragment extends Fragment {
+	@NonNull
 	public static final String TAG = TrackedFragment.class.getSimpleName();
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		track();
 	}

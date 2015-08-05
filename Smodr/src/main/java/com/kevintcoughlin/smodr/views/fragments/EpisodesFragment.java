@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.SmodrApplication;
@@ -13,13 +14,15 @@ import retrofit.client.Response;
 import timber.log.Timber;
 
 public final class EpisodesFragment extends TrackedFragment {
+	@NonNull
 	public static final String TAG = EpisodesFragment.class.getSimpleName();
-    public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
-
-    private final EpisodesAdapter mAdapter = new EpisodesAdapter();
+	@NonNull
+	public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
+	@NonNull
+	private final EpisodesAdapter mAdapter = new EpisodesAdapter();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 	    final Bundle bundle = getArguments();
@@ -30,21 +33,21 @@ public final class EpisodesFragment extends TrackedFragment {
 	    }
     }
 
-    private void refresh(final String shortName) {
-        SmodcastClient.getClient().getFeed(shortName, new Callback<Rss>() {
-            @Override
-            public void success(Rss rss, Response response) {
+	private void refresh(@NonNull final String shortName) {
+		SmodcastClient.getClient().getFeed(shortName, new Callback<Rss>() {
+			@Override
+			public void success(final Rss rss, final Response response) {
                 mAdapter.setResults(rss.getChannel().getItems());
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(final RetrofitError error) {
 	            Timber.e(error, error.getMessage());
             }
         });
     }
 
-    private void trackEpisodeSelected(String episodeTitle) {
+	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
 	    final Tracker t = ((SmodrApplication) getActivity()
 			    .getApplication())
 			    .getTracker(SmodrApplication.TrackerName.APP_TRACKER);

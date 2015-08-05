@@ -2,12 +2,12 @@ package com.kevintcoughlin.smodr.views.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
@@ -22,23 +22,27 @@ import retrofit.client.Response;
 import timber.log.Timber;
 
 public final class ChannelsFragment extends TrackedFragment {
+	@NonNull
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
-    private Callbacks mCallbacks = sChannelCallbacks;
-    private ChannelsAdapter mAdapter = new ChannelsAdapter();
+	@NonNull
+	private Callbacks mCallbacks = sChannelCallbacks;
+	@NonNull
+	private final ChannelsAdapter mAdapter = new ChannelsAdapter();
+
 	@Bind(R.id.list) RecyclerView mRecyclerView;
 
 	public interface Callbacks {
         void onChannelSelected(Channel channel);
     }
 
-    private static Callbacks sChannelCallbacks = new Callbacks() {
-        @Override
-        public void onChannelSelected(Channel channel) {
+	private static final Callbacks sChannelCallbacks = new Callbacks() {
+		@Override
+		public void onChannelSelected(Channel channel) {
         }
     };
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(final Activity activity) {
         super.onAttach(activity);
 
         if (!(activity instanceof Callbacks)) {
@@ -55,14 +59,14 @@ public final class ChannelsFragment extends TrackedFragment {
     }
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		for (final String channel : AppUtil.getStrings(getActivity(), R.array.podcasts)) {
 			SmodcastClient.getClient().getFeed(channel, new Callback<Rss>() {
 				@Override
-				public void success(Rss rss, Response response) {
-                    mAdapter.addChannel(rss.getChannel());
-                    final Channel channel = rss.getChannel();
+				public void success(final Rss rss, final Response response) {
+					mAdapter.addChannel(rss.getChannel());
+					final Channel channel = rss.getChannel();
 				}
 
 				@Override
