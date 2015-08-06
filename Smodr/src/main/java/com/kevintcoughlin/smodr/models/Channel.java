@@ -5,6 +5,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Root(name = "channel", strict = false)
 public final class Channel {
@@ -19,8 +20,11 @@ public final class Channel {
     @ElementList(name = "item", required = false, inline = true)
     private ArrayList<Item> items = new ArrayList<>();
 
-	@Element(name ="pubDate", required = false)
+	@Element(name = "pubDate", required = false)
 	private String pubDate;
+
+	@ElementList(name = "image", required = false, inline = true)
+	private List<Image> image = new ArrayList<>();
 
 	public Channel() {
 	}
@@ -64,4 +68,12 @@ public final class Channel {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
+
+	public List<Image> getImages() {
+		return image;
+	}
+
+	public void setImages(List<Image> image) {
+		this.image = image;
+	}
 }

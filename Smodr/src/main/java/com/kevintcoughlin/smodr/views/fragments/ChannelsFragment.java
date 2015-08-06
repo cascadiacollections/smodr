@@ -25,6 +25,8 @@ public final class ChannelsFragment extends TrackedFragment {
 	@NonNull
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
 	@NonNull
+	private static final int NUM_COLUMNS = 4;
+	@NonNull
 	private Callbacks mCallbacks = sChannelCallbacks;
 	@NonNull
 	private final ChannelsAdapter mAdapter = new ChannelsAdapter();
@@ -66,7 +68,6 @@ public final class ChannelsFragment extends TrackedFragment {
 				@Override
 				public void success(final Rss rss, final Response response) {
 					mAdapter.addChannel(rss.getChannel());
-					final Channel channel = rss.getChannel();
 				}
 
 				@Override
@@ -81,9 +82,8 @@ public final class ChannelsFragment extends TrackedFragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
 	    ButterKnife.bind(this, view);
-
-		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-	    mRecyclerView.setLayoutManager(layoutManager);
+		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), NUM_COLUMNS);
+		mRecyclerView.setLayoutManager(layoutManager);
 	    mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setAdapter(mAdapter);
         return view;

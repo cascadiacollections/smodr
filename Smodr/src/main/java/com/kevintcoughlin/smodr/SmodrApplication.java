@@ -3,13 +3,13 @@ package com.kevintcoughlin.smodr;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,8 +19,8 @@ public final class SmodrApplication extends Application {
 	@NonNull
 	private static final String PROPERTY_ID = "UA-28569939-11";
 	@NonNull
-	private final Map<TrackerName, Tracker> mTrackers = new HashMap<>();
-	@NonNull
+    private final Map<TrackerName, Tracker> mTrackers = new ArrayMap<>();
+    @NonNull
 	private static final Bus mEventBus = new Bus(ThreadEnforcer.ANY);
 	@Nullable
 	private static SmodrApplication instance;

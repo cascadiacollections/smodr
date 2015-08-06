@@ -28,8 +28,12 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 		final Channel channel = mItems.get(position);
 		final ChannelViewHolder vh = (ChannelViewHolder) holder;
-
-		Glide.with(vh.mImage.getContext()).load("http://goo.gl/gEgYUd").into(vh.mImage);
+		final String href = !channel.getImages().isEmpty() ? channel.getImages().get(0).getHref() : "";
+		Glide.with(vh.itemView.getContext())
+				.load(href)
+				.fitCenter()
+				.crossFade()
+				.into(vh.mImage);
 	}
 
 	@Override
@@ -47,7 +51,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 	public void addChannel(@NonNull final Channel channel) {
 		mItems.add(channel);
-		notifyDataSetChanged();
+		notifyItemInserted(mItems.size() - 1);
 	}
 
 	public static final class ChannelViewHolder extends RecyclerView.ViewHolder {
