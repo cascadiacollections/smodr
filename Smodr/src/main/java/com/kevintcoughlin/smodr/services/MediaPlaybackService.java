@@ -34,6 +34,9 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
     MediaPlayer mMediaPlayer = null;
 
+	public MediaPlaybackService() {
+	}
+
 	public MediaPlaybackService(ScheduledThreadPoolExecutor mScheduledExecutor) {
 	}
 

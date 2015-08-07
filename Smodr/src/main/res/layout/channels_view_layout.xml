@@ -4,7 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <FrameLayout
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/my_awesome_toolbar"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:minHeight="?attr/actionBarSize"
+		android:background="?attr/colorPrimary" />
+
+	<FrameLayout
         android:id="@+id/channels_container"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
