@@ -14,8 +14,8 @@ import com.kevintcoughlin.smodr.models.Item;
 import java.util.ArrayList;
 
 public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-	@NonNull
-	private final ArrayList<Item> mItems = new ArrayList<>();
+    @NonNull
+    private final ArrayList<Item> mItems = new ArrayList<>();
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,10 +37,8 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 	public void setResults(ArrayList<Item> results) {
-		if (!mItems.isEmpty()) {
-			mItems.clear();
-		}
-		mItems.addAll(results);
+        mItems.clear();
+        mItems.addAll(results);
 		notifyDataSetChanged();
 	}
 

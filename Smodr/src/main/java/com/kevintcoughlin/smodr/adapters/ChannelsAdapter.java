@@ -42,9 +42,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	}
 
 	public void setChannels(@NonNull final ArrayList<Channel> results) {
-		if (!mItems.isEmpty()) {
-			mItems.clear();
-		}
+		mItems.clear();
 		mItems.addAll(results);
 		notifyDataSetChanged();
 	}
