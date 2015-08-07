@@ -2,8 +2,8 @@ package com.kevintcoughlin.smodr.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
@@ -12,7 +12,7 @@ import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
-public final class ChannelsActivity extends FragmentActivity implements ChannelsFragment.Callbacks {
+public final class ChannelsActivity extends AppCompatActivity implements ChannelsFragment.Callbacks {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
