@@ -4,7 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 @Root(name = "image", strict = false)
-public class Image {
+public final class Image {
 
 	@Attribute(name = "href", required = false)
 	public String href;
