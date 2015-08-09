@@ -19,13 +19,13 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-	    final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.episodes_list_item_layout, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.episodes_list_item_layout, parent, false);
 	    return new ItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		final Item item = mItems.get(position);
+        final Item item = mItems.get(position);
 		final ItemViewHolder vh = (ItemViewHolder) holder;
 	    vh.mTitle.setText(item.getTitle());
 	    vh.mDescription.setText(item.getDescription());

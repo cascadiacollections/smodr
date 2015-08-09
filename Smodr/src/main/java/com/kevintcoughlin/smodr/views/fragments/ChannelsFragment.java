@@ -21,17 +21,21 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import timber.log.Timber;
 
-public final class ChannelsFragment extends TrackedFragment {
+public final class ChannelsFragment extends TrackedFragment implements ChannelsAdapter.ChannelViewHolder.IChannelViewHolderClicks {
 	@NonNull
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
-	@NonNull
-	private static final int NUM_COLUMNS = 4;
 	@NonNull
 	private Callbacks mCallbacks = sChannelCallbacks;
 	@NonNull
 	private final ChannelsAdapter mAdapter = new ChannelsAdapter();
+	private static final int NUM_COLUMNS = 4;
 
 	@Bind(R.id.list) RecyclerView mRecyclerView;
+
+	@Override
+	public void onChannelClick(final int position) {
+		mCallbacks.onChannelSelected(mAdapter.getItem(position));
+	}
 
 	public interface Callbacks {
         void onChannelSelected(Channel channel);
@@ -63,11 +67,13 @@ public final class ChannelsFragment extends TrackedFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		for (final String channel : AppUtil.getStrings(getActivity(), R.array.podcasts)) {
-			SmodcastClient.getClient().getFeed(channel, new Callback<Rss>() {
+		for (final String name : AppUtil.getStrings(getActivity(), R.array.podcasts)) {
+			SmodcastClient.getClient().getFeed(name, new Callback<Rss>() {
 				@Override
 				public void success(final Rss rss, final Response response) {
-					mAdapter.addChannel(rss.getChannel());
+					final Channel channel = rss.getChannel();
+					channel.setShortName(name);
+					mAdapter.addChannel(channel);
 				}
 
 				@Override
@@ -80,12 +86,13 @@ public final class ChannelsFragment extends TrackedFragment {
 
 	@Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.channels_grid_layout, container, false);
-	    ButterKnife.bind(this, view);
+		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+		ButterKnife.bind(this, view);
 		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), NUM_COLUMNS);
 		mRecyclerView.setLayoutManager(layoutManager);
 	    mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setAdapter(mAdapter);
-        return view;
+		mAdapter.setClickListener(this);
+		return view;
     }
 }
