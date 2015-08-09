@@ -1,7 +1,6 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
-
-import com.rain.utils.android.robocop.generator.*;
+apply plugin: 'me.tatarka.retrolambda'
 
 buildscript {
     repositories {
@@ -9,9 +8,9 @@ buildscript {
         maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath files('RoboCoP/RoboCoP-0.5-jar-with-dependencies.jar')
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.16.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
     }
 }
 
@@ -20,55 +19,36 @@ repositories {
     maven { url 'http://download.crashlytics.com/maven' }
 }
 
-task contentProviderGen {
-    description = 'Generating Smodr ContentProvider.'
-    doLast {
-        System.out.println("Generating ContentProvider...")
-        String schemaFilename = 'RoboCoP/schema.json';
-        String baseOutputDir = 'src/main/java/';
-        ContentProviderGenerator.generateContentProvider(schemaFilename, baseOutputDir);
-    }
-}
-
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 19
-    }
-
-    buildTypes {
-        dev {
-            applicationIdSuffix '.dev'
-        }
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
+        minSdkVersion 19
+        targetSdkVersion 22
     }
 }
 
 dependencies {
-    compile 'com.google.apis:google-api-services-analytics:v3-rev96-1.18.0-rc'
-    compile 'com.google.android.gms:play-services:4.4.52'
-    compile 'com.android.support:support-v4:19.1.0'
-    compile 'com.android.support:appcompat-v7:19.1.0'
-    compile 'com.android.support:gridlayout-v7:19.1.0'
-    compile 'com.android.support:mediarouter-v7:19.1.0'
-    compile 'com.android.support:support-v13:19.1.0'
-    //compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:3.1.2'
-    compile 'joda-time:joda-time:2.3'
-    compile 'com.jakewharton:butterknife:5.1.+'
-    compile 'com.jakewharton.timber:timber:2.4.+'
+    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    compile 'com.google.android.gms:play-services-ads:7.5.0'
+    compile "com.android.support:appcompat-v7:22.2.1"
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:gridlayout-v7:22.2.1'
+    compile 'com.android.support:mediarouter-v7:22.2.1'
+    compile 'com.android.support:palette-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'io.reactivex:rxjava:1.0.2'
+    compile 'io.reactivex:rxandroid:1.0.0'
+    compile 'com.jakewharton:butterknife:7.0.0'
+    compile 'com.jakewharton.timber:timber:2.4.2'
     compile 'com.squareup:otto:1.3.5'
-    compile 'com.squareup.picasso:picasso:2.3.+'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
     compile 'com.squareup.okio:okio:1.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
@@ -78,6 +58,5 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
-    compile 'com.path:android-priority-jobqueue:1.1.2'
-    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.github.hotchemi:android-rate:0.5.2'
 }

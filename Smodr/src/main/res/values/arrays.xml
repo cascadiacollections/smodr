@@ -1,17 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-
     <string-array name="podcasts">
-        <item>@string/smodcast</item>
-        <item>@string/tell_em_steve_dave</item>
-        <item>@string/fatman_on_batman</item>
+		<item>hollywood-babble-on</item>
+		<item>smodcast</item>
+		<item>jay-silent-bob-get-old</item>
+		<item>tell-em-steve-dave</item>
+		<item>fatman-on-batman</item>
+		<item>i-sell-comics</item>
+		<item>plus-one</item>
+		<item>last-week-on-earth-with-ben-gleib</item>
+		<item>the-secret-stash</item>
+		<item>netheads</item>
+		<item>tha-breaks</item>
+		<item>having-sex</item>
+		<item>feab</item>
+		<item>highlands-a-peephole-history</item>
+		<item>waking-from-the-american-dream</item>
+		<item>smodco-smorning-show</item>
+		<item>smoviemakers</item>
+		<item>sound-bite-nation</item>
+		<item>sminterview</item>
+		<item>bagged-boarded-live</item>
     </string-array>
-
-    <string-array name="podcasts_urls">
-        <item>@string/smodcast_url</item>
-        <item>@string/tell_em_steve_dave_url</item>
-        <item>@string/fatman_on_batman_url</item>
-    </string-array>
-
 </resources>

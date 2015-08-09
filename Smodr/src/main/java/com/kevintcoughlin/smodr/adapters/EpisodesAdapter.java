@@ -1,58 +1,78 @@
 package com.kevintcoughlin.smodr.adapters;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.data.model.Episodes;
-
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Item;
 
-public class EpisodesAdapter extends CursorAdapter {
+import java.util.ArrayList;
 
-    private Context mContext;
+public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    @NonNull
+    private final ArrayList<Item> mItems = new ArrayList<>();
+	@Nullable
+	private ItemViewHolder.IItemViewHolderClicks mListener;
 
-    public EpisodesAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-        mContext = context;
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_episode_layout, parent, false);
+	    return new ItemViewHolder(v, mListener);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        final View view = LayoutInflater.from(mContext).inflate(R.layout.episodes_list_item_layout, parent, false);
-        final ViewHolder holder;
-
-        holder = new ViewHolder(view);
-        view.setTag(holder);
-
-        return view;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final Item item = mItems.get(position);
+		final ItemViewHolder vh = (ItemViewHolder) holder;
+	    vh.mTitle.setText(item.getTitle());
+	    vh.mDescription.setText(item.getDescription());
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        final ViewHolder holder = (ViewHolder) view.getTag();
-
-        Episodes episode = new Episodes(cursor);
-
-        holder.mTitle.setText(episode.getTitle());
-        holder.mDescription.setText(episode.getDescription());
+    public int getItemCount() {
+        return mItems.size();
     }
 
-    static class ViewHolder {
-        @InjectView(R.id.title)
-        TextView mTitle;
+	public Item getItem(final int position) {
+		return mItems.get(position);
+	}
 
-        @InjectView(R.id.description)
-        TextView mDescription;
+	public void setResults(ArrayList<Item> results) {
+        mItems.clear();
+        mItems.addAll(results);
+		notifyDataSetChanged();
+	}
 
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
-    }
+	public void setClickListener(@NonNull final ItemViewHolder.IItemViewHolderClicks listener) {
+		mListener = listener;
+	}
+
+	public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+		@Bind(R.id.title) TextView mTitle;
+        @Bind(R.id.description) TextView mDescription;
+		@NonNull
+		private final IItemViewHolderClicks mListener;
+
+		public ItemViewHolder(View itemView, @NonNull IItemViewHolderClicks listener) {
+			super(itemView);
+            ButterKnife.bind(this, itemView);
+			mListener = listener;
+			itemView.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			mListener.onItemClick(getAdapterPosition());
+		}
+
+		public interface IItemViewHolderClicks {
+			void onItemClick(final int position);
+		}
+	}
 }

@@ -1,23 +1,24 @@
 package com.kevintcoughlin.smodr.http;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.kevintcoughlin.smodr.models.Rss;
-
-import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Path;
+import rx.Observable;
 
-public class SmodcastClient {
-    private static SmodcastInterface sSmodcastService;
+public final class SmodcastClient {
+	@Nullable
+	private static SmodcastInterface sSmodcastService;
 
     public static SmodcastInterface getClient() {
         if (sSmodcastService == null) {
-            RestAdapter restAdapter = new RestAdapter.Builder()
+            final RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint("http://smodcast.com/channels")
                     .setConverter(new SimpleXMLConverter())
                     .build();
-
             sSmodcastService = restAdapter.create(SmodcastInterface.class);
         }
 
@@ -26,6 +27,6 @@ public class SmodcastClient {
 
     public interface SmodcastInterface {
         @GET("/{channel}/feed/")
-        void getFeed(@Path("channel") String channel, Callback<Rss> callback);
+        Observable<Rss> getFeed(@NonNull final @Path("channel") String channel);
     }
 }

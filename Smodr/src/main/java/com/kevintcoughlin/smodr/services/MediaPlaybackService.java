@@ -8,227 +8,172 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.jobs.UpdateEpisodeJob;
-import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
-import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import com.path.android.jobqueue.JobManager;
+import com.kevintcoughlin.smodr.views.activities.MainActivity;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
-    public static final int NOTIFICATION_ID = 37;
-    public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
-    public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
-    public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
-    public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener,
+		MediaPlayer.OnPreparedListener {
+	@NonNull
+	public static final String INTENT_EPISODE_URL = "intent_episode_url";
+	@NonNull
+	public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
+	@NonNull
+	public static final String INTENT_EPISODE_DESCRIPTION = "intent_episode_description";
+	@NonNull
+	public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
+	@NonNull
+	private static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
+	@NonNull
+	private static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
+	@NonNull
+	private static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+	@NonNull
+	private String mTitle = "";
+	@NonNull
+	private String mDescription = "";
+	@Nullable
+	private MediaPlayer mMediaPlayer;
+	private boolean mPrepared = false;
+	private static final int NOTIFICATION_ID = 37;
 
-    private final String SERVICE_NAME = "Smodr";
-    private int mId;
-    private String mTitle = "";
-    private String mDescription = "";
-    private int mPosition = 0;
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
 
-    private final int POOL_SIZE = 2;
-    private final int SAVE_PLAYBACK_POSITION_INTERVAL = 5000;
-    private ScheduledThreadPoolExecutor mScheduledExecutor;
-    private ScheduledFuture mSavePlaybackPositionFuture;
-    private Context mContext;
-    private Timer mAddEpisodeUpdateJobTimer;
-    private JobManager mJobManager;
+		if (intent != null && intent.getAction() == null) {
+			stopPlayback();
+		} else if (intent != null) {
+			if (intent.getAction().equals(ACTION_PLAY)) {
+				final String url = intent.getStringExtra(INTENT_EPISODE_URL);
+				mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
+				mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
+				if (url != null) {
+					try {
+						if (mMediaPlayer == null) {
+							mMediaPlayer = new MediaPlayer();
+							mMediaPlayer.setOnPreparedListener(this);
+						} else {
+							stopPlayback();
+						}
+						mMediaPlayer.setDataSource(url);
+						mMediaPlayer.prepareAsync();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					stopPlayback();
+				}
+			} else if (intent.getAction().equals(ACTION_PAUSE)) {
+				pausePlayback();
+				createNotification();
+			} else if (intent.getAction().equals(ACTION_RESUME)) {
+				if (mPrepared) {
+					if (mMediaPlayer != null) {
+						mMediaPlayer.start();
+					}
+				} else {
+					stopPlayback();
+				}
+				createNotification();
+			} else if (intent.getAction().equals(ACTION_STOP)) {
+				stopPlayback();
+			}
+		}
 
-    private boolean mIsPlaying = false;
-    private boolean mPrepared = false;
+		return Service.START_REDELIVER_INTENT;
+	}
 
-    MediaPlayer mMediaPlayer = null;
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+	@Override
+	public boolean onError(MediaPlayer mp, int what, int extra) {
+		stopPlayback();
+		mPrepared = false;
 
-        mContext = getApplicationContext();
-        mJobManager = SmodrApplication.getInstance().getJobManager();
-    }
+		return true;
+	}
 
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		stopPlayback();
+		mPrepared = false;
+	}
 
-        if (intent == null && intent.getAction() == null) {
-            stopPlayback();
-        } else {
-            if (intent.getAction().equals(ACTION_PLAY)) {
-                mId = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_ID, -1);
-                String url = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_URL);
-                mTitle = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_TITLE);
-                mDescription = intent.getStringExtra(EpisodesFragment.INTENT_EPISODE_DESCRIPTION);
-                mPosition = intent.getIntExtra(EpisodesFragment.INTENT_EPISODE_POSITION, 0);
+	private void pausePlayback() {
+		if (mMediaPlayer != null) {
+			mMediaPlayer.pause();
+		}
+	}
 
-                if (url != null) {
-                    try {
-                        if (mMediaPlayer == null) {
-                            mMediaPlayer = new MediaPlayer();
-                            mMediaPlayer.setOnPreparedListener(this);
-                        } else {
-                            stopPlayback();
-                        }
-                        mMediaPlayer.setDataSource(url);
-                        mMediaPlayer.prepareAsync();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    stopPlayback();
-                }
-            } else if (intent.getAction().equals(ACTION_PAUSE)) {
-                pausePlayback();
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_RESUME)) {
-                if (mPrepared) {
-                    mMediaPlayer.start();
-                    mIsPlaying = true;
-                } else {
-                    stopPlayback();
-                }
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_STOP)) {
-                stopPlayback();
-            }
-        }
+	private void stopPlayback() {
+		if (mMediaPlayer != null) {
+			mMediaPlayer.reset();
+		}
+		mPrepared = false;
 
-        return Service.START_REDELIVER_INTENT;
-    }
+		final NotificationManager mNotificationManager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+		mNotificationManager.cancel(NOTIFICATION_ID);
+		stopForeground(true);
+	}
 
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        stopPlayback();
-        mIsPlaying = false;
-        mPrepared = false;
+	private void createNotification() {
+		final Intent mIntent = new Intent(this, MediaPlaybackService.class);
+		mIntent.setAction(ACTION_STOP);
 
-        return true;
-    }
+		final PendingIntent mPendingIntent = PendingIntent.getService(
+				this,
+				0,
+				mIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+		);
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopPlayback();
-        mIsPlaying = false;
-        mPrepared = false;
-    }
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(this)
+						.setSmallIcon(R.drawable.icon)
+						.setOngoing(true)
+						.setPriority(Notification.PRIORITY_HIGH)
+						.setContentTitle(mTitle)
+						.setContentText(mDescription)
+						.addAction(
+								R.drawable.ic_action_pause,
+								getString(R.string.notification_action_pause),
+								mPendingIntent
+						);
 
-    private void pausePlayback() {
-        mMediaPlayer.pause();
-        mIsPlaying = false;
-    }
+		final Intent resultIntent = new Intent(this, MainActivity.class);
+		final TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		stackBuilder.addParentStack(MainActivity.class);
+		stackBuilder.addNextIntent(resultIntent);
 
-    private void stopPlayback() {
-        stopUpdateEpisodeTimer();
-        mMediaPlayer.reset();
-        mIsPlaying = false;
-        mPrepared = false;
+		final PendingIntent resultPendingIntent =
+				stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mBuilder.setContentIntent(resultPendingIntent);
 
-        mNotificationManager.cancel(NOTIFICATION_ID);
-        stopForeground(true);
-    }
+		final NotificationManager mNotificationManager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-    private void createNotification() {
-        Intent mIntent = new Intent(this, MediaPlaybackService.class);
-        mIntent.setAction(ACTION_STOP);
+		final Notification notification = mBuilder.build();
 
-        PendingIntent mPendingIntent = PendingIntent.getService(
-                this,
-                0,
-                mIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+		mNotificationManager.notify(NOTIFICATION_ID, notification);
+		startForeground(NOTIFICATION_ID, notification);
+	}
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icon)
-                        .setOngoing(true)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setContentTitle(SERVICE_NAME)
-                        .setContentText(mTitle)
-                        .addAction(
-                                R.drawable.ic_action_pause,
-                                getString(R.string.notification_action_pause),
-                                mPendingIntent
-                        );
-
-        Intent resultIntent = new Intent(this, ChannelsActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ChannelsActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Notification notification = mBuilder.build();
-
-        mNotificationManager.notify(NOTIFICATION_ID, notification);
-        startForeground(NOTIFICATION_ID, notification);
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        mediaPlayer.start();
-
-        // At the end of the episode, seek to the beginning.
-        if (mPosition >= mediaPlayer.getDuration())
-            mPosition = 0;
-
-        mediaPlayer.seekTo(mPosition);
-        createNotification();
-        startUpdateEpisodeTimer();
-
-        mIsPlaying = true;
-        mPrepared = true;
-    }
-
-    private int getCurrentPosition() {
-        return mMediaPlayer.getCurrentPosition();
-    }
-
-    private int getDuration() {
-        return mMediaPlayer.getDuration();
-    }
-
-    private synchronized void startUpdateEpisodeTimer() {
-        mAddEpisodeUpdateJobTimer = new Timer();
-        mAddEpisodeUpdateJobTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                int position = getCurrentPosition();
-                int duration = getDuration();
-                mJobManager.addJobInBackground(new UpdateEpisodeJob(mId, position, duration));
-            }
-        }, 0, UpdateEpisodeJob.UPDATE_INTERVAL);
-    }
-
-    private synchronized void stopUpdateEpisodeTimer() {
-        if (mAddEpisodeUpdateJobTimer != null) {
-            mAddEpisodeUpdateJobTimer.cancel();
-        }
-    }
+	@Override
+	public void onPrepared(MediaPlayer mediaPlayer) {
+		mediaPlayer.start();
+		createNotification();
+		mPrepared = true;
+	}
 }

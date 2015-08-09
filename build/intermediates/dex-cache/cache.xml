@@ -1,167 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/classes-42edacef05da3a5441650840ab879b7f54caeb1c.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/okhttp-urlconnection-2.0.0-e77266cf5c075d70708d147ee2b9d7d73f053b3d.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp-urlconnection/2.0.0/afe8399d352713b66e597e9670c741d1e60ae923/okhttp-urlconnection-2.0.0.jar"
+        revision="22.0.1"
+        sha1="3ae231b4fc4ff0e7647bdcf28d532ec199161701">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-a71960ca01ace66d37391a485b056c087f2772ea.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/converter-simplexml/1.6.1/44a1b22f8f3a27109d6cefc355ecfbfed98f1917/converter-simplexml-1.6.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="afe8399d352713b66e597e9670c741d1e60ae923"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/crashlytics-1.1.11-1e001e0e971bd278ded033f86d0f019862659468.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.crashlytics.android/crashlytics/1.1.11/b8189e9eef2f07fae743e05d7fe7e69daebe98d1/crashlytics-1.1.11.jar"
+        revision="22.0.1"
+        sha1="44a1b22f8f3a27109d6cefc355ecfbfed98f1917">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/converter-simplexml-1.6.1-6f5ab6fabd280893d7ddfa556b83e4ab0ac9907c.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="b8189e9eef2f07fae743e05d7fe7e69daebe98d1"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/joda-time-2.3-2e0dfaf5b3438b5af7882bf6b981fa16d795e73f.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.3/56498efd17752898cfcc3868c1b6211a07b12b8f/joda-time-2.3.jar"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-7992c60a027a3b6c8798e8611ef7d5f9842c485a.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/org.simpleframework/simple-xml/2.7.1/dd91fb744c2ff921407475cb29a1e3fee397d411/simple-xml-2.7.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="56498efd17752898cfcc3868c1b6211a07b12b8f"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/google-oauth-client-1.18.0-rc-69a3cc2be7be94a0520c2ffc900485746143d362.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.18.0-rc/30281a66559f60a491748974ac17cec3483b873/google-oauth-client-1.18.0-rc.jar"
+        revision="22.0.1"
+        sha1="dd91fb744c2ff921407475cb29a1e3fee397d411">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/simple-xml-2.7.1-e675043099d25d7394196d75f46c7b7c6797cf0a.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="030281a66559f60a491748974ac17cec3483b873"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/android-priority-jobqueue-1.1.2-1eaf71f8f8983a937f038d6e92054c686ff965e5.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.path/android-priority-jobqueue/1.1.2/b3549df66f71fb135bce3300eecb1a88fd45d86f/android-priority-jobqueue-1.1.2.jar"
+        revision="22.0.1"
+        sha1="4c8d1536dba3812cc1592090dc20c47a4ed3c35e">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/okhttp-2.0.0-643c532839a7b2e1ef1225fcf127cbe496de72c2.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp-urlconnection/2.0.0/afe8399d352713b66e597e9670c741d1e60ae923/okhttp-urlconnection-2.0.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="b3549df66f71fb135bce3300eecb1a88fd45d86f"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/google-api-services-analytics-v3-rev96-1.18.0-rc-f7fb209e7c093c13be329558522a305ad665bde1.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-analytics/v3-rev96-1.18.0-rc/78a75a0aa2057d0a249a94c229cb0dcd86a0d116/google-api-services-analytics-v3-rev96-1.18.0-rc.jar"
+        revision="22.0.1"
+        sha1="afe8399d352713b66e597e9670c741d1e60ae923">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/okhttp-urlconnection-2.0.0-e77266cf5c075d70708d147ee2b9d7d73f053b3d.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.0/f1e24ac977505d1fdcabadaa5be1f41dc11c4286/butterknife-7.0.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="78a75a0aa2057d0a249a94c229cb0dcd86a0d116"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/google-api-client-1.18.0-rc-81991cf1a174ffe37a328973908cb7d8cc3f612d.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.18.0-rc/45b0d00b78197d8a3047751443c09538117d188b/google-api-client-1.18.0-rc.jar"
+        revision="22.0.1"
+        sha1="f1e24ac977505d1fdcabadaa5be1f41dc11c4286">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/butterknife-7.0.0-2ca06a1fb837a78f0be9d52642865f62f701f23f.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.0.13/b8668706414b5936d38c8a9e4c2be16e3c999c62/rxjava-1.0.13.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="45b0d00b78197d8a3047751443c09538117d188b"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/okhttp-2.0.0-643c532839a7b2e1ef1225fcf127cbe496de72c2.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.0.0/4c8d1536dba3812cc1592090dc20c47a4ed3c35e/okhttp-2.0.0.jar"
+        revision="22.0.1"
+        sha1="b8668706414b5936d38c8a9e4c2be16e3c999c62">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/rxjava-1.0.13-3853e9e6d160a0e17ec66a442a88ab12c7a8fbd1.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.0.0/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="4c8d1536dba3812cc1592090dc20c47a4ed3c35e"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/timber-2.4.1-7e5cdb00fe9accae099a438cb429bf058312c853.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton.timber/timber/2.4.1/a220494292c6e32a3a10d66fc6bc56fd2416c163/timber-2.4.1.jar"
+        revision="22.0.1"
+        sha1="a60ad76c555501c6326126340f64fe7bd948e3eb">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-3aab8c8e1d9a11c4e05e77351ab02223897e4b06.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/Documents/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="a220494292c6e32a3a10d66fc6bc56fd2416c163"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/simple-xml-2.7.1-e675043099d25d7394196d75f46c7b7c6797cf0a.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/org.simpleframework/simple-xml/2.7.1/dd91fb744c2ff921407475cb29a1e3fee397d411/simple-xml-2.7.1.jar"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-c9d1db011a6fabd2763178e83923de8c88086df0.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/gridlayout-v7/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="dd91fb744c2ff921407475cb29a1e3fee397d411"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/support-v13-19.1.0-432d29bb26d6067815408d15c09d69cadf2dd68d.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
+        revision="22.0.1"
+        sha1="1e47268e271ff279aca3dfdd62587b8c90b6da14">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-1a39f60f024690d7d549c640e4de6ebed96e58f7.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/jsr305-1.3.9-1140e963846850d0d626ade9fc2c823692d2848f.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"
+        revision="22.0.1"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-9bf8d57915e364685ae9f697d35d413f2ae55e74.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/palette-v7/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/google-http-client-1.18.0-rc-45989477cb02788ef3120f3ffd8579dc9c510126.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.18.0-rc/880ad30d2b249a7591c195c2392646f1b146c139/google-http-client-1.18.0-rc.jar"
+        revision="22.0.1"
+        sha1="d3aba1c188fea5ee83ebbcb458be29d1cc0ef483">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-7ede567b9616d68d83aaf5e30a5948c7c97bbb92.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.1/jars/libs/internal_impl-22.2.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="880ad30d2b249a7591c195c2392646f1b146c139"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/converter-simplexml-1.6.1-6f5ab6fabd280893d7ddfa556b83e4ab0ac9907c.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/converter-simplexml/1.6.1/44a1b22f8f3a27109d6cefc355ecfbfed98f1917/converter-simplexml-1.6.1.jar"
+        revision="22.0.1"
+        sha1="f8761a2a7a8faedf6e8bcb1a14bcf1a8e7346eb8">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-085a1ccfbe6a5fbb3d2ce910b9eca0ec867cf06c.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.5.0/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="44a1b22f8f3a27109d6cefc355ecfbfed98f1917"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/gson-2.2.4-777b8306b9cb7f9b53d59d91d2c78a5d54d329e9.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
+        revision="22.0.1"
+        sha1="e7b35244f50663b3f8d150714bca9ecd7a290da1">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-5138cb3475de5ae1d85617602225ce4aa6f4abdf.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/butterknife-5.1.2-54edea9b7dda3d28f8f13beeeb4128f6859fbd6b.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/5.1.2/daf5472b0df6dabaceb6ad755b3812535863965a/butterknife-5.1.2.jar"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-3117cd3893e0c6afe916862efeefe95eeb7fa27c.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.6.1/efb0a36546aa8857ab8df358b106c1817e03cbee/retrofit-1.6.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="daf5472b0df6dabaceb6ad755b3812535863965a"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/internal_impl-19.1.0-9912e15fa462664544282b5af73129252ea4002e.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/19.1.0/libs/internal_impl-19.1.0.jar"
+        revision="22.0.1"
+        sha1="efb0a36546aa8857ab8df358b106c1817e03cbee">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/retrofit-1.6.1-6a5a6773dfc9273e2fc4cf933cc93cd9a665d8f1.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.5.0/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="e898b3d4e2733017f23894a563ea4f5b3aca72bc"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/classes-8ccbcfd648968353425db67afd0e1b771a7535d8.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/exploded-aar/com.android.support/gridlayout-v7/19.1.0/classes.jar"
+        revision="22.0.1"
+        sha1="a78183f30e769a98ab4820794f597763088d3065">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-3319cc8423bbb08d943af34c131a817731727e2f.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="af4cc326e6cd92f88db12298767e521743aedd36"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/okio-1.0.0-6c5c3bb6276eb39414a9caba697ce11c9d0fa5af.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.0.0/2534c458682c73f5b9871131ab3098d3f987ca3/okio-1.0.0.jar"
+        revision="22.0.1"
+        sha1="02534c458682c73f5b9871131ab3098d3f987ca3">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/okio-1.0.0-6c5c3bb6276eb39414a9caba697ce11c9d0fa5af.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="02534c458682c73f5b9871131ab3098d3f987ca3"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/picasso-2.3.3-bec6e7a1609f07aa5597b642055b20d980b24426.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.3/1262995965440e28ba5c4d480c9c9ab4ccce84cc/picasso-2.3.3.jar"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-5e8add111ee6cfc04b9eda9383285baddd489bff.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/3.6.0/a7537446a030da8eb0da4c71424d16c2589f6c4a/glide-3.6.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="1262995965440e28ba5c4d480c9c9ab4ccce84cc"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/classes-a46551c750f212efe762c340c9bc89f48bb3a3e1.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/exploded-aar/com.google.android.gms/play-services/4.4.52/classes.jar"
+        revision="22.0.1"
+        sha1="a7537446a030da8eb0da4c71424d16c2589f6c4a">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/glide-3.6.0-6ffa053838483cb44c48a65f0f798c47db1f62bc.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton.timber/timber/2.4.2/1f875e143b83cf04899dd6db12765fe9ba483656/timber-2.4.2.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="3dfdf1db5ce5ea2999a5dcde8c8e650b02660059"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/classes-bdf8095f8552717e97adc55101bf9912e320b8d6.jar"
-        jar="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/19.1.0/classes.jar"
+        revision="22.0.1"
+        sha1="1f875e143b83cf04899dd6db12765fe9ba483656">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/timber-2.4.2-6922cd9f1e159ce835215640e0ffd920a67602e3.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup/otto/1.3.5/7941cd2c2c8ec006800d75c35f8a9dacf892ab93/otto-1.3.5.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="c654eae911e6b937a56f14ba353baa95a82adb9c"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/debug/otto-1.3.5-063179e2e600ea3b4fc9c1ea1f9f6bcc8c6873a1.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup/otto/1.3.5/7941cd2c2c8ec006800d75c35f8a9dacf892ab93/otto-1.3.5.jar"
+        revision="22.0.1"
+        sha1="7941cd2c2c8ec006800d75c35f8a9dacf892ab93">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/otto-1.3.5-063179e2e600ea3b4fc9c1ea1f9f6bcc8c6873a1.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.github.hotchemi/android-rate/0.5.2/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="7941cd2c2c8ec006800d75c35f8a9dacf892ab93"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        revision="22.0.1"
+        sha1="1cbc3995dc86cdb53a8253cc3232f363c936c9f6">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-872a006c6d7c6f3ced7c6377deca6fe02005e5ec.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.5.0/jars/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/retrofit-1.6.1-6a5a6773dfc9273e2fc4cf933cc93cd9a665d8f1.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.6.1/efb0a36546aa8857ab8df358b106c1817e03cbee/retrofit-1.6.1.jar"
+        revision="22.0.1"
+        sha1="29ebc7e04d877062317c8cc0e68b20f0c1fcda66">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/classes-cbb142ab27a3153d27dc2b80a8706364b900a64e.jar" />
+    </item>
+    <item jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="efb0a36546aa8857ab8df358b106c1817e03cbee"/>
-    <item
-        dex="/Users/kevincoughlin/Desktop/Android/SmodrProject/Smodr/build/intermediates/pre-dexed/release/butterknife-5.1.1-d516f7338ad40837791c2ecd61dfb796340586c9.jar"
-        jar="/Users/kevincoughlin/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/5.1.1/b3652dfd65ca0bcf18790ff1a1f7624af4cb2bb8/butterknife-5.1.1.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="b3652dfd65ca0bcf18790ff1a1f7624af4cb2bb8"/>
+        revision="22.0.1"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="/Users/kevincoughlin/AndroidStudioProjects/Google/Smodr-Android/Smodr/build/intermediates/pre-dexed/debug/gson-2.2.4-777b8306b9cb7f9b53d59d91d2c78a5d54d329e9.jar" />
+    </item>
 
-</pre-dex-items>
+</items>

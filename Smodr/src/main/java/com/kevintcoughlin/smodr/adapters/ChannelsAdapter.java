@@ -1,63 +1,88 @@
 package com.kevintcoughlin.smodr.adapters;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.data.model.Channel;
-import com.squareup.picasso.Picasso;
-
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import com.bumptech.glide.Glide;
+import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Channel;
 
-public class ChannelsAdapter extends CursorAdapter {
+import java.util.ArrayList;
 
-    private Context mContext;
+public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+	@NonNull
+	private final ArrayList<Channel> mItems = new ArrayList<>();
+	@Nullable
+	private ChannelViewHolder.IChannelViewHolderClicks mListener;
 
-    public ChannelsAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-        mContext = context;
-    }
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+		final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_channel_layout, parent, false);
+		return new ChannelViewHolder(v, mListener);
+	}
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        final View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.channels_grid_item_layout, parent, false);
-        final ViewHolder holder;
-        holder = new ViewHolder(view);
-        view.setTag(holder);
-        return view;
-    }
+	@Override
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+		final Channel channel = mItems.get(position);
+		final ChannelViewHolder vh = (ChannelViewHolder) holder;
+		final String href = !channel.getImages().isEmpty() ? channel.getImages().get(0).getHref() : "";
+		Glide.with(vh.itemView.getContext())
+				.load(href)
+				.fitCenter()
+				.crossFade()
+				.into(vh.mImage);
+	}
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        final ViewHolder holder = (ViewHolder) view.getTag();
+	@Override
+	public int getItemCount() {
+		return mItems.size();
+	}
 
-        Channel channel = new Channel(cursor);
+	public void setChannels(@NonNull final ArrayList<Channel> results) {
+		mItems.clear();
+		mItems.addAll(results);
+		notifyDataSetChanged();
+	}
 
-        // @TODO: cleanup and db properly
-        int coverPhotoResource = mContext.getResources()
-                .getIdentifier(channel.getShortName().replace("-", ""), "drawable", mContext.getPackageName());
+	public void addChannel(@NonNull final Channel channel) {
+		mItems.add(channel);
+		notifyItemInserted(mItems.size() - 1);
+	}
 
-        Picasso.with(context)
-                .load(coverPhotoResource)
-                .placeholder(R.drawable.placeholder)
-                .fit()
-                .centerCrop()
-                .into(holder.mImage);
-    }
+	public Channel getItem(final int position) {
+		return mItems.get(position);
+	}
 
-    static class ViewHolder {
-        @InjectView(R.id.image)
-        ImageView mImage;
+	public void setClickListener(@NonNull final ChannelViewHolder.IChannelViewHolderClicks listener) {
+		mListener = listener;
+	}
 
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
-    }
+	public static final class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+		@Bind(R.id.image)
+		ImageView mImage;
+		@NonNull
+		private final IChannelViewHolderClicks mListener;
+
+		public ChannelViewHolder(View itemView, @NonNull IChannelViewHolderClicks listener) {
+			super(itemView);
+			ButterKnife.bind(this, itemView);
+			mListener = listener;
+			itemView.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			mListener.onChannelClick(getAdapterPosition());
+		}
+
+		public interface IChannelViewHolderClicks {
+			void onChannelClick(final int position);
+		}
+	}
 }
