@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:paddingRight="16dip"
+	android:paddingLeft="16dip"
+	android:paddingTop="8dip"
+	android:paddingBottom="8dip"
+	android:orientation="vertical"
+	android:background="?android:attr/selectableItemBackground"
+	tools:context=".EpisodesFragment">
+
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="16sp"
+		android:textColor="#343434"
+		android:textStyle="bold"
+		tools:text="SModcast 241: Another Episode" />
+
+	<TextView
+		android:id="@+id/description"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="12sp"
+		android:maxLines="2"
+		android:ellipsize="end"
+		tools:text="Episode description." />
+
+</LinearLayout>

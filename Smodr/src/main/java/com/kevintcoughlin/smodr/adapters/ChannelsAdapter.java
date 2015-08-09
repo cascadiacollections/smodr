@@ -23,7 +23,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-		final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.channels_grid_item_layout, parent, false);
+		final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_channel_layout, parent, false);
 		return new ChannelViewHolder(v, mListener);
 	}
 
