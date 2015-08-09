@@ -24,7 +24,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	@NonNull
 	public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
 	@NonNull
-	private static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
+	public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
 	@NonNull
 	private static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
 	@NonNull
@@ -35,7 +35,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	private String mTitle = "";
 	@Nullable
 	private MediaPlayer mMediaPlayer;
-	private int mPosition = 0;
 	private boolean mPrepared = false;
 	private static final int NOTIFICATION_ID = 37;
 
@@ -117,7 +116,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		}
 		mPrepared = false;
 
-		NotificationManager mNotificationManager =
+		final NotificationManager mNotificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		mNotificationManager.cancel(NOTIFICATION_ID);
@@ -125,10 +124,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	}
 
 	private void createNotification() {
-		Intent mIntent = new Intent(this, MediaPlaybackService.class);
+		final Intent mIntent = new Intent(this, MediaPlaybackService.class);
 		mIntent.setAction(ACTION_STOP);
 
-		PendingIntent mPendingIntent = PendingIntent.getService(
+		final PendingIntent mPendingIntent = PendingIntent.getService(
 				this,
 				0,
 				mIntent,
@@ -149,20 +148,20 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 								mPendingIntent
 						);
 
-		Intent resultIntent = new Intent(this, MainActivity.class);
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		final Intent resultIntent = new Intent(this, MainActivity.class);
+		final TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 		stackBuilder.addParentStack(MainActivity.class);
 		stackBuilder.addNextIntent(resultIntent);
 
-		PendingIntent resultPendingIntent =
+		final PendingIntent resultPendingIntent =
 				stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		mBuilder.setContentIntent(resultPendingIntent);
 
-		NotificationManager mNotificationManager =
+		final NotificationManager mNotificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		Notification notification = mBuilder.build();
+		final Notification notification = mBuilder.build();
 
 		mNotificationManager.notify(NOTIFICATION_ID, notification);
 		startForeground(NOTIFICATION_ID, notification);
@@ -171,14 +170,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	@Override
 	public void onPrepared(MediaPlayer mediaPlayer) {
 		mediaPlayer.start();
-
-		// At the end of the episode, seek to the beginning.
-		if (mPosition >= mediaPlayer.getDuration())
-			mPosition = 0;
-
-		mediaPlayer.seekTo(mPosition);
 		createNotification();
-
 		mPrepared = true;
 	}
 }
