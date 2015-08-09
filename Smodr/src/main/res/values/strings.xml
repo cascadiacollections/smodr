@@ -2,49 +2,7 @@
 <resources>
     <string name="app_name">Smodr</string>
     <string name="action_settings">Settings</string>
-    <string name="smodcast">Smodcast</string>
-    <string name="tell_em_steve_dave">Tell \'Em Steve-Dave</string>
-    <string name="fatman_on_batman">Fatman On Batman</string>
-    <string name="smodcast_url">http://smodcast.com/channels/smodcast/feed/</string>
-    <string name="tell_em_steve_dave_url">http://smodcast.com/channels/tell-em-steve-dave/feed/</string>
-    <string name="fatman_on_batman_url">http://smodcast.com/channels/fatman-on-batman/feed/</string>
-    <string name="title_activity_podcast">PodcastActivity</string>
-    <string name="connection_error">Error with your network connection.</string>
-    <string name="xml_error">Error parsing podcast feed.</string>
-
-    <!-- actions on feeditems -->
-    <string name="download_label">Download</string>
-    <string name="play_label">Play</string>
-    <string name="pause_label">Pause</string>
-    <string name="stream_label">Stream</string>
-    <string name="remove_label">Remove</string>
-    <string name="mark_read_label">Mark as read</string>
-    <string name="mark_unread_label">Mark as unread</string>
-    <string name="add_to_queue_label">Add to Queue</string>
-    <string name="remove_from_queue_label">Remove from Queue</string>
-    <string name="visit_website_label">Visit Website</string>
-    <string name="support_label">Flattr this</string>
-    <string name="enqueue_all_new">Enqueue all</string>
-    <string name="download_all">Download all</string>
-    <string name="skip_episode_label">Skip episode</string>
-
-    <!-- Mediaplayer messages -->
-    <string name="player_error_msg">Error!</string>
-    <string name="player_stopped_msg">No media playing</string>
-    <string name="player_preparing_msg">Preparing</string>
-    <string name="player_ready_msg">Ready</string>
-    <string name="player_seeking_msg">Seeking</string>
-    <string name="playback_error_server_died">Server died</string>
-    <string name="playback_error_unknown">Unknown Error</string>
-    <string name="no_media_playing_label">No media playing</string>
-    <string name="position_default_label">00:00:00</string>
-    <string name="player_buffering_msg">Buffering</string>
-    <string name="playbackservice_notification_title">Playing podcast</string>
-    <string name="playbackservice_notification_content">Tap here for more info</string>
-
-    <!-- Notification action strings -->
     <string name="notification_action_pause">Pause</string>
     <string name="cover_art">Cover art</string>
-
 	<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
