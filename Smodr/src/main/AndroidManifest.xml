@@ -33,5 +33,10 @@
             android:name=".services.MediaPlaybackService" />
 
         <meta-data android:name="com.crashlytics.ApiKey" android:value="18b85511073de7110b693fd33f7ef96cb27ae1eb"/>
+
+		<activity
+			android:name="com.google.android.gms.ads.AdActivity"
+			android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+			android:theme="@android:style/Theme.Translucent" />
     </application>
 </manifest>

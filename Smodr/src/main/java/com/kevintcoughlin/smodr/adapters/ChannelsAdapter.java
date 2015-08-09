@@ -69,7 +69,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		@NonNull
 		private final IChannelViewHolderClicks mListener;
 
-		public ChannelViewHolder(View itemView, IChannelViewHolderClicks listener) {
+		public ChannelViewHolder(View itemView, @NonNull IChannelViewHolderClicks listener) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
 			mListener = listener;
