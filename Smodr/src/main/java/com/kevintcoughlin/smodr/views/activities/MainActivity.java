@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -16,12 +17,14 @@ import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.models.Channel;
+import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import hotchemi.android.rate.AppRate;
 
-public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks {
+public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks, EpisodesFragment.Callbacks {
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
 	@Bind(R.id.ad)
@@ -78,6 +81,16 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     }
 
 	@Override
+	public void onEpisodeSelected(@NonNull final Item item) {
+		final Intent intent = new Intent(this, MediaPlaybackService.class);
+		intent.setAction(MediaPlaybackService.ACTION_PLAY);
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getEnclosure().getUrl());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getTitle());
+		startService(intent);
+		trackEpisodeSelected(item.getTitle());
+	}
+
+	@Override
 	public void setTitle(final CharSequence title) {
 	    if (getActionBar() != null) {
             getActionBar().setTitle(title);
@@ -94,9 +107,20 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
         final Tracker t = ((SmodrApplication) getApplication()).getTracker(
                 SmodrApplication.TrackerName.APP_TRACKER);
         t.send(new HitBuilders.EventBuilder()
-                .setCategory("CHANNEL")
-                .setAction("SELECTED")
-                .setLabel(channel.getShortName())
-                .build());
+		        .setCategory("CHANNEL")
+		        .setAction("SELECTED")
+		        .setLabel(channel.getShortName())
+		        .build());
     }
+
+	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
+		final Tracker t = ((SmodrApplication) getApplication()).getTracker(
+				SmodrApplication.TrackerName.APP_TRACKER);
+		t.send(new HitBuilders.EventBuilder()
+				.setCategory("EPISODE")
+				.setAction("SELECTED")
+				.setLabel(episodeTitle)
+				.build());
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,22 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
+import com.kevintcoughlin.smodr.models.Item;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public final class EpisodesFragment extends TrackedFragment {
+public final class EpisodesFragment extends TrackedFragment implements EpisodesAdapter.ItemViewHolder.IItemViewHolderClicks {
 	@NonNull
 	public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
 	@NonNull
 	private final EpisodesAdapter mAdapter = new EpisodesAdapter();
 	@Nullable
 	private LinearLayoutManager mLayoutManager;
+	@Nullable
+	private Callbacks mCallbacks;
 	@Bind(R.id.list)
 	RecyclerView mRecyclerView;
 
@@ -37,7 +38,6 @@ public final class EpisodesFragment extends TrackedFragment {
 	    if (bundle != null) {
             final String channel = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
 		    refresh(channel);
-            trackEpisodeSelected(channel);
 	    }
     }
 
@@ -49,7 +49,36 @@ public final class EpisodesFragment extends TrackedFragment {
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setAdapter(mAdapter);
+		mAdapter.setClickListener(this);
 		return view;
+	}
+
+	@Override
+	public void onAttach(final Activity activity) {
+		super.onAttach(activity);
+
+		if (!(activity instanceof Callbacks)) {
+			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		}
+
+		mCallbacks = (Callbacks) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mCallbacks = null;
+	}
+
+	@Override
+	public void onItemClick(final int position) {
+		if (mCallbacks != null) {
+			mCallbacks.onEpisodeSelected(mAdapter.getItem(position));
+		}
+	}
+
+	public interface Callbacks {
+		void onEpisodeSelected(Item item);
 	}
 
 	private void refresh(@NonNull final String name) {
@@ -60,15 +89,4 @@ public final class EpisodesFragment extends TrackedFragment {
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(rss -> mAdapter.setResults(rss.getChannel().getItems()));
 	}
-
-	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
-	    final Tracker t = ((SmodrApplication) getActivity()
-			    .getApplication())
-			    .getTracker(SmodrApplication.TrackerName.APP_TRACKER);
-	    t.send(new HitBuilders.EventBuilder()
-			    .setCategory("EPISODE")
-			    .setAction("SELECTED")
-			    .setLabel(episodeTitle)
-			    .build());
-    }
 }
