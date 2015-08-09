@@ -24,6 +24,8 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	@NonNull
 	public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
 	@NonNull
+	public static final String INTENT_EPISODE_DESCRIPTION = "intent_episode_description";
+	@NonNull
 	public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
 	@NonNull
 	private static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
@@ -33,6 +35,8 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	private static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
 	@NonNull
 	private String mTitle = "";
+	@NonNull
+	private String mDescription = "";
 	@Nullable
 	private MediaPlayer mMediaPlayer;
 	private boolean mPrepared = false;
@@ -47,7 +51,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 			if (intent.getAction().equals(ACTION_PLAY)) {
 				final String url = intent.getStringExtra(INTENT_EPISODE_URL);
 				mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
-
+				mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
 				if (url != null) {
 					try {
 						if (mMediaPlayer == null) {
@@ -134,14 +138,13 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 				PendingIntent.FLAG_UPDATE_CURRENT
 		);
 
-		final String SERVICE_NAME = "Smodr";
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
 						.setSmallIcon(R.drawable.icon)
 						.setOngoing(true)
 						.setPriority(Notification.PRIORITY_HIGH)
-						.setContentTitle(SERVICE_NAME)
-						.setContentText(mTitle)
+						.setContentTitle(mTitle)
+						.setContentText(mDescription)
 						.addAction(
 								R.drawable.ic_action_pause,
 								getString(R.string.notification_action_pause),

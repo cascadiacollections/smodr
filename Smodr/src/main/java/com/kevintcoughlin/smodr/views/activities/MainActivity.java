@@ -86,6 +86,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		intent.setAction(MediaPlaybackService.ACTION_PLAY);
 		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getEnclosure().getUrl());
 		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getTitle());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getDescription());
 		startService(intent);
 		trackEpisodeSelected(item.getTitle());
 	}
