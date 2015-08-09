@@ -138,11 +138,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 				PendingIntent.FLAG_UPDATE_CURRENT
 		);
 
-		NotificationCompat.Builder mBuilder =
+		final NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
 						.setSmallIcon(R.drawable.icon)
 						.setOngoing(true)
-						.setPriority(Notification.PRIORITY_HIGH)
 						.setContentTitle(mTitle)
 						.setContentText(mDescription)
 						.addAction(
