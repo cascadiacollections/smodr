@@ -66,6 +66,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	    fragment.setArguments(args);
 	    getSupportFragmentManager()
             .beginTransaction()
+			    .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
             .replace(R.id.channels_container, fragment)
             .addToBackStack(ChannelsFragment.TAG)
             .commit();
@@ -81,8 +82,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	@Override
 	public boolean onNavigateUp() {
 		getSupportFragmentManager().popBackStack();
-        return true;
-    }
+		return super.onNavigateUp();
+	}
 
     private void trackChannelSelected(@NonNull final Channel channel) {
         final Tracker t = ((SmodrApplication) getApplication()).getTracker(
