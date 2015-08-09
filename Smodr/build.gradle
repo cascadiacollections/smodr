@@ -58,4 +58,5 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile 'com.github.hotchemi:android-rate:0.5.2'
 }

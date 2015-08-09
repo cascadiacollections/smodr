@@ -12,12 +12,14 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+import hotchemi.android.rate.AppRate;
 
 public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks {
 	@Bind(R.id.toolbar)
@@ -55,7 +57,10 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
                     .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
-    }
+
+		AppRate.with(this).setDebug(BuildConfig.DEBUG);
+		AppRate.showRateDialogIfMeetsConditions(this);
+	}
 
 	@Override
 	public void onChannelSelected(@NonNull final Channel channel) {
