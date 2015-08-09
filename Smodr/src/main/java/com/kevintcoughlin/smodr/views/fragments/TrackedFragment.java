@@ -13,7 +13,7 @@ import com.kevintcoughlin.smodr.SmodrApplication;
  */
 public abstract class TrackedFragment extends Fragment {
 	@NonNull
-	public static final String TAG = TrackedFragment.class.getSimpleName();
+	private static final String TAG = TrackedFragment.class.getSimpleName();
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {

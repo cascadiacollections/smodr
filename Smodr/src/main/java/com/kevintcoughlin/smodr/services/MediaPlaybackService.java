@@ -11,7 +11,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.views.activities.ChannelsActivity;
+import com.kevintcoughlin.smodr.views.activities.MainActivity;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -156,11 +156,11 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
                                 mPendingIntent
                         );
 
-        Intent resultIntent = new Intent(this, ChannelsActivity.class);
+	    Intent resultIntent = new Intent(this, MainActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ChannelsActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
+	    stackBuilder.addParentStack(MainActivity.class);
+	    stackBuilder.addNextIntent(resultIntent);
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

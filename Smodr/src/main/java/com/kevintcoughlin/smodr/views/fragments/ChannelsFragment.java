@@ -44,12 +44,12 @@ public final class ChannelsFragment extends TrackedFragment implements ChannelsA
 	private static final Callbacks sChannelCallbacks = new Callbacks() {
 		@Override
 		public void onChannelSelected(Channel channel) {
-        }
+		}
     };
 
-    @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
+	@Override
+	public void onAttach(final Activity activity) {
+		super.onAttach(activity);
 
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -58,9 +58,9 @@ public final class ChannelsFragment extends TrackedFragment implements ChannelsA
         mCallbacks = (Callbacks) activity;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+	@Override
+	public void onDetach() {
+		super.onDetach();
         mCallbacks = sChannelCallbacks;
     }
 
@@ -78,14 +78,14 @@ public final class ChannelsFragment extends TrackedFragment implements ChannelsA
 
 				@Override
 				public void failure(RetrofitError error) {
-                    Timber.e(error, error.getMessage());
+					Timber.e(error, error.getMessage());
 				}
 			});
 		}
 	}
 
 	@Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
 		ButterKnife.bind(this, view);
 		final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), NUM_COLUMNS);

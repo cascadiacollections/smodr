@@ -13,11 +13,11 @@ import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
-public final class ChannelsActivity extends AppCompatActivity implements ChannelsFragment.Callbacks {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.channels_view_layout);
+public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main_layout);
 
 	    final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 	    setSupportActionBar(toolbar);
@@ -31,9 +31,9 @@ public final class ChannelsActivity extends AppCompatActivity implements Channel
         }
     }
 
-    @Override
-    public void onChannelSelected(@NonNull final Channel channel) {
-        trackChannelSelected(channel);
+	@Override
+	public void onChannelSelected(@NonNull final Channel channel) {
+		trackChannelSelected(channel);
 	    final EpisodesFragment fragment = new EpisodesFragment();
 	    final Bundle args = new Bundle();
 	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getShortName());
@@ -45,16 +45,16 @@ public final class ChannelsActivity extends AppCompatActivity implements Channel
             .commit();
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
+	@Override
+	public void setTitle(CharSequence title) {
 	    if (getActionBar() != null) {
             getActionBar().setTitle(title);
         }
     }
 
-    @Override
-    public boolean onNavigateUp() {
-        getSupportFragmentManager().popBackStack();
+	@Override
+	public boolean onNavigateUp() {
+		getSupportFragmentManager().popBackStack();
         return true;
     }
 
