@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
@@ -17,17 +19,25 @@ import java.io.IOException;
 
 public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener,
 		MediaPlayer.OnPreparedListener {
-	public static final int NOTIFICATION_ID = 37;
+	@NonNull
 	public static final String INTENT_EPISODE_URL = "intent_episode_url";
+	@NonNull
 	public static final String INTENT_EPISODE_TITLE = "intent_episode_title";
-	public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
-	public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
-	public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
-	public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+	@NonNull
+	private static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
+	@NonNull
+	private static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
+	@NonNull
+	private static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
+	@NonNull
+	private static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+	@NonNull
 	private String mTitle = "";
+	@Nullable
+	private MediaPlayer mMediaPlayer;
 	private int mPosition = 0;
 	private boolean mPrepared = false;
-	MediaPlayer mMediaPlayer = null;
+	private static final int NOTIFICATION_ID = 37;
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
@@ -60,7 +70,9 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 				createNotification();
 			} else if (intent.getAction().equals(ACTION_RESUME)) {
 				if (mPrepared) {
-					mMediaPlayer.start();
+					if (mMediaPlayer != null) {
+						mMediaPlayer.start();
+					}
 				} else {
 					stopPlayback();
 				}
@@ -94,11 +106,15 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	}
 
 	private void pausePlayback() {
-		mMediaPlayer.pause();
+		if (mMediaPlayer != null) {
+			mMediaPlayer.pause();
+		}
 	}
 
 	private void stopPlayback() {
-		mMediaPlayer.reset();
+		if (mMediaPlayer != null) {
+			mMediaPlayer.reset();
+		}
 		mPrepared = false;
 
 		NotificationManager mNotificationManager =
