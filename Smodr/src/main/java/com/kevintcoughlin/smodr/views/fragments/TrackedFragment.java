@@ -9,9 +9,13 @@ import com.kevintcoughlin.smodr.SmodrApplication;
 
 /**
  * Fragment that tracks analytics.
- * Created by kevincoughlin on 5/25/15.
+ *
+ * @author kevincoughlin
  */
 public abstract class TrackedFragment extends Fragment {
+	/**
+	 * The name of the screen to track.
+	 */
 	@NonNull
 	private static final String TAG = TrackedFragment.class.getSimpleName();
 
@@ -21,6 +25,10 @@ public abstract class TrackedFragment extends Fragment {
 		track();
 	}
 
+	/**
+	 * Sends a screen view to Google Analytics,
+	 * using the @{link #TAG} as the screen name.
+	 */
 	private void track() {
 		final Tracker t = ((SmodrApplication) getActivity().getApplication())
 				.getTracker(SmodrApplication.TrackerName.APP_TRACKER);

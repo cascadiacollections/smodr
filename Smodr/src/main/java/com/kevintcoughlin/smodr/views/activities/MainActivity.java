@@ -3,6 +3,7 @@ package com.kevintcoughlin.smodr.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,9 +25,22 @@ import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import hotchemi.android.rate.AppRate;
 
+/**
+ * The primary activity containing a single {@link android.support.v4.app.Fragment}.
+ *
+ * @author kevincoughlin
+ */
 public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks, EpisodesFragment.Callbacks {
+	/**
+	 * The primary {@link Toolbar}.
+	 */
+	@Nullable
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
+	/**
+	 * The {@link AdView} displayed.
+	 */
+	@Nullable
 	@Bind(R.id.ad)
 	AdView mAdView;
 
@@ -37,20 +51,22 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		ButterKnife.bind(this);
 
 		final AdRequest adRequest = new AdRequest.Builder().addTestDevice("C6D397172C2598AF256CF30C6393FBFC").build();
-		mAdView.setAdListener(new AdListener() {
-			@Override
-			public void onAdFailedToLoad(int errorCode) {
-				super.onAdFailedToLoad(errorCode);
-				AppUtil.setVisible(mAdView, false);
-			}
+		if (mAdView != null) {
+			mAdView.setAdListener(new AdListener() {
+				@Override
+				public void onAdFailedToLoad(int errorCode) {
+					super.onAdFailedToLoad(errorCode);
+					AppUtil.setVisible(mAdView, false);
+				}
 
-			@Override
-			public void onAdLoaded() {
-				super.onAdLoaded();
-				AppUtil.setVisible(mAdView, true);
-			}
-		});
-		mAdView.loadAd(adRequest);
+				@Override
+				public void onAdLoaded() {
+					super.onAdLoaded();
+					AppUtil.setVisible(mAdView, true);
+				}
+			});
+			mAdView.loadAd(adRequest);
+		}
 		setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {

@@ -20,17 +20,41 @@ import com.kevintcoughlin.smodr.utils.AppUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * A fragment that displays a collection of {@link Channel}s.
+ *
+ * @author kevincoughlin
+ */
 public final class ChannelsFragment extends TrackedFragment implements ChannelsAdapter.ChannelViewHolder.IChannelViewHolderClicks {
+	/**
+	 * Screen name for this view.
+	 */
 	@NonNull
 	public static final String TAG = ChannelsFragment.class.getSimpleName();
+	/**
+	 * Callback interface for activity communication.
+	 */
 	@Nullable
 	private Callbacks mCallbacks;
+	/**
+	 * Adapter containing a collection of {@link Channel}s.
+	 */
 	@NonNull
 	private final ChannelsAdapter mAdapter = new ChannelsAdapter();
+	/**
+	 * Linear layout manager for the {@link #mRecyclerView}.
+	 */
 	@Nullable
 	private LinearLayoutManager mLayoutManager;
+	/**
+	 * The recycler view containing episodes.
+	 */
+	@Nullable
 	@Bind(R.id.list)
 	RecyclerView mRecyclerView;
+	/**
+	 * The number of columns to display in the {@link #mRecyclerView}.
+	 */
 	private static final int NUM_COLUMNS = 4;
 
 	@Override
@@ -40,9 +64,18 @@ public final class ChannelsFragment extends TrackedFragment implements ChannelsA
 		}
 	}
 
+	/**
+	 * Handler for {@link Channel} selection to the {@link Activity}.
+	 */
 	public interface Callbacks {
-        void onChannelSelected(Channel channel);
-    }
+		/**
+		 * Called when a {@link Channel} is selected.
+		 *
+		 * @param channel
+		 * 		the {@link Channel} selected.
+		 */
+		void onChannelSelected(final Channel channel);
+	}
 
 	@Override
 	public void onAttach(final Activity activity) {
@@ -83,9 +116,11 @@ public final class ChannelsFragment extends TrackedFragment implements ChannelsA
 		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
 		ButterKnife.bind(this, view);
 		mLayoutManager = new GridLayoutManager(getActivity(), NUM_COLUMNS);
-		mRecyclerView.setLayoutManager(mLayoutManager);
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setAdapter(mAdapter);
+		if (mRecyclerView != null) {
+			mRecyclerView.setLayoutManager(mLayoutManager);
+			mRecyclerView.setHasFixedSize(true);
+			mRecyclerView.setAdapter(mAdapter);
+		}
 		mAdapter.setClickListener(this);
 		return view;
     }

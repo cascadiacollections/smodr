@@ -18,15 +18,36 @@ import com.kevintcoughlin.smodr.models.Item;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * A fragment that displays a collection of {@link Item}s.
+ *
+ * @author kevincoughlin
+ */
 public final class EpisodesFragment extends TrackedFragment implements EpisodesAdapter.ItemViewHolder.IItemViewHolderClicks {
+	/**
+	 * Param for sending a channel's name.
+	 */
 	@NonNull
 	public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
+	/**
+	 * Adapter containing a collection of {@link Item}s.
+	 */
 	@NonNull
 	private final EpisodesAdapter mAdapter = new EpisodesAdapter();
+	/**
+	 * Linear layout manager for the {@link #mRecyclerView}.
+	 */
 	@Nullable
 	private LinearLayoutManager mLayoutManager;
+	/**
+	 * Callback interface for activity communication.
+	 */
 	@Nullable
 	private Callbacks mCallbacks;
+	/**
+	 * The recycler view containing episodes.
+	 */
+	@Nullable
 	@Bind(R.id.list)
 	RecyclerView mRecyclerView;
 
@@ -46,9 +67,11 @@ public final class EpisodesFragment extends TrackedFragment implements EpisodesA
 		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
 		ButterKnife.bind(this, view);
 		mLayoutManager = new LinearLayoutManager(getActivity());
-		mRecyclerView.setLayoutManager(mLayoutManager);
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setAdapter(mAdapter);
+		if (mRecyclerView != null) {
+			mRecyclerView.setLayoutManager(mLayoutManager);
+			mRecyclerView.setHasFixedSize(true);
+			mRecyclerView.setAdapter(mAdapter);
+		}
 		mAdapter.setClickListener(this);
 		return view;
 	}
@@ -77,10 +100,25 @@ public final class EpisodesFragment extends TrackedFragment implements EpisodesA
 		}
 	}
 
+	/**
+	 * Handler for {@link Item} selection to the {@link Activity}.
+	 */
 	public interface Callbacks {
-		void onEpisodeSelected(Item item);
+		/**
+		 * Called when an {link @Item} is selected.
+		 *
+		 * @param item
+		 * 		the {@link Item} selected.
+		 */
+		void onEpisodeSelected(final Item item);
 	}
 
+	/**
+	 * Refreshes the channel's feed of episodes.
+	 *
+	 * @param name
+	 *      the name of the channel to refresh.
+	 */
 	private void refresh(@NonNull final String name) {
 		SmodcastClient
 				.getClient()
