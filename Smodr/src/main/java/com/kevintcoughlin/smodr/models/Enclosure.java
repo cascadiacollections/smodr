@@ -3,6 +3,11 @@ package com.kevintcoughlin.smodr.models;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
+/**
+ * Model representing an RSS feed item's media enclosure.
+ *
+ * @author kevincoughlin
+ */
 @Root(name = "enclosure", strict = false)
 public final class Enclosure {
     @Attribute(name = "url", required = false)

@@ -7,6 +7,11 @@ import org.simpleframework.xml.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model representing an RSS feed's channel.
+ *
+ * @author kevincoughlin
+ */
 @Root(name = "channel", strict = false)
 public final class Channel {
 	private String shortName;

@@ -4,6 +4,11 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+/**
+ * Model representing an RSS feed item.
+ *
+ * @author kevincoughlin
+ */
 @Root(name = "item", strict = false)
 public final class Item {
     @Element(name = "title")
