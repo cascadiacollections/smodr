@@ -13,6 +13,11 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Tests for {@link MainActivity}.
+ *
+ * @author kevincoughlin
+ */
 @Config(constants = BuildConfig.class, sdk = 21)
 @RunWith(RobolectricGradleTestRunner.class)
 public final class MainActivityTest {
