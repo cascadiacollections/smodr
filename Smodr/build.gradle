@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    testCompile "org.robolectric:robolectric:3.0"
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile "com.android.support:appcompat-v7:22.2.1"
