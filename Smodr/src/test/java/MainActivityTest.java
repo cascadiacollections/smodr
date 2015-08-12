@@ -1,4 +1,4 @@
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
