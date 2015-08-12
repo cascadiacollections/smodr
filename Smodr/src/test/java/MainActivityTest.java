@@ -1,4 +1,6 @@
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
+import com.google.android.gms.ads.AdView;
 import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
@@ -14,7 +16,6 @@ import static org.junit.Assert.assertNotNull;
 @Config(constants = BuildConfig.class, sdk = 21)
 @RunWith(RobolectricGradleTestRunner.class)
 public final class MainActivityTest {
-
 	private MainActivity activity;
 
 	@Before
@@ -24,9 +25,13 @@ public final class MainActivityTest {
 	}
 
 	@Test
-	public void validateTextViewContent() throws Exception {
+	public void validateViews() throws Exception {
+		final FrameLayout container = (FrameLayout) activity.findViewById(R.id.channels_container);
 		final Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-		assertNotNull("Toolbar could not be found", toolbar);
-	}
+		final AdView adView = (AdView) activity.findViewById(R.id.ad);
 
+		assertNotNull("Container could not be found", container);
+		assertNotNull("Toolbar could not be found", toolbar);
+		assertNotNull("AdView could not be found", adView);
+	}
 }
