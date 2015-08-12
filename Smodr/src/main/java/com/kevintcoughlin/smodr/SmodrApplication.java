@@ -9,6 +9,11 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
+/**
+ * The Smodr {@link Application}.
+ *
+ * @author kevincoughlin
+ */
 public final class SmodrApplication extends Application {
 	@NonNull
 	private static final String PROPERTY_ID = "UA-28569939-11";
@@ -26,7 +31,14 @@ public final class SmodrApplication extends Application {
         }
     }
 
-    public synchronized Tracker getTracker(@NonNull final TrackerName trackerId) {
+	/**
+	 * Returns the {@link Tracker} for the {@link Application}.
+	 *
+	 * @param trackerId
+	 * 		The Google Analytics tracker identifier.
+	 * @return the {@link Application}'s {@link Tracker}.
+	 */
+	public synchronized Tracker getTracker(@NonNull final TrackerName trackerId) {
         if (!mTrackers.containsKey(trackerId)) {
             final Tracker t = GoogleAnalytics.getInstance(this).newTracker(PROPERTY_ID);
             mTrackers.put(trackerId, t);
@@ -34,7 +46,10 @@ public final class SmodrApplication extends Application {
         return mTrackers.get(trackerId);
     }
 
-    public enum TrackerName {
+	/**
+	 * Enum of Google Analytic {@link Tracker} identifiers.
+	 */
+	public enum TrackerName {
         APP_TRACKER
     }
 }
