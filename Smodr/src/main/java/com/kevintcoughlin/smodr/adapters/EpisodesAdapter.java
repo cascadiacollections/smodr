@@ -13,10 +13,22 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Adapter for displaying a collection of {@link Item}s.
+ *
+ * @author kevincoughlin
+ */
 public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    @NonNull
+	/**
+	 * The collection of {@link Item} to display.
+	 */
+	@NonNull
     private final ArrayList<Item> mItems = new ArrayList<>();
+	/**
+	 * The interface for clicks on {@link com.kevintcoughlin.smodr.adapters.EpisodesAdapter.ItemViewHolder}.
+	 */
 	@Nullable
 	private ItemViewHolder.IItemViewHolderClicks mListener;
 
@@ -39,27 +51,54 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return mItems.size();
     }
 
+	/**
+	 * Returns a {@link Item} at the given position.
+	 *
+	 * @param position
+	 *      the position to fetch.
+	 *
+	 * @return
+	 *      the resultant {@link Item}.
+	 */
 	public Item getItem(final int position) {
 		return mItems.get(position);
 	}
 
-	public void setResults(ArrayList<Item> results) {
-        mItems.clear();
+	/**
+	 * Clear and set the adapter to the passed in collection and invokes {@link #notifyDataSetChanged()}.
+	 *
+	 * @param results
+	 * 		a {@link List <Item>} to set the adapter to.
+	 */
+	public void setResults(final List<Item> results) {
+		mItems.clear();
         mItems.addAll(results);
 		notifyDataSetChanged();
 	}
 
-	public void setClickListener(@NonNull final ItemViewHolder.IItemViewHolderClicks listener) {
+	/**
+	 * Sets the click listener for {@link com.kevintcoughlin.smodr.adapters.EpisodesAdapter.ItemViewHolder}.
+	 *
+	 * @param listener
+	 * 		the {@link com.kevintcoughlin.smodr.adapters.EpisodesAdapter.ItemViewHolder.IItemViewHolderClicks}
+	 * 		to set.
+	 */
+	public void setClickListener(@Nullable final ItemViewHolder.IItemViewHolderClicks listener) {
 		mListener = listener;
 	}
 
+	/**
+	 * A {@link android.support.v7.widget.RecyclerView.ViewHolder} for display a {@link Item}.
+	 */
 	public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		@Bind(R.id.title) TextView mTitle;
-        @Bind(R.id.description) TextView mDescription;
-		@NonNull
+		@Bind(R.id.title)
+		TextView mTitle;
+		@Bind(R.id.description)
+		TextView mDescription;
+		@Nullable
 		private final IItemViewHolderClicks mListener;
 
-		public ItemViewHolder(View itemView, @NonNull IItemViewHolderClicks listener) {
+		public ItemViewHolder(View itemView, @Nullable IItemViewHolderClicks listener) {
 			super(itemView);
             ButterKnife.bind(this, itemView);
 			mListener = listener;
@@ -68,10 +107,21 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 		@Override
 		public void onClick(View v) {
-			mListener.onItemClick(getAdapterPosition());
+			if (mListener != null) {
+				mListener.onItemClick(getAdapterPosition());
+			}
 		}
 
+		/**
+		 * Interface for clicks on the view.
+		 */
 		public interface IItemViewHolderClicks {
+			/**
+			 * Invoked when the view is clicked, returning the corresponding position.
+			 *
+			 * @param position
+			 *      the position of the data for the view clicked.
+			 */
 			void onItemClick(final int position);
 		}
 	}

@@ -14,10 +14,22 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Adapter for displaying a collection of {@link Channel}s.
+ *
+ * @author kevincoughlin
+ */
 public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+	/**
+	 * The collection of {@link Channel} to display.
+	 */
 	@NonNull
 	private final ArrayList<Channel> mItems = new ArrayList<>();
+	/**
+	 * The interface for clicks on {@link com.kevintcoughlin.smodr.adapters.ChannelsAdapter.ChannelViewHolder}.
+	 */
 	@Nullable
 	private ChannelViewHolder.IChannelViewHolderClicks mListener;
 
@@ -44,32 +56,64 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		return mItems.size();
 	}
 
-	public void setChannels(@NonNull final ArrayList<Channel> results) {
+	/**
+	 * Clear and set the adapter to the passed in collection and invokes {@link #notifyDataSetChanged()}.
+	 *
+	 * @param results
+	 * 		a {@link List <Channel>} to set the adapter to.
+	 */
+	public void setChannels(@NonNull final List<Channel> results) {
 		mItems.clear();
 		mItems.addAll(results);
 		notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds a {@link Channel} to the adapter and invokes {@link #notifyItemInserted(int)}.
+	 *
+	 * @param channel
+	 *      the {@link Channel} to insert.
+	 */
 	public void addChannel(@NonNull final Channel channel) {
 		mItems.add(channel);
 		notifyItemInserted(mItems.size() - 1);
 	}
 
+	/**
+	 * Returns a {@link Channel} at the given position.
+	 *
+	 * @param position
+	 *      the position to fetch.
+	 *
+	 * @return
+	 *      the resultant {@link Channel}.
+	 */
 	public Channel getItem(final int position) {
 		return mItems.get(position);
 	}
 
+	/**
+	 * Sets the click listener for {@link com.kevintcoughlin.smodr.adapters.ChannelsAdapter.ChannelViewHolder}.
+	 *
+	 * @param listener
+	 *      the {@link com.kevintcoughlin.smodr.adapters.ChannelsAdapter.ChannelViewHolder.IChannelViewHolderClicks}
+	 *      to set.
+	 */
 	public void setClickListener(@NonNull final ChannelViewHolder.IChannelViewHolderClicks listener) {
 		mListener = listener;
 	}
 
+	/**
+	 * A {@link android.support.v7.widget.RecyclerView.ViewHolder} for display a {@link Channel}.
+	 */
 	public static final class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+		@Nullable
 		@Bind(R.id.image)
 		ImageView mImage;
-		@NonNull
+		@Nullable
 		private final IChannelViewHolderClicks mListener;
 
-		public ChannelViewHolder(View itemView, @NonNull IChannelViewHolderClicks listener) {
+		public ChannelViewHolder(View itemView, @Nullable IChannelViewHolderClicks listener) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
 			mListener = listener;
@@ -78,10 +122,21 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 		@Override
 		public void onClick(View v) {
-			mListener.onChannelClick(getAdapterPosition());
+			if (mListener != null) {
+				mListener.onChannelClick(getAdapterPosition());
+			}
 		}
 
+		/**
+		 * Interface for clicks on the view.
+		 */
 		public interface IChannelViewHolderClicks {
+			/**
+			 * Invoked when the view is clicked, returning the corresponding position.
+			 *
+			 * @param position
+			 *      the position of the data for the view clicked.
+			 */
 			void onChannelClick(final int position);
 		}
 	}
