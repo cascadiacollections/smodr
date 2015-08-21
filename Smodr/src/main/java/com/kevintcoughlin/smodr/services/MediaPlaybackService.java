@@ -11,7 +11,6 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
@@ -98,7 +97,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		stopPlayback();
 		mPrepared = false;
-
 		return true;
 	}
 
@@ -133,10 +131,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		mIntent.setAction(ACTION_STOP);
 
-		final NotificationCompat.Builder mBuilder =
-				new NotificationCompat.Builder(this)
+		final Notification.Builder mBuilder =
+				new Notification.Builder(this)
 						.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
-						.setSmallIcon(R.drawable.icon)
+						.setSmallIcon(R.drawable.ic_action_play)
 						.setOngoing(true)
 						.setContentTitle(mTitle)
 						.setContentText(mDescription)
