@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -129,17 +130,12 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
 	private void createNotification() {
 		final Intent mIntent = new Intent(this, MediaPlaybackService.class);
+		final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		mIntent.setAction(ACTION_STOP);
-
-		final PendingIntent mPendingIntent = PendingIntent.getService(
-				this,
-				0,
-				mIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT
-		);
 
 		final NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
+						.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
 						.setSmallIcon(R.drawable.icon)
 						.setOngoing(true)
 						.setContentTitle(mTitle)
