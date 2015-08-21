@@ -32,10 +32,17 @@ android {
         minSdkVersion 19
         targetSdkVersion 22
     }
+
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    testCompile "org.robolectric:robolectric:3.0"
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile "com.android.support:appcompat-v7:22.2.1"
@@ -60,4 +67,8 @@ dependencies {
         exclude module: 'xpp3'
     }
     compile 'com.github.hotchemi:android-rate:0.5.2'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile "org.robolectric:robolectric:3.0"
 }
