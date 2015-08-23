@@ -80,6 +80,15 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	}
 
 	/**
+	 * Returns a {@link List<Channel>} backing the adapter.
+	 *
+	 * @return a {@link List<Channel>}.
+	 */
+	public ArrayList<Channel> getChannels() {
+		return mItems;
+	}
+
+	/**
 	 * Returns a {@link Channel} at the given position.
 	 *
 	 * @param position

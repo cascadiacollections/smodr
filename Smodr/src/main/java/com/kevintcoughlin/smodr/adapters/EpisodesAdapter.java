@@ -77,6 +77,15 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	}
 
 	/**
+	 * Returns a {@link List<Item>} backing the adapter.
+	 *
+	 * @return a {@link List<Item>}.
+	 */
+	public ArrayList<Item> getEpisodes() {
+		return mItems;
+	}
+
+	/**
 	 * Sets the click listener for {@link com.kevintcoughlin.smodr.adapters.EpisodesAdapter.ItemViewHolder}.
 	 *
 	 * @param listener

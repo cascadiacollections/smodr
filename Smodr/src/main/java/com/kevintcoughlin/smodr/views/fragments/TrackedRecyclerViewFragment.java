@@ -12,6 +12,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
 
+import java.util.List;
+
 /**
  * A {@link TrackedFragment} that contains a {@link android.support.v7.widget.RecyclerView}.
  *
@@ -38,6 +40,10 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 * The resource id of the layout to inflate.
 	 */
 	protected int mLayoutResId = R.layout.fragment_recycler_layout;
+	/**
+	 * {@link Bundle} key for {@link List < Parcelable >}.
+	 */
+	protected static final String STATE_RECYCLER_ITEMS = "STATE_RECYCLER_ITEMS";
 
 	@Nullable
 	@Override

@@ -16,6 +16,7 @@ import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.AppUtil;
+import org.parceler.Parcels;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -78,7 +79,12 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 			mSwipeRefreshLayout.setOnRefreshListener(this);
 			mSwipeRefreshLayout.setRefreshing(true);
 		}
-		onRefresh();
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_RECYCLER_ITEMS)) {
+			getAdapter().setResults(Parcels.unwrap(savedInstanceState.getParcelable(STATE_RECYCLER_ITEMS)));
+			mSwipeRefreshLayout.setRefreshing(false);
+		} else {
+			onRefresh();
+		}
 	}
 
 	@Override
@@ -149,6 +155,12 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 					}
 				})
 				.subscribe(rss -> getAdapter().setResults(rss.getChannel().getItems()));
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(STATE_RECYCLER_ITEMS, Parcels.wrap(getAdapter().getEpisodes()));
 	}
 
 	@Override

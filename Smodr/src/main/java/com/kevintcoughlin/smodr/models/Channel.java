@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.models;
 
+import org.parceler.Parcel;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -12,6 +13,7 @@ import java.util.List;
  *
  * @author kevincoughlin
  */
+@Parcel
 @Root(name = "channel", strict = false)
 public final class Channel {
 	private String shortName;

@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.models;
 
+import org.parceler.Parcel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -9,6 +10,7 @@ import org.simpleframework.xml.Root;
  *
  * @author kevincoughlin
  */
+@Parcel
 @Root(name = "item", strict = false)
 public final class Item {
     @Element(name = "title")
