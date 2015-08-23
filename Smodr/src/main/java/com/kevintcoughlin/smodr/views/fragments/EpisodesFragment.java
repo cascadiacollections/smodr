@@ -5,10 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.Bind;
+import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
@@ -22,12 +25,23 @@ import rx.schedulers.Schedulers;
  * @author kevincoughlin
  */
 public final class EpisodesFragment extends TrackedRecyclerViewFragment implements EpisodesAdapter.ItemViewHolder
-		.IItemViewHolderClicks {
+		.IItemViewHolderClicks, SwipeRefreshLayout.OnRefreshListener {
 	/**
 	 * Param for sending a channel's name.
 	 */
 	@NonNull
 	public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
+	/**
+	 * {@link SwipeRefreshLayout} for this fragment.
+	 */
+	@Nullable
+	@Bind(R.id.refresh)
+	protected SwipeRefreshLayout mSwipeRefreshLayout;
+	/**
+	 * The channel name for this {@link EpisodesFragment}.
+	 */
+	@NonNull
+	private String mChannelName = "Smodcast";
 	/**
 	 * Callback interface for activity communication.
 	 */
@@ -38,6 +52,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	 * Constructor.
 	 */
 	public EpisodesFragment() {
+		mLayoutResId = R.layout.fragment_episodes_layout;
 		mAdapter = new EpisodesAdapter();
 	}
 
@@ -47,9 +62,24 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 
 	    final Bundle bundle = getArguments();
 	    if (bundle != null) {
-		    refresh(bundle.getString(ARG_CHANNEL_NAME, "Smodcast"));
+		    mChannelName = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
 	    }
     }
+
+	@Override
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (mSwipeRefreshLayout != null) {
+			mSwipeRefreshLayout.setColorSchemeResources(
+					R.color.colorAccent,
+					R.color.colorPrimary,
+					R.color.colorPrimaryDark
+			);
+			mSwipeRefreshLayout.setOnRefreshListener(this);
+			mSwipeRefreshLayout.setRefreshing(true);
+		}
+		onRefresh();
+	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -82,6 +112,11 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 		}
 	}
 
+	@Override
+	public void onRefresh() {
+		refresh(mChannelName);
+	}
+
 	/**
 	 * Handler for {@link Item} selection to the {@link Activity}.
 	 */
@@ -108,6 +143,11 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnError(error -> AppUtil.toast(getContext(), error.getLocalizedMessage()))
+				.doOnTerminate(() -> {
+					if (mSwipeRefreshLayout != null) {
+						mSwipeRefreshLayout.setRefreshing(false);
+					}
+				})
 				.subscribe(rss -> getAdapter().setResults(rss.getChannel().getItems()));
 	}
 

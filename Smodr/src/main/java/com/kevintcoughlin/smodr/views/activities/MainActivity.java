@@ -34,13 +34,13 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	 */
 	@Nullable
 	@Bind(R.id.toolbar)
-	Toolbar mToolbar;
+	protected Toolbar mToolbar;
 	/**
 	 * The {@link AdView} displayed.
 	 */
 	@Nullable
 	@Bind(R.id.ad)
-	AdView mAdView;
+	protected AdView mAdView;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -75,8 +75,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	    fragment.setArguments(args);
 	    getSupportFragmentManager()
             .beginTransaction()
-            .replace(R.id.channels_container, fragment)
-            .addToBackStack(ChannelsFragment.TAG)
+			    .replace(R.id.channels_container, fragment)
+			    .addToBackStack(ChannelsFragment.TAG)
             .commit();
     }
 

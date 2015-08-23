@@ -34,11 +34,15 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 */
 	@Nullable
 	protected Adapter mAdapter;
+	/**
+	 * The resource id of the layout to inflate.
+	 */
+	protected int mLayoutResId = R.layout.fragment_recycler_layout;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+		final View view = inflater.inflate(mLayoutResId, container, false);
 		ButterKnife.bind(this, view);
 		return view;
 	}
