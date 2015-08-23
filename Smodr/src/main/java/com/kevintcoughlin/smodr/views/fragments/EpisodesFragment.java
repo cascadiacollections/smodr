@@ -1,20 +1,18 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.utils.AppUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -23,33 +21,25 @@ import rx.schedulers.Schedulers;
  *
  * @author kevincoughlin
  */
-public final class EpisodesFragment extends TrackedFragment implements EpisodesAdapter.ItemViewHolder.IItemViewHolderClicks {
+public final class EpisodesFragment extends TrackedRecyclerViewFragment implements EpisodesAdapter.ItemViewHolder
+		.IItemViewHolderClicks {
 	/**
 	 * Param for sending a channel's name.
 	 */
 	@NonNull
 	public static final String ARG_CHANNEL_NAME = "SHORT_NAME";
 	/**
-	 * Adapter containing a collection of {@link Item}s.
-	 */
-	@NonNull
-	private final EpisodesAdapter mAdapter = new EpisodesAdapter();
-	/**
-	 * Linear layout manager for the {@link #mRecyclerView}.
-	 */
-	@Nullable
-	private LinearLayoutManager mLayoutManager;
-	/**
 	 * Callback interface for activity communication.
 	 */
 	@Nullable
 	private Callbacks mCallbacks;
+
 	/**
-	 * The recycler view containing episodes.
+	 * Constructor.
 	 */
-	@Nullable
-	@Bind(R.id.list)
-	RecyclerView mRecyclerView;
+	public EpisodesFragment() {
+		mAdapter = new EpisodesAdapter();
+	}
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -57,34 +47,26 @@ public final class EpisodesFragment extends TrackedFragment implements EpisodesA
 
 	    final Bundle bundle = getArguments();
 	    if (bundle != null) {
-            final String channel = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
-		    refresh(channel);
+		    refresh(bundle.getString(ARG_CHANNEL_NAME, "Smodcast"));
 	    }
     }
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
-		ButterKnife.bind(this, view);
-		mLayoutManager = new LinearLayoutManager(getActivity());
-		if (mRecyclerView != null) {
-			mRecyclerView.setLayoutManager(mLayoutManager);
-			mRecyclerView.setHasFixedSize(true);
-			mRecyclerView.setAdapter(mAdapter);
-		}
-		mAdapter.setClickListener(this);
-		return view;
+		mLayoutManager = new LinearLayoutManager(getContext());
+		getAdapter().setClickListener(this);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
-	public void onAttach(final Activity activity) {
-		super.onAttach(activity);
+	public void onAttach(final Context context) {
+		super.onAttach(context);
 
-		if (!(activity instanceof Callbacks)) {
+		if (!(context instanceof Callbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
 
-		mCallbacks = (Callbacks) activity;
+		mCallbacks = (Callbacks) context;
 	}
 
 	@Override
@@ -96,7 +78,7 @@ public final class EpisodesFragment extends TrackedFragment implements EpisodesA
 	@Override
 	public void onItemClick(final int position) {
 		if (mCallbacks != null) {
-			mCallbacks.onEpisodeSelected(mAdapter.getItem(position));
+			mCallbacks.onEpisodeSelected(getAdapter().getItem(position));
 		}
 	}
 
@@ -125,6 +107,12 @@ public final class EpisodesFragment extends TrackedFragment implements EpisodesA
 				.getFeed(name)
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(rss -> mAdapter.setResults(rss.getChannel().getItems()));
+				.doOnError(error -> AppUtil.toast(getContext(), error.getLocalizedMessage()))
+				.subscribe(rss -> getAdapter().setResults(rss.getChannel().getItems()));
+	}
+
+	@Override
+	protected EpisodesAdapter getAdapter() {
+		return (EpisodesAdapter) mAdapter;
 	}
 }
