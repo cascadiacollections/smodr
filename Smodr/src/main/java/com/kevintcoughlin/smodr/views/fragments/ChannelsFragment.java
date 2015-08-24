@@ -84,7 +84,7 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 	}
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
+	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_RECYCLER_ITEMS)) {
@@ -107,14 +107,15 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 	}
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, @Nullable final Bundle
+			savedInstanceState) {
 		mLayoutManager = new GridLayoutManager(getContext(), NUM_COLUMNS);
 		getAdapter().setClickListener(this);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(STATE_RECYCLER_ITEMS, Parcels.wrap(getAdapter().getChannels()));
 	}

@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,14 +52,15 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle
+			savedInstanceState) {
 		final View view = inflater.inflate(mLayoutResId, container, false);
 		ButterKnife.bind(this, view);
 		return view;
 	}
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if (mRecyclerView != null) {
 			mRecyclerView.setLayoutManager(mLayoutManager);
@@ -72,7 +74,7 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (mLayoutManager != null) {
 			outState.putParcelable(STATE_LAYOUT_MANAGER, mLayoutManager.onSaveInstanceState());

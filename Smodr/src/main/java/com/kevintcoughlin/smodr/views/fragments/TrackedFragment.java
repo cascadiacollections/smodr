@@ -2,6 +2,7 @@ package com.kevintcoughlin.smodr.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -20,7 +21,7 @@ public abstract class TrackedFragment extends Fragment {
 	private static final String TAG = TrackedFragment.class.getSimpleName();
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
+	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		track();
 	}

@@ -58,7 +58,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	}
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
+	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 	    final Bundle bundle = getArguments();
@@ -68,7 +68,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
     }
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if (mSwipeRefreshLayout != null) {
 			mSwipeRefreshLayout.setColorSchemeResources(
@@ -88,7 +88,8 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	}
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, @Nullable final Bundle
+			savedInstanceState) {
 		mLayoutManager = new LinearLayoutManager(getContext());
 		getAdapter().setClickListener(this);
 		return super.onCreateView(inflater, container, savedInstanceState);
@@ -158,7 +159,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(STATE_RECYCLER_ITEMS, Parcels.wrap(getAdapter().getEpisodes()));
 	}

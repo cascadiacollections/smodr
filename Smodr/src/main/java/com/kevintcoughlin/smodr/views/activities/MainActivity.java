@@ -13,7 +13,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.models.Channel;
@@ -21,7 +20,6 @@ import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import hotchemi.android.rate.AppRate;
 
 /**
  * The primary activity containing a single {@link android.support.v4.app.Fragment}.
@@ -62,8 +60,9 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
                     .commit();
         }
 
-		AppRate.with(this).setDebug(BuildConfig.DEBUG);
-		AppRate.showRateDialogIfMeetsConditions(this);
+		// @TODO: Implement when ready.
+		//AppRate.with(this).setDebug(BuildConfig.DEBUG);
+		//AppRate.showRateDialogIfMeetsConditions(this);
 	}
 
 	@Override
