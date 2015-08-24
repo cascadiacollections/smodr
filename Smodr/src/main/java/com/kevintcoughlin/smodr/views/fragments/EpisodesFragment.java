@@ -16,7 +16,6 @@ import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.models.Rss;
-import org.parceler.Parcels;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,8 +60,8 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	@Override
 	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-	    final Bundle bundle = getArguments();
+		setRetainInstance(true);
+		final Bundle bundle = getArguments();
 	    if (bundle != null) {
 		    mChannelName = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
 	    }
@@ -80,12 +79,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 			mSwipeRefreshLayout.setOnRefreshListener(this);
 			mSwipeRefreshLayout.setRefreshing(true);
 		}
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_RECYCLER_ITEMS)) {
-			getAdapter().setResults(Parcels.unwrap(savedInstanceState.getParcelable(STATE_RECYCLER_ITEMS)));
-			mSwipeRefreshLayout.setRefreshing(false);
-		} else {
-			onRefresh();
-		}
+		onRefresh();
 	}
 
 	@Override
@@ -158,12 +152,6 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 					}
 				})
 				.subscribe(rss -> getAdapter().setResults(rss.getChannel().getItems()));
-	}
-
-	@Override
-	public void onSaveInstanceState(@NonNull final Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putParcelable(STATE_RECYCLER_ITEMS, Parcels.wrap(getAdapter().getEpisodes()));
 	}
 
 	@Override

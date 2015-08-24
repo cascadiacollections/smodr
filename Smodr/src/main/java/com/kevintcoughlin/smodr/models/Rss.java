@@ -14,7 +14,8 @@ import org.simpleframework.xml.Root;
 @Root(name = "rss", strict = false)
 public final class Rss {
     @Element(name="channel") private Channel channel;
-    @Attribute private String version;
+    @Attribute
+    String version;
 
 	public Rss() {
 	}

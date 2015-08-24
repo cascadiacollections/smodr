@@ -14,25 +14,25 @@ import org.simpleframework.xml.Root;
 @Root(name = "item", strict = false)
 public final class Item {
     @Element(name = "title")
-    private String title;
+    String title;
 
     @Element(name = "link", required = false)
-    private String link;
+    String link;
 
     @Element(name = "guid", required = false)
-    private String guid;
+    String guid;
 
     @Element(name = "pubDate", required = false)
-    private String pubDate;
+    String pubDate;
 
     @Element(name = "description", required = false)
-    private String description;
+    String description;
 
     @Element(name="enclosure", required = false)
-    private Enclosure enclosure;
+    Enclosure enclosure;
 
     @Attribute(name="url", required = false)
-    private String url;
+    String url;
 
 	public Item() {
 	}

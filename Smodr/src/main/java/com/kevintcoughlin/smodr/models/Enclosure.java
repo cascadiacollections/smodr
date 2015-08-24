@@ -13,7 +13,7 @@ import org.simpleframework.xml.Root;
 @Root(name = "enclosure", strict = false)
 public final class Enclosure {
     @Attribute(name = "url", required = false)
-    private String url;
+    String url;
 
 	public Enclosure() {
 	}

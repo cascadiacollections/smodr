@@ -12,9 +12,11 @@ import org.simpleframework.xml.Root;
 @Parcel
 @Root(name = "image", strict = false)
 public final class Image {
-
 	@Attribute(name = "href", required = false)
 	public String href;
+
+	public Image() {
+	}
 
 	public String getHref() {
 		return href;

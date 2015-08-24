@@ -2,13 +2,13 @@ package com.kevintcoughlin.smodr;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.util.ArrayMap;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import io.fabric.sdk.android.Fabric;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +20,7 @@ public final class SmodrApplication extends Application {
 	@NonNull
 	private static final String PROPERTY_ID = "UA-28569939-11";
 	@NonNull
-    private final Map<TrackerName, Tracker> mTrackers = new ArrayMap<>();
+    private final Map<TrackerName, Tracker> mTrackers = new HashMap<>();
 
     @Override
     public void onCreate() {

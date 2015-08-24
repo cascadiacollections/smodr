@@ -15,7 +15,6 @@ import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.utils.AppUtil;
-import org.parceler.Parcels;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -88,24 +87,20 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 	@Override
 	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_RECYCLER_ITEMS)) {
-			getAdapter().setChannels(Parcels.unwrap(savedInstanceState.getParcelable(STATE_RECYCLER_ITEMS)));
-		} else {
-			for (final String name : AppUtil.getStrings(getContext(), R.array.podcasts)) {
-				SmodcastClient
-						.getClient()
-						.getFeed(name)
-						.subscribeOn(Schedulers.newThread())
-						.retry(3)
-						.observeOn(AndroidSchedulers.mainThread())
-						.onErrorResumeNext(Observable.<Rss>empty())
-						.subscribe(rss -> {
-							final Channel channel = rss.getChannel();
-							channel.setShortName(name);
-							getAdapter().addChannel(channel);
-						});
-			}
+		setRetainInstance(true);
+		for (final String name : AppUtil.getStrings(getContext(), R.array.podcasts)) {
+			SmodcastClient
+					.getClient()
+					.getFeed(name)
+					.subscribeOn(Schedulers.newThread())
+					.retry(3)
+					.observeOn(AndroidSchedulers.mainThread())
+					.onErrorResumeNext(Observable.<Rss>empty())
+					.subscribe(rss -> {
+						final Channel channel = rss.getChannel();
+						channel.setShortName(name);
+						getAdapter().addChannel(channel);
+					});
 		}
 	}
 
@@ -115,12 +110,6 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 		mLayoutManager = new GridLayoutManager(getContext(), NUM_COLUMNS);
 		getAdapter().setClickListener(this);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	@Override
-	public void onSaveInstanceState(@NonNull final Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putParcelable(STATE_RECYCLER_ITEMS, Parcels.wrap(getAdapter().getChannels()));
 	}
 
 	@Override

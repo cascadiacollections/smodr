@@ -9,29 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Model representing an RSS feed's channel.
+ * The {@link Channel} contained in a {@link Rss} feed.
  *
  * @author kevincoughlin
  */
 @Parcel
 @Root(name = "channel", strict = false)
 public final class Channel {
-	private String shortName;
+    String shortName;
 
     @Element(name = "title", required = false)
-    private String title;
+    String title;
 
     @Element(name = "description", required = false)
-    private String description;
+    String description;
 
     @ElementList(name = "item", required = false, inline = true)
-    private ArrayList<Item> items = new ArrayList<>();
+    ArrayList<Item> items = new ArrayList<>();
 
 	@Element(name = "pubDate", required = false)
-	private String pubDate;
+    String pubDate;
 
 	@ElementList(name = "image", required = false, inline = true)
-	private List<Image> image = new ArrayList<>();
+    List<Image> image = new ArrayList<>();
 
 	public Channel() {
 	}
