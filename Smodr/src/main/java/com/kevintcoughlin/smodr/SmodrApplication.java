@@ -3,9 +3,11 @@ package com.kevintcoughlin.smodr;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.util.ArrayMap;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.Map;
 
@@ -23,6 +25,7 @@ public final class SmodrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         if (BuildConfig.DEBUG) {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
