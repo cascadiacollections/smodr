@@ -44,6 +44,10 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 * {@link Bundle} key for {@link List < Parcelable >}.
 	 */
 	protected static final String STATE_RECYCLER_ITEMS = "STATE_RECYCLER_ITEMS";
+	/**
+	 * {@link Bundle} key for {@link android.support.v7.widget.LinearLayoutManager.SavedState}.
+	 */
+	protected static final String STATE_LAYOUT_MANAGER = "STATE_LAYOUT_MANAGER_STATE";
 
 	@Nullable
 	@Override
@@ -60,6 +64,18 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 			mRecyclerView.setLayoutManager(mLayoutManager);
 			mRecyclerView.setHasFixedSize(true);
 			mRecyclerView.setAdapter(mAdapter);
+		}
+		if (mLayoutManager != null && savedInstanceState != null
+				&& savedInstanceState.containsKey(STATE_LAYOUT_MANAGER)) {
+			mLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_LAYOUT_MANAGER));
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (mLayoutManager != null) {
+			outState.putParcelable(STATE_LAYOUT_MANAGER, mLayoutManager.onSaveInstanceState());
 		}
 	}
 
