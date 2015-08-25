@@ -13,9 +13,7 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.utils.AppUtil;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -95,12 +93,11 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 					.subscribeOn(Schedulers.newThread())
 					.retry(3)
 					.observeOn(AndroidSchedulers.mainThread())
-					.onErrorResumeNext(Observable.<Rss>empty())
 					.subscribe(rss -> {
 						final Channel channel = rss.getChannel();
 						channel.setShortName(name);
 						getAdapter().addChannel(channel);
-					});
+					}, error -> AppUtil.toast(getContext(), error.getLocalizedMessage()));
 		}
 	}
 
