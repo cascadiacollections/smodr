@@ -15,8 +15,7 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
 import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.models.Rss;
-import rx.Observable;
+import com.kevintcoughlin.smodr.utils.AppUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -145,13 +144,15 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
 				.retry(3)
-				.onErrorResumeNext(Observable.<Rss>empty())
 				.doOnTerminate(() -> {
 					if (mSwipeRefreshLayout != null) {
 						mSwipeRefreshLayout.setRefreshing(false);
 					}
 				})
-				.subscribe(rss -> getAdapter().setResults(rss.getChannel().getItems()));
+				.subscribe(
+						rss -> getAdapter().setResults(rss.getChannel().getItems()),
+						error -> AppUtil.toast(getContext(), error.getLocalizedMessage())
+				);
 	}
 
 	@Override
