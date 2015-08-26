@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
@@ -63,6 +64,18 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		// @TODO: Implement when ready.
 		//AppRate.with(this).setDebug(BuildConfig.DEBUG);
 		//AppRate.showRateDialogIfMeetsConditions(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AppEventsLogger.activateApp(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		AppEventsLogger.deactivateApp(this);
 	}
 
 	@Override
