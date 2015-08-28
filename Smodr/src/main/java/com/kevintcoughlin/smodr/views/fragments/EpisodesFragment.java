@@ -136,7 +136,11 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	 *      the name of the channel to refresh.
 	 */
 	private void refresh(@NonNull final String name) {
+		if (mSwipeRefreshLayout != null) {
+			mSwipeRefreshLayout.setRefreshing(true);
+		}
 		ParseQuery.getQuery("Item")
+				.orderByDescending("createdAt")
 			.whereEqualTo("feed_title", name)
 			.findInBackground((episodes, e) -> {
 				if (e == null) {
@@ -145,6 +149,9 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 					}
 				} else {
 					AppUtil.toast(getContext(), e.getLocalizedMessage());
+				}
+				if (mSwipeRefreshLayout != null) {
+					mSwipeRefreshLayout.setRefreshing(false);
 				}
 			});
 	}
