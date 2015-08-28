@@ -16,11 +16,10 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+import com.parse.ParseObject;
 
 /**
  * The primary activity containing a single {@link android.support.v4.app.Fragment}.
@@ -60,10 +59,6 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
                     .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
-
-		// @TODO: Implement when ready.
-		//AppRate.with(this).setDebug(BuildConfig.DEBUG);
-		//AppRate.showRateDialogIfMeetsConditions(this);
 	}
 
 	@Override
@@ -79,11 +74,11 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
 	@Override
-	public void onChannelSelected(@NonNull final Channel channel) {
+	public void onChannelSelected(@NonNull final ParseObject channel) {
 		trackChannelSelected(channel);
 	    final EpisodesFragment fragment = new EpisodesFragment();
 	    final Bundle args = new Bundle();
-	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getShortName());
+	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getString("title"));
 	    fragment.setArguments(args);
 	    getSupportFragmentManager()
             .beginTransaction()
@@ -93,14 +88,14 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     }
 
 	@Override
-	public void onEpisodeSelected(@NonNull final Item item) {
+	public void onEpisodeSelected(@NonNull final ParseObject item) {
 		final Intent intent = new Intent(this, MediaPlaybackService.class);
 		intent.setAction(MediaPlaybackService.ACTION_PLAY);
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getEnclosure().getUrl());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getTitle());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getDescription());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getString("enclosure_url"));
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getString("title"));
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getString("description"));
 		startService(intent);
-		trackEpisodeSelected(item.getTitle());
+		trackEpisodeSelected(item.getString("title"));
 	}
 
 	@Override
@@ -116,13 +111,13 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		return super.onNavigateUp();
 	}
 
-    private void trackChannelSelected(@NonNull final Channel channel) {
+    private void trackChannelSelected(@NonNull final ParseObject channel) {
         final Tracker t = ((SmodrApplication) getApplication()).getTracker(
                 SmodrApplication.TrackerName.APP_TRACKER);
         t.send(new HitBuilders.EventBuilder()
 		        .setCategory("CHANNEL")
 		        .setAction("SELECTED")
-		        .setLabel(channel.getShortName())
+		        .setLabel(channel.getString("title"))
 		        .build());
     }
 

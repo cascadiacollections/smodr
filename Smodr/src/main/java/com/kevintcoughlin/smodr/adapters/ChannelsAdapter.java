@@ -11,7 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Channel;
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * The collection of {@link Channel} to display.
 	 */
 	@NonNull
-	private final ArrayList<Channel> mItems = new ArrayList<>();
+	private final ArrayList<ParseObject> mItems = new ArrayList<>();
 	/**
 	 * The interface for clicks on {@link com.kevintcoughlin.smodr.adapters.ChannelsAdapter.ChannelViewHolder}.
 	 */
@@ -41,11 +41,10 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 	@Override
 	public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-		final Channel channel = mItems.get(position);
+		final ParseObject channel = mItems.get(position);
 		final ChannelViewHolder vh = (ChannelViewHolder) holder;
-		final String href = !channel.getImages().isEmpty() ? channel.getImages().get(0).getHref() : "";
 		Glide.with(vh.itemView.getContext())
-				.load(href)
+				.load(channel.getString("image_url"))
 				.fitCenter()
 				.crossFade()
 				.into(vh.mImage);
@@ -62,7 +61,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * @param results
 	 * 		a {@link List <Channel>} to set the adapter to.
 	 */
-	public void setChannels(@NonNull final List<Channel> results) {
+	public void setChannels(@NonNull final List<ParseObject> results) {
 		mItems.clear();
 		mItems.addAll(results);
 		notifyDataSetChanged();
@@ -74,7 +73,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * @param channel
 	 *      the {@link Channel} to insert.
 	 */
-	public void addChannel(@NonNull final Channel channel) {
+	public void addChannel(@NonNull final ParseObject channel) {
 		mItems.add(channel);
 		notifyItemInserted(mItems.size() - 1);
 	}
@@ -84,7 +83,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 *
 	 * @return a {@link List<Channel>}.
 	 */
-	public ArrayList<Channel> getChannels() {
+	public ArrayList<ParseObject> getChannels() {
 		return mItems;
 	}
 
@@ -97,7 +96,7 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * @return
 	 *      the resultant {@link Channel}.
 	 */
-	public Channel getItem(final int position) {
+	public ParseObject getItem(final int position) {
 		return mItems.get(position);
 	}
 
@@ -116,7 +115,6 @@ public final class ChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * A {@link android.support.v7.widget.RecyclerView.ViewHolder} for display a {@link Channel}.
 	 */
 	public static final class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		@Nullable
 		@Bind(R.id.image)
 		ImageView mImage;
 		@Nullable

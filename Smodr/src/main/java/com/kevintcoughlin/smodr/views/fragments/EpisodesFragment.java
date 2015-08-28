@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
-import com.kevintcoughlin.smodr.http.SmodcastClient;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.AppUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * A fragment that displays a collection of {@link Item}s.
@@ -128,7 +126,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 		 * @param item
 		 * 		the {@link Item} selected.
 		 */
-		void onEpisodeSelected(final Item item);
+		void onEpisodeSelected(final ParseObject item);
 	}
 
 	/**
@@ -138,21 +136,24 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	 *      the name of the channel to refresh.
 	 */
 	private void refresh(@NonNull final String name) {
-		SmodcastClient
-				.getClient()
-				.getFeed(name)
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.retry(3)
-				.doOnTerminate(() -> {
-					if (mSwipeRefreshLayout != null) {
-						mSwipeRefreshLayout.setRefreshing(false);
+		if (mSwipeRefreshLayout != null) {
+			mSwipeRefreshLayout.setRefreshing(true);
+		}
+		ParseQuery.getQuery("Item")
+				.orderByDescending("createdAt")
+			.whereEqualTo("feed_title", name)
+			.findInBackground((episodes, e) -> {
+				if (e == null) {
+					if (mAdapter != null) {
+						((EpisodesAdapter) mAdapter).setResults(episodes);
 					}
-				})
-				.subscribe(
-						rss -> getAdapter().setResults(rss.getChannel().getItems()),
-						error -> AppUtil.toast(getContext(), error.getLocalizedMessage())
-				);
+				} else {
+					AppUtil.toast(getContext(), e.getLocalizedMessage());
+				}
+				if (mSwipeRefreshLayout != null) {
+					mSwipeRefreshLayout.setRefreshing(false);
+				}
+			});
 	}
 
 	@Override
