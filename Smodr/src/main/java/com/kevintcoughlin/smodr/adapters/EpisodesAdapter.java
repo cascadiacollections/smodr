@@ -11,6 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * The collection of {@link Item} to display.
 	 */
 	@NonNull
-    private final ArrayList<Item> mItems = new ArrayList<>();
+    private final ArrayList<ParseObject> mItems = new ArrayList<>();
 	/**
 	 * The interface for clicks on {@link com.kevintcoughlin.smodr.adapters.EpisodesAdapter.ItemViewHolder}.
 	 */
@@ -40,10 +41,10 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Item item = mItems.get(position);
+        final ParseObject item = mItems.get(position);
 		final ItemViewHolder vh = (ItemViewHolder) holder;
-	    vh.mTitle.setText(item.getTitle());
-	    vh.mDescription.setText(item.getDescription());
+	    vh.mTitle.setText(item.getString("title"));
+	    vh.mDescription.setText(item.getString("description"));
     }
 
     @Override
@@ -60,7 +61,7 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * @return
 	 *      the resultant {@link Item}.
 	 */
-	public Item getItem(final int position) {
+	public ParseObject getItem(final int position) {
 		return mItems.get(position);
 	}
 
@@ -70,7 +71,7 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 * @param results
 	 * 		a {@link List <Item>} to set the adapter to.
 	 */
-	public void setResults(final List<Item> results) {
+	public void setResults(final List<ParseObject> results) {
 		mItems.clear();
         mItems.addAll(results);
 		notifyDataSetChanged();
@@ -81,7 +82,7 @@ public final class EpisodesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 	 *
 	 * @return a {@link List<Item>}.
 	 */
-	public ArrayList<Item> getEpisodes() {
+	public ArrayList<ParseObject> getEpisodes() {
 		return mItems;
 	}
 

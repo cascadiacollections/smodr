@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
+import com.parse.Parse;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public final class SmodrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "xdsymmQJ9lxCgIlbZEW3V1oeNAkKp54yl4fehfzR", "ZCAACD4VyKimQgPo6WVGRcfA3Ddd9AcheSDFWrbo");
 
         if (BuildConfig.DEBUG) {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);

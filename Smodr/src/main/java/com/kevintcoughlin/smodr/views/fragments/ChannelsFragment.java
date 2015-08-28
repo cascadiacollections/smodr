@@ -9,13 +9,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
-import com.kevintcoughlin.smodr.http.SmodcastClient;
 import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.utils.AppUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * A fragment that displays a collection of {@link Channel}s.
@@ -62,7 +59,7 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 		 * @param channel
 		 * 		the {@link Channel} selected.
 		 */
-		void onChannelSelected(final Channel channel);
+		void onChannelSelected(final ParseObject channel);
 	}
 
 	@Override
@@ -86,19 +83,12 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		for (final String name : AppUtil.getStrings(getContext(), R.array.podcasts)) {
-			SmodcastClient
-					.getClient()
-					.getFeed(name)
-					.subscribeOn(Schedulers.newThread())
-					.retry(3)
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(rss -> {
-						final Channel channel = rss.getChannel();
-						channel.setShortName(name);
-						getAdapter().addChannel(channel);
-					}, error -> AppUtil.toast(getContext(), error.getLocalizedMessage()));
-		}
+
+		ParseQuery.getQuery("Channel").findInBackground((objects, e) -> {
+			if (mAdapter != null) {
+				((ChannelsAdapter) mAdapter).setChannels(objects);
+			}
+		});
 	}
 
 	@Override
