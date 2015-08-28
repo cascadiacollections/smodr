@@ -10,7 +10,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Item;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;

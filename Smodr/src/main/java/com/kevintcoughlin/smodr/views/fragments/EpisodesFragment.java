@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;

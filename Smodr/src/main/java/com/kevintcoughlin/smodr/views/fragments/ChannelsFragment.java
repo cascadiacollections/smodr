@@ -10,12 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
-import com.kevintcoughlin.smodr.models.Channel;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 /**
- * A fragment that displays a collection of {@link Channel}s.
+ * A fragment that displays a collection of channels.
  *
  * @author kevincoughlin
  */

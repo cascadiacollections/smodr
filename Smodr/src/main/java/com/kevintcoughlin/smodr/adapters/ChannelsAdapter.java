@@ -11,7 +11,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Channel;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
