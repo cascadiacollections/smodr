@@ -84,7 +84,7 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 		setRetainInstance(true);
 
 		ParseQuery.getQuery("Channel").findInBackground((objects, e) -> {
-			if (mAdapter != null) {
+			if (mAdapter != null && objects != null) {
 				((ChannelsAdapter) mAdapter).setChannels(objects);
 			}
 		});

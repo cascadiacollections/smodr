@@ -140,8 +140,8 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 			mSwipeRefreshLayout.setRefreshing(true);
 		}
 		ParseQuery.getQuery("Item")
-				.orderByDescending("createdAt")
 			.whereEqualTo("feed_title", name)
+				.orderByDescending("pubDate")
 			.findInBackground((episodes, e) -> {
 				if (e == null) {
 					if (mAdapter != null) {
