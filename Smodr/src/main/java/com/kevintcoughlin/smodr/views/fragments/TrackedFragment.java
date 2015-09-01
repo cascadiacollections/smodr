@@ -31,8 +31,7 @@ public abstract class TrackedFragment extends Fragment {
 	 * using the @{link #TAG} as the screen name.
 	 */
 	private void track() {
-		final Tracker t = ((SmodrApplication) getActivity().getApplication())
-				.getTracker(SmodrApplication.TrackerName.APP_TRACKER);
+		final Tracker t = ((SmodrApplication) getActivity().getApplication()).getTracker();
 		t.setScreenName(TAG);
 		t.send(new HitBuilders.AppViewBuilder().build());
 	}
