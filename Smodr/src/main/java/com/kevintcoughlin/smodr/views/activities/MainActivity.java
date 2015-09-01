@@ -84,7 +84,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
             .beginTransaction()
 			    .replace(R.id.channels_container, fragment)
 			    .addToBackStack(ChannelsFragment.TAG)
-            .commit();
+			    .commit();
     }
 
 	@Override
@@ -112,9 +112,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
     private void trackChannelSelected(@NonNull final ParseObject channel) {
-        final Tracker t = ((SmodrApplication) getApplication()).getTracker(
-                SmodrApplication.TrackerName.APP_TRACKER);
-        t.send(new HitBuilders.EventBuilder()
+	    final Tracker t = ((SmodrApplication) getApplication()).getTracker();
+	    t.send(new HitBuilders.EventBuilder()
 		        .setCategory("CHANNEL")
 		        .setAction("SELECTED")
 		        .setLabel(channel.getString("title"))
@@ -122,8 +121,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     }
 
 	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
-		final Tracker t = ((SmodrApplication) getApplication()).getTracker(
-				SmodrApplication.TrackerName.APP_TRACKER);
+		final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 		t.send(new HitBuilders.EventBuilder()
 				.setCategory("EPISODE")
 				.setAction("SELECTED")
