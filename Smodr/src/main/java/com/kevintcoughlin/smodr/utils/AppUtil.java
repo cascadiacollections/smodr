@@ -56,7 +56,7 @@ public final class AppUtil {
 		if (context == null) {
 			return;
 		}
-		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_LONG).show();
+		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_SHORT).show();
 	}
 
 	/**
