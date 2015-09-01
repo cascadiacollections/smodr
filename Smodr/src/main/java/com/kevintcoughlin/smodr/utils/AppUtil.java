@@ -2,6 +2,7 @@ package com.kevintcoughlin.smodr.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
@@ -21,7 +22,10 @@ public final class AppUtil {
 	 * 		the resource id to fetch.
 	 * @return the {@link String[]} for the given resource id.
 	 */
-	public static String[] getStrings(@NonNull final Context context, final int id) {
+	public static String[] getStrings(@Nullable final Context context, final int id) {
+		if (context == null) {
+			return new String[] {};
+		}
 		return context.getResources().getStringArray(id);
 	}
 
@@ -33,7 +37,10 @@ public final class AppUtil {
 	 * @param message
 	 *      the {@link String} message to display.
 	 */
-	public static void toast(@NonNull final Context context, @NonNull final String message) {
+	public static void toast(@Nullable final Context context, @NonNull final String message) {
+		if (context == null) {
+			return;
+		}
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
 
@@ -45,7 +52,10 @@ public final class AppUtil {
 	 * @param id
 	 *      the string resource identifier to use.
 	 */
-	public static void toast(@NonNull final Context context, @StringRes final int id) {
+	public static void toast(@Nullable final Context context, @StringRes final int id) {
+		if (context == null) {
+			return;
+		}
 		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_LONG).show();
 	}
 
@@ -57,7 +67,7 @@ public final class AppUtil {
 	 * @param visible
 	 *      if true then {@link View#VISIBLE} else {@link View#INVISIBLE}.
 	 */
-	public static void setVisible(final View v, final boolean visible) {
+	public static void setVisible(@Nullable View v, final boolean visible) {
 		if (v != null) {
 			v.setVisibility(visible ? View.VISIBLE : View.GONE);
 		}
