@@ -84,7 +84,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
             .beginTransaction()
 			    .replace(R.id.channels_container, fragment)
 			    .addToBackStack(ChannelsFragment.TAG)
-            .commit();
+			    .commit();
     }
 
 	@Override
