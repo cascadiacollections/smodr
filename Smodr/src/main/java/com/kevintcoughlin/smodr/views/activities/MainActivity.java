@@ -46,7 +46,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		setContentView(R.layout.activity_main_layout);
 		ButterKnife.bind(this);
 
-		final AdRequest adRequest = new AdRequest.Builder().addTestDevice("C6D397172C2598AF256CF30C6393FBFC").build();
+		final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
 		if (mAdView != null) {
 			mAdView.loadAd(adRequest);
 		}
@@ -84,7 +84,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
             .beginTransaction()
 			    .replace(R.id.channels_container, fragment)
 			    .addToBackStack(ChannelsFragment.TAG)
-            .commit();
+			    .commit();
     }
 
 	@Override
@@ -112,9 +112,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
     private void trackChannelSelected(@NonNull final ParseObject channel) {
-        final Tracker t = ((SmodrApplication) getApplication()).getTracker(
-                SmodrApplication.TrackerName.APP_TRACKER);
-        t.send(new HitBuilders.EventBuilder()
+	    final Tracker t = ((SmodrApplication) getApplication()).getTracker();
+	    t.send(new HitBuilders.EventBuilder()
 		        .setCategory("CHANNEL")
 		        .setAction("SELECTED")
 		        .setLabel(channel.getString("title"))
@@ -122,8 +121,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     }
 
 	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
-		final Tracker t = ((SmodrApplication) getApplication()).getTracker(
-				SmodrApplication.TrackerName.APP_TRACKER);
+		final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 		t.send(new HitBuilders.EventBuilder()
 				.setCategory("EPISODE")
 				.setAction("SELECTED")
