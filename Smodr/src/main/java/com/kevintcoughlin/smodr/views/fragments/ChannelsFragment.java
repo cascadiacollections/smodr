@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kevintcoughlin.smodr.adapters.ChannelsAdapter;
+import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -83,9 +84,20 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment implemen
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
 
-		ParseQuery.getQuery("Channel").findInBackground((objects, e) -> {
-			if (mAdapter != null && objects != null) {
+		ParseQuery.getQuery("Channel").setLimit(1000).fromLocalDatastore().findInBackground((objects, e) -> {
+			if (e == null && mAdapter != null && objects != null) {
 				((ChannelsAdapter) mAdapter).setChannels(objects);
+			} else if (e != null) {
+				AppUtil.toast(getContext(), e.getLocalizedMessage());
+			}
+		});
+
+		ParseQuery.getQuery("Channel").setLimit(1000).findInBackground((objects, e) -> {
+			if (e == null && mAdapter != null && objects != null) {
+				ParseObject.pinAllInBackground(objects);
+				((ChannelsAdapter) mAdapter).setChannels(objects);
+			} else if (e != null) {
+				AppUtil.toast(getContext(), e.getLocalizedMessage());
 			}
 		});
 	}

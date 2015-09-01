@@ -139,15 +139,30 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 		if (mSwipeRefreshLayout != null) {
 			mSwipeRefreshLayout.setRefreshing(true);
 		}
+
+		ParseQuery.getQuery("Item")
+				.whereEqualTo("feed_title", name)
+				.orderByDescending("pubDate")
+				.fromLocalDatastore()
+				.setLimit(1000)
+				.findInBackground((episodes, e) -> {
+					if (e == null && mAdapter != null && episodes != null) {
+						((EpisodesAdapter) mAdapter).setResults(episodes);
+					}
+					if (mSwipeRefreshLayout != null) {
+						mSwipeRefreshLayout.setRefreshing(false);
+					}
+				});
+
 		ParseQuery.getQuery("Item")
 			.whereEqualTo("feed_title", name)
 				.orderByDescending("pubDate")
+				.setLimit(1000)
 			.findInBackground((episodes, e) -> {
-				if (e == null) {
-					if (mAdapter != null) {
-						((EpisodesAdapter) mAdapter).setResults(episodes);
-					}
-				} else {
+				if (e == null && mAdapter != null && episodes != null) {
+					ParseObject.pinAllInBackground(episodes);
+					((EpisodesAdapter) mAdapter).setResults(episodes);
+				} else if (e != null) {
 					AppUtil.toast(getContext(), e.getLocalizedMessage());
 				}
 				if (mSwipeRefreshLayout != null) {

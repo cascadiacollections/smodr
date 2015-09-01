@@ -46,7 +46,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		setContentView(R.layout.activity_main_layout);
 		ButterKnife.bind(this);
 
-		final AdRequest adRequest = new AdRequest.Builder().addTestDevice("C6D397172C2598AF256CF30C6393FBFC").build();
+		final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
 		if (mAdView != null) {
 			mAdView.loadAd(adRequest);
 		}
