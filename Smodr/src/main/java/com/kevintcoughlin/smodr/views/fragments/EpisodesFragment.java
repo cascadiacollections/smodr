@@ -34,7 +34,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	 */
 	@Nullable
 	@Bind(R.id.refresh)
-	protected SwipeRefreshLayout mSwipeRefreshLayout;
+	SwipeRefreshLayout mSwipeRefreshLayout;
 	/**
 	 * The channel name for this {@link EpisodesFragment}.
 	 */

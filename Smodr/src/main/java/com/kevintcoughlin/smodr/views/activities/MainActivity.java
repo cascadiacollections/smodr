@@ -32,13 +32,13 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	 */
 	@Nullable
 	@Bind(R.id.toolbar)
-	protected Toolbar mToolbar;
+	Toolbar mToolbar;
 	/**
 	 * The {@link AdView} displayed.
 	 */
 	@Nullable
 	@Bind(R.id.ad)
-	protected AdView mAdView;
+	AdView mAdView;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {

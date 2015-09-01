@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
@@ -131,18 +132,19 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		mIntent.setAction(ACTION_STOP);
 
-		final Notification.Builder mBuilder =
-				new Notification.Builder(this)
+		final NotificationCompat.Action action = new NotificationCompat.Action.Builder(
+				R.drawable.ic_action_pause,
+				getString(R.string.notification_action_pause),
+				mPendingIntent).build();
+
+		final NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(this)
 						.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
 						.setSmallIcon(R.drawable.ic_action_play)
 						.setOngoing(true)
 						.setContentTitle(mTitle)
 						.setContentText(mDescription)
-						.addAction(
-								R.drawable.ic_action_pause,
-								getString(R.string.notification_action_pause),
-								mPendingIntent
-						);
+						.addAction(action);
 
 		final Intent resultIntent = new Intent(this, MainActivity.class);
 		final TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

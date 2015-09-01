@@ -26,21 +26,21 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 */
 	@Nullable
 	@Bind(R.id.list)
-	protected RecyclerView mRecyclerView;
+	RecyclerView mRecyclerView;
 	/**
 	 * Linear layout manager for the {@link #mRecyclerView}.
 	 */
 	@Nullable
-	protected LinearLayoutManager mLayoutManager;
+	LinearLayoutManager mLayoutManager;
 	/**
 	 * Array adapter backing {@link #mRecyclerView}.
 	 */
 	@Nullable
-	protected Adapter mAdapter;
+	Adapter mAdapter;
 	/**
 	 * The resource id of the layout to inflate.
 	 */
-	protected int mLayoutResId = R.layout.fragment_recycler_layout;
+	int mLayoutResId = R.layout.fragment_recycler_layout;
 	/**
 	 * {@link Bundle} key for {@link List < Parcelable >}.
 	 */
@@ -48,7 +48,7 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	/**
 	 * {@link Bundle} key for {@link android.support.v7.widget.LinearLayoutManager.SavedState}.
 	 */
-	protected static final String STATE_LAYOUT_MANAGER = "STATE_LAYOUT_MANAGER_STATE";
+	private static final String STATE_LAYOUT_MANAGER = "STATE_LAYOUT_MANAGER_STATE";
 
 	@Nullable
 	@Override

@@ -37,8 +37,8 @@ public final class SmodrApplication extends Application {
         }
     }
 
-	/**
-	 * Returns the {@link Tracker} for the {@link Application}.
+    /**
+     * Returns the {@link Tracker} for the {@link Application}.
 	 *
 	 * @param trackerId
 	 * 		The Google Analytics tracker identifier.
