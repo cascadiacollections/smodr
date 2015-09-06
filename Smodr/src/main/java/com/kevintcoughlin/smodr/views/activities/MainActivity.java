@@ -1,6 +1,5 @@
 package com.kevintcoughlin.smodr.views.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,9 +15,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
-import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.parse.ParseObject;
 
 /**
@@ -26,7 +23,7 @@ import com.parse.ParseObject;
  *
  * @author kevincoughlin
  */
-public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks, EpisodesFragment.Callbacks {
+public final class MainActivity extends AppCompatActivity {
 	/**
 	 * The primary {@link Toolbar}.
 	 */
@@ -73,30 +70,30 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		AppEventsLogger.deactivateApp(this);
 	}
 
-	@Override
-	public void onChannelSelected(@NonNull final ParseObject channel) {
-		trackChannelSelected(channel);
-	    final EpisodesFragment fragment = new EpisodesFragment();
-	    final Bundle args = new Bundle();
-	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getString("title"));
-	    fragment.setArguments(args);
-	    getSupportFragmentManager()
-            .beginTransaction()
-			    .replace(R.id.channels_container, fragment)
-			    .addToBackStack(ChannelsFragment.TAG)
-			    .commit();
-    }
-
-	@Override
-	public void onEpisodeSelected(@NonNull final ParseObject item) {
-		final Intent intent = new Intent(this, MediaPlaybackService.class);
-		intent.setAction(MediaPlaybackService.ACTION_PLAY);
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getString("enclosure_url"));
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getString("title"));
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getString("description"));
-		startService(intent);
-		trackEpisodeSelected(item.getString("title"));
-	}
+//	@Override
+//	public void onChannelSelected(@NonNull final ParseObject channel) {
+//		trackChannelSelected(channel);
+//	    final EpisodesFragment fragment = new EpisodesFragment();
+//	    final Bundle args = new Bundle();
+//	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getString("title"));
+//	    fragment.setArguments(args);
+//	    getSupportFragmentManager()
+//            .beginTransaction()
+//			    .replace(R.id.channels_container, fragment)
+//			    .addToBackStack(ChannelsFragment.TAG)
+//			    .commit();
+//    }
+//
+//	@Override
+//	public void onEpisodeSelected(@NonNull final ParseObject item) {
+//		final Intent intent = new Intent(this, MediaPlaybackService.class);
+//		intent.setAction(MediaPlaybackService.ACTION_PLAY);
+//		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getString("enclosure_url"));
+//		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getString("title"));
+//		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getString("description"));
+//		startService(intent);
+//		trackEpisodeSelected(item.getString("title"));
+//	}
 
 	@Override
 	public void setTitle(final CharSequence title) {

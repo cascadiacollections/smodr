@@ -5,13 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 * Array adapter backing {@link #mRecyclerView}.
 	 */
 	@Nullable
-	Adapter mAdapter;
+	BinderAdapter mAdapter;
 	/**
 	 * The resource id of the layout to inflate.
 	 */
@@ -49,6 +49,12 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 	 * {@link Bundle} key for {@link android.support.v7.widget.LinearLayoutManager.SavedState}.
 	 */
 	private static final String STATE_LAYOUT_MANAGER = "STATE_LAYOUT_MANAGER_STATE";
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
+	}
 
 	@Nullable
 	@Override
@@ -64,7 +70,6 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 		super.onViewCreated(view, savedInstanceState);
 		if (mRecyclerView != null) {
 			mRecyclerView.setLayoutManager(mLayoutManager);
-			mRecyclerView.setHasFixedSize(true);
 			mRecyclerView.setAdapter(mAdapter);
 		}
 		if (mLayoutManager != null && savedInstanceState != null
@@ -80,6 +85,4 @@ public abstract class TrackedRecyclerViewFragment extends TrackedFragment {
 			outState.putParcelable(STATE_LAYOUT_MANAGER, mLayoutManager.onSaveInstanceState());
 		}
 	}
-
-	protected abstract <T extends Adapter> T getAdapter();
 }

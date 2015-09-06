@@ -1,7 +1,5 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.adapters.EpisodesAdapter;
+import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -22,8 +20,7 @@ import com.parse.ParseQuery;
  *
  * @author kevincoughlin
  */
-public final class EpisodesFragment extends TrackedRecyclerViewFragment implements EpisodesAdapter.ItemViewHolder
-		.IItemViewHolderClicks, SwipeRefreshLayout.OnRefreshListener {
+public final class EpisodesFragment extends TrackedRecyclerViewFragment implements SwipeRefreshLayout.OnRefreshListener {
 	/**
 	 * Param for sending a channel's name.
 	 */
@@ -40,24 +37,17 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	 */
 	@NonNull
 	private String mChannelName = "Smodcast";
-	/**
-	 * Callback interface for activity communication.
-	 */
-	@Nullable
-	private Callbacks mCallbacks;
 
 	/**
 	 * Constructor.
 	 */
 	public EpisodesFragment() {
 		mLayoutResId = R.layout.fragment_episodes_layout;
-		mAdapter = new EpisodesAdapter();
 	}
 
 	@Override
 	public void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
 		final Bundle bundle = getArguments();
 	    if (bundle != null) {
 		    mChannelName = bundle.getString(ARG_CHANNEL_NAME, "Smodcast");
@@ -67,6 +57,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	@Override
 	public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		mAdapter = new BinderAdapter(getContext());
 		if (mSwipeRefreshLayout != null) {
 			mSwipeRefreshLayout.setColorSchemeResources(
 					R.color.colorAccent,
@@ -83,50 +74,12 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, @Nullable final Bundle
 			savedInstanceState) {
 		mLayoutManager = new LinearLayoutManager(getContext());
-		getAdapter().setClickListener(this);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	@Override
-	public void onAttach(final Context context) {
-		super.onAttach(context);
-
-		if (!(context instanceof Callbacks)) {
-			throw new IllegalStateException("Activity must implement fragment's callbacks.");
-		}
-
-		mCallbacks = (Callbacks) context;
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mCallbacks = null;
-	}
-
-	@Override
-	public void onItemClick(final int position) {
-		if (mCallbacks != null) {
-			mCallbacks.onEpisodeSelected(getAdapter().getItem(position));
-		}
 	}
 
 	@Override
 	public void onRefresh() {
 		refresh(mChannelName);
-	}
-
-	/**
-	 * Handler for {@link Item} selection to the {@link Activity}.
-	 */
-	public interface Callbacks {
-		/**
-		 * Called when an {link @Item} is selected.
-		 *
-		 * @param item
-		 * 		the {@link Item} selected.
-		 */
-		void onEpisodeSelected(final ParseObject item);
 	}
 
 	/**
@@ -147,7 +100,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 				.setLimit(1000)
 				.findInBackground((episodes, e) -> {
 					if (e == null && mAdapter != null && episodes != null) {
-						((EpisodesAdapter) mAdapter).setResults(episodes);
+//						((EpisodesAdapter) mAdapter).setResults(episodes);
 					}
 					if (mSwipeRefreshLayout != null) {
 						mSwipeRefreshLayout.setRefreshing(false);
@@ -161,7 +114,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 			.findInBackground((episodes, e) -> {
 				if (e == null && mAdapter != null && episodes != null) {
 					ParseObject.pinAllInBackground(episodes);
-					((EpisodesAdapter) mAdapter).setResults(episodes);
+//					((EpisodesAdapter) mAdapter).setResults(episodes);
 				} else if (e != null) {
 					AppUtil.toast(getContext(), e.getLocalizedMessage());
 				}
@@ -169,10 +122,5 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 					mSwipeRefreshLayout.setRefreshing(false);
 				}
 			});
-	}
-
-	@Override
-	protected EpisodesAdapter getAdapter() {
-		return (EpisodesAdapter) mAdapter;
 	}
 }
