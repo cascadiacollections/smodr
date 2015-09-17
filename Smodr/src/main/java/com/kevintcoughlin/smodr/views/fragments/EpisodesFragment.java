@@ -16,7 +16,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 /**
- * A fragment that displays a collection of {@link Item}s.
+ * A fragment that displays a collection of items.
  *
  * @author kevincoughlin
  */
@@ -100,7 +100,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 				.setLimit(1000)
 				.findInBackground((episodes, e) -> {
 					if (e == null && mAdapter != null && episodes != null) {
-//						((EpisodesAdapter) mAdapter).setResults(episodes);
+						mAdapter.setItems(episodes);
 					}
 					if (mSwipeRefreshLayout != null) {
 						mSwipeRefreshLayout.setRefreshing(false);
@@ -114,7 +114,7 @@ public final class EpisodesFragment extends TrackedRecyclerViewFragment implemen
 			.findInBackground((episodes, e) -> {
 				if (e == null && mAdapter != null && episodes != null) {
 					ParseObject.pinAllInBackground(episodes);
-//					((EpisodesAdapter) mAdapter).setResults(episodes);
+					mAdapter.setItems(episodes);
 				} else if (e != null) {
 					AppUtil.toast(getContext(), e.getLocalizedMessage());
 				}
