@@ -26,7 +26,8 @@ import com.parse.ParseObject;
  *
  * @author kevincoughlin
  */
-public final class MainActivity extends AppCompatActivity implements ChannelsFragment.Callbacks, EpisodesFragment.Callbacks {
+public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnEpisodeSelected,
+		ChannelsFragment.OnChannelSelected {
 	/**
 	 * The primary {@link Toolbar}.
 	 */
@@ -81,10 +82,10 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	    args.putString(EpisodesFragment.ARG_CHANNEL_NAME, channel.getString("title"));
 	    fragment.setArguments(args);
 	    getSupportFragmentManager()
-            .beginTransaction()
-			    .replace(R.id.channels_container, fragment)
-			    .addToBackStack(ChannelsFragment.TAG)
-			    .commit();
+			.beginTransaction()
+			.replace(R.id.channels_container, fragment)
+			.addToBackStack(ChannelsFragment.TAG)
+			.commit();
     }
 
 	@Override
