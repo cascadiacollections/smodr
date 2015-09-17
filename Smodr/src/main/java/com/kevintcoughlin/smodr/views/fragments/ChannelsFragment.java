@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.viewholders.ChannelViewBinder;
+import com.kevintcoughlin.smodr.views.activities.MainActivity;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -20,7 +24,7 @@ import com.parse.ParseQuery;
  *
  * @author kevincoughlin
  */
-public final class ChannelsFragment extends TrackedRecyclerViewFragment {
+public final class ChannelsFragment extends TrackedFragment {
 	/**
 	 * Screen name for this view.
 	 */
@@ -31,25 +35,35 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment {
 	 */
 	private static final int NUM_COLUMNS = 4;
 
+	@Nullable
+	private BinderAdapter mAdapter;
+
+	@Bind(R.id.list)
+	RecyclerView mRecyclerView;
+
 	@Override
 	public void onAttach(final Context context) {
 		super.onAttach(context);
 		mAdapter = new BinderAdapter(context);
 		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), ParseObject.class);
+		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onChannelSelected((ParseObject) item));
 	}
 
+	@Nullable
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, @Nullable final Bundle
-			savedInstanceState) {
-		mLayoutManager = new GridLayoutManager(getContext(), NUM_COLUMNS);
-		return super.onCreateView(inflater, container, savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+		ButterKnife.bind(this, view);
+		return view;
 	}
-
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
+		mRecyclerView.setAdapter(mAdapter);
+
 		ParseQuery.getQuery("Channel").setLimit(1000).fromLocalDatastore().findInBackground((objects, e) -> {
-			if (e == null && mAdapter != null && objects != null) {
+			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
 				mAdapter.setItems(objects);
 			} else if (e != null) {
 				AppUtil.toast(getContext(), e.getLocalizedMessage());
@@ -57,12 +71,16 @@ public final class ChannelsFragment extends TrackedRecyclerViewFragment {
 		});
 
 		ParseQuery.getQuery("Channel").setLimit(1000).findInBackground((objects, e) -> {
-			if (e == null && mAdapter != null && objects != null) {
+			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
 				ParseObject.pinAllInBackground(objects);
 				mAdapter.setItems(objects);
 			} else if (e != null) {
 				AppUtil.toast(getContext(), e.getLocalizedMessage());
 			}
 		});
+	}
+
+	public interface OnChannelSelected {
+		void onChannelSelected(@NonNull final ParseObject o);
 	}
 }

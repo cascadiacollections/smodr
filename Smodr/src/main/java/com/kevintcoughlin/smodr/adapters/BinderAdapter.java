@@ -109,7 +109,7 @@ public final class BinderAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		VH createViewHolder(final View view);
 	}
 
-	private interface OnItemClickListener {
+	public interface OnItemClickListener {
 		void onItemClick(@NonNull Object item);
 	}
 }
