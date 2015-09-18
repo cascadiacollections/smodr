@@ -1,16 +1,40 @@
-sudo: false
 language: android
 
 jdk:
-    - oraclejdk8
+  - oraclejdk8
+
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+notifications:
+  email: false
 
 android:
   components:
-    - build-tools-21.1.2
+    - build-tools-23.0.1
     - platform-tools
     - tools
-    - android-22
+    - android-23
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-19
+
+script: ./gradlew clean build -PdisablePreDex
+
+env:
+  global:
+    - ADB_INSTALL_TIMEOUT=8
+
+before_script:
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+script:
+  - android list target
+  - ./gradlew connectedAndroidTest
