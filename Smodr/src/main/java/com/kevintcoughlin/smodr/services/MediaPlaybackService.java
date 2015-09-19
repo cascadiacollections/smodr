@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
@@ -129,18 +131,17 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
 	private void createNotification() {
 		final Intent mIntent = new Intent(this, MediaPlaybackService.class);
+		mIntent.setAction(getAction());
 		final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		mIntent.setAction(ACTION_STOP);
-
 		final NotificationCompat.Action action = new NotificationCompat.Action.Builder(
-				R.drawable.ic_action_pause,
-				getString(R.string.notification_action_pause),
+				getIcon(),
+				getTitle(),
 				mPendingIntent).build();
 
 		final NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
 						.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
-						.setSmallIcon(R.drawable.ic_action_play)
+						.setSmallIcon(getIcon())
 						.setOngoing(true)
 						.setContentTitle(mTitle)
 						.setContentText(mDescription)
@@ -170,5 +171,23 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		mediaPlayer.start();
 		createNotification();
 		mPrepared = true;
+	}
+
+	@DrawableRes
+	private int getIcon() {
+		return (mMediaPlayer != null && mMediaPlayer.isPlaying())
+				? R.drawable.ic_action_pause
+				: R.drawable.ic_action_play;
+	}
+
+	@StringRes
+	private String getTitle() {
+		return (mMediaPlayer != null && mMediaPlayer.isPlaying())
+				? getString(R.string.notification_action_pause)
+				: getString(R.string.notification_action_play);
+	}
+
+	private String getAction() {
+		return (mMediaPlayer != null && mMediaPlayer.isPlaying()) ? ACTION_PAUSE : ACTION_RESUME;
 	}
 }
