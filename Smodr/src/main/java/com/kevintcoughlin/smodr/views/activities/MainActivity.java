@@ -57,7 +57,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             final FragmentManager fm = getSupportFragmentManager();
             final ChannelsFragment fragment = new ChannelsFragment();
             fm.beginTransaction()
-                    .add(R.id.channels_container, fragment, ChannelsFragment.TAG)
+                    .add(R.id.fragment_container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
 	}
@@ -83,7 +83,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 	    fragment.setArguments(args);
 	    getSupportFragmentManager()
 			.beginTransaction()
-			.replace(R.id.channels_container, fragment)
+			.replace(R.id.fragment_container, fragment)
 			.addToBackStack(ChannelsFragment.TAG)
 			.commit();
     }

@@ -17,7 +17,7 @@
 		app:theme="@style/MyToolbarStyle" />
 
 	<FrameLayout
-		android:id="@+id/channels_container"
+		android:id="@+id/fragment_container"
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent"
 		android:layout_above="@+id/ad"
