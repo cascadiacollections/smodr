@@ -12,7 +12,6 @@ public final class ChannelViewBinder implements BinderAdapter.Binder<ParseObject
 		Glide.with(viewHolder.itemView.getContext())
 				.load(model.getString("image_url"))
 				.fitCenter()
-				.crossFade()
 				.into(viewHolder.mImage);
 	}
 
