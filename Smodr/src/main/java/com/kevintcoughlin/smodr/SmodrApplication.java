@@ -21,7 +21,6 @@ public final class SmodrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "xdsymmQJ9lxCgIlbZEW3V1oeNAkKp54yl4fehfzR", "ZCAACD4VyKimQgPo6WVGRcfA3Ddd9AcheSDFWrbo");
 
@@ -29,6 +28,8 @@ public final class SmodrApplication extends Application {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             analytics.setDryRun(true);
             analytics.getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
+        } else {
+            Fabric.with(this, new Crashlytics());
         }
     }
 
