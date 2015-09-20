@@ -6,7 +6,9 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
+import com.kevintcoughlin.smodr.models.Episode;
 import com.parse.Parse;
+import com.parse.ParseObject;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -22,6 +24,7 @@ public final class SmodrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        ParseObject.registerSubclass(Episode.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "xdsymmQJ9lxCgIlbZEW3V1oeNAkKp54yl4fehfzR", "ZCAACD4VyKimQgPo6WVGRcfA3Ddd9AcheSDFWrbo");
 

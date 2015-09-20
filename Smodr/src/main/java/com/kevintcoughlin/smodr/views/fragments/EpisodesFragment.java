@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
+import com.kevintcoughlin.smodr.models.Episode;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewBinder;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
@@ -52,7 +53,7 @@ public final class EpisodesFragment extends TrackedFragment implements SwipeRefr
 	public void onAttach(Context context) {
 		super.onAttach(context);
 		mAdapter = new BinderAdapter(context);
-		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), ParseObject.class);
+		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Episode.class);
 		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onEpisodeSelected((ParseObject) item));
 	}
 
@@ -106,7 +107,7 @@ public final class EpisodesFragment extends TrackedFragment implements SwipeRefr
 			mSwipeRefreshLayout.setRefreshing(true);
 		}
 
-		ParseQuery.getQuery("Item")
+		ParseQuery.getQuery(Episode.class)
 				.whereEqualTo("feed_title", name)
 				.orderByDescending("pubDate")
 				.fromLocalDatastore()
@@ -120,21 +121,21 @@ public final class EpisodesFragment extends TrackedFragment implements SwipeRefr
 					}
 				});
 
-		ParseQuery.getQuery("Item")
+		ParseQuery.getQuery(Episode.class)
 			.whereEqualTo("feed_title", name)
 				.orderByDescending("pubDate")
 				.setLimit(1000)
-			.findInBackground((episodes, e) -> {
-				if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
-					ParseObject.pinAllInBackground(episodes);
-					mAdapter.setItems(episodes);
-				} else if (e != null) {
-					AppUtil.toast(getContext(), e.getLocalizedMessage());
-				}
-				if (mSwipeRefreshLayout != null) {
-					mSwipeRefreshLayout.setRefreshing(false);
-				}
-			});
+				.findInBackground((episodes, e) -> {
+					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
+						ParseObject.pinAllInBackground(episodes);
+						mAdapter.setItems(episodes);
+					} else if (e != null) {
+						AppUtil.toast(getContext(), e.getLocalizedMessage());
+					}
+					if (mSwipeRefreshLayout != null) {
+						mSwipeRefreshLayout.setRefreshing(false);
+					}
+				});
 	}
 
 	public interface OnEpisodeSelected {
