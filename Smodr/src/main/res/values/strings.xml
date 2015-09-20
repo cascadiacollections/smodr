@@ -6,4 +6,6 @@
     <string name="facebook_app_id">889919744389128</string>
     <string name="test_device_id">C6D397172C2598AF256CF30C6393FBFC</string>
     <string name="notification_action_play">Play</string>
+    <string name="on_network_connected">Whew. Looks like the internet is back.</string>
+    <string name="on_network_disconnected">Uh oh. Looks like we\'ve lost internet.</string>
 </resources>

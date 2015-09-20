@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.facebook.appevents.AppEventsLogger;
@@ -133,10 +134,10 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private void trackChannelSelected(@NonNull final ParseObject channel) {
 	    final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 	    t.send(new HitBuilders.EventBuilder()
-		        .setCategory("CHANNEL")
-		        .setAction("SELECTED")
-		        .setLabel(channel.getString("title"))
-		        .build());
+			    .setCategory("CHANNEL")
+			    .setAction("SELECTED")
+			    .setLabel(channel.getString("title"))
+			    .build());
     }
 
 	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
@@ -146,6 +147,14 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 				.setAction("SELECTED")
 				.setLabel(episodeTitle)
 				.build());
+	}
+
+	private void onNetworkConnected() {
+		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_connected);
+	}
+
+	private void onNetworkDisconnected() {
+		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_disconnected);
 	}
 
 	public final class NetworkStateReceiver extends BroadcastReceiver {
@@ -174,10 +183,10 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 			final boolean isNetworkAvailable = isNetworkAvailable(context);
 			if (isNetworkAvailable && !mLastConnectivityState) {
 				mLastConnectivityState = true;
-				AppUtil.toast(getApplicationContext(), "CONNECTED");
+				onNetworkConnected();
 			} else if (!isNetworkAvailable && mLastConnectivityState) {
 				mLastConnectivityState = false;
-				AppUtil.toast(getApplicationContext(), "NOT CONNECTED");
+				onNetworkDisconnected();
 			}
 		}
 

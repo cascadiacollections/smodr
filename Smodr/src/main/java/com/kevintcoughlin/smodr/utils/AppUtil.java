@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 /**
@@ -57,6 +59,14 @@ public final class AppUtil {
 			return;
 		}
 		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_SHORT).show();
+	}
+
+	public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res, final int length) {
+		Snackbar.make(parent, res, length).show();
+	}
+
+	public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res) {
+		snackbar(parent, res, Snackbar.LENGTH_SHORT);
 	}
 
 	/**
