@@ -1,6 +1,11 @@
 package com.kevintcoughlin.smodr.views.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +22,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
+import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.parse.ParseObject;
@@ -41,11 +47,17 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 	@Bind(R.id.ad)
 	AdView mAdView;
 
+	@Nullable
+	private NetworkStateReceiver mNetworkStateReceiver;
+
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_layout);
 		ButterKnife.bind(this);
+
+		mNetworkStateReceiver = new NetworkStateReceiver();
+		registerReceiver(mNetworkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 		final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
 		if (mAdView != null) {
@@ -72,6 +84,12 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 	protected void onPause() {
 		super.onPause();
 		AppEventsLogger.deactivateApp(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mNetworkStateReceiver);
 	}
 
 	@Override
@@ -128,6 +146,46 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 				.setAction("SELECTED")
 				.setLabel(episodeTitle)
 				.build());
+	}
+
+	public final class NetworkStateReceiver extends BroadcastReceiver {
+
+		private boolean mLastConnectivityState = true;
+
+		public void onReceive(Context context, Intent intent) {
+			if (intent == null || context == null) {
+				return;
+			} else if (!intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+				return;
+			}
+			if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && intent.getExtras() != null) {
+				final NetworkInfo networkInfo = (NetworkInfo) intent.getExtras().get(ConnectivityManager
+						.EXTRA_NETWORK_INFO);
+				if (networkInfo != null) {
+					if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
+							|| networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+						onConnectivityChange(context);
+					}
+				}
+			}
+		}
+
+		private void onConnectivityChange(final Context context) {
+			final boolean isNetworkAvailable = isNetworkAvailable(context);
+			if (isNetworkAvailable && !mLastConnectivityState) {
+				mLastConnectivityState = true;
+				AppUtil.toast(getApplicationContext(), "CONNECTED");
+			} else if (!isNetworkAvailable && mLastConnectivityState) {
+				mLastConnectivityState = false;
+				AppUtil.toast(getApplicationContext(), "NOT CONNECTED");
+			}
+		}
+
+		private boolean isNetworkAvailable(final Context context) {
+			final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			final NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			return netInfo != null && netInfo.isConnected();
+		}
 	}
 
 }
