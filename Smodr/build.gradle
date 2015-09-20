@@ -39,8 +39,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    lintOptions {
-        abortOnError false
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            ext.enableCrashlytics = false
+        }
     }
 }
 
