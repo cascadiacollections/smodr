@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import com.bumptech.glide.Glide;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
-import com.parse.ParseObject;
+import com.kevintcoughlin.smodr.models.Channel;
 
-public final class ChannelViewBinder implements BinderAdapter.Binder<ParseObject, ChannelViewHolder> {
+public final class ChannelViewBinder implements BinderAdapter.Binder<Channel, ChannelViewHolder> {
 	@Override
-	public void bind(@NonNull final ParseObject model, @NonNull final ChannelViewHolder viewHolder) {
+	public void bind(@NonNull final Channel model, @NonNull final ChannelViewHolder viewHolder) {
 		Glide.with(viewHolder.itemView.getContext())
-				.load(model.getString("image_url"))
+				.load(model.getImageUrl())
 				.fitCenter()
 				.into(viewHolder.mImage);
 	}
