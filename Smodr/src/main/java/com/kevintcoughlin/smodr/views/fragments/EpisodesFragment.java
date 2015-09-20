@@ -54,7 +54,7 @@ public final class EpisodesFragment extends TrackedFragment implements SwipeRefr
 		super.onAttach(context);
 		mAdapter = new BinderAdapter(context);
 		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Episode.class);
-		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onEpisodeSelected((ParseObject) item));
+		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onEpisodeSelected((Episode) item));
 	}
 
 	@Override
@@ -139,6 +139,6 @@ public final class EpisodesFragment extends TrackedFragment implements SwipeRefr
 	}
 
 	public interface OnEpisodeSelected {
-		void onEpisodeSelected(@NonNull final ParseObject o);
+		void onEpisodeSelected(@NonNull final Episode o);
 	}
 }

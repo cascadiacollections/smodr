@@ -17,4 +17,7 @@ public final class Episode extends ParseObject {
 		return getString("description");
 	}
 
+	public String getEnclosureUrl() {
+		return getString("enclosure_url");
+	}
 }

@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.viewholders.ChannelViewBinder;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
@@ -45,8 +46,8 @@ public final class ChannelsFragment extends TrackedFragment {
 	public void onAttach(final Context context) {
 		super.onAttach(context);
 		mAdapter = new BinderAdapter(context);
-		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), ParseObject.class);
-		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onChannelSelected((ParseObject) item));
+		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Channel.class);
+		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onChannelSelected((Channel) item));
 	}
 
 	@Nullable
@@ -62,7 +63,7 @@ public final class ChannelsFragment extends TrackedFragment {
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
 		mRecyclerView.setAdapter(mAdapter);
 
-		ParseQuery.getQuery("Channel").setLimit(1000).fromLocalDatastore().findInBackground((objects, e) -> {
+		ParseQuery.getQuery(Channel.class).setLimit(1000).fromLocalDatastore().findInBackground((objects, e) -> {
 			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
 				mAdapter.setItems(objects);
 			} else if (e != null) {
@@ -70,7 +71,7 @@ public final class ChannelsFragment extends TrackedFragment {
 			}
 		});
 
-		ParseQuery.getQuery("Channel").setLimit(1000).findInBackground((objects, e) -> {
+		ParseQuery.getQuery(Channel.class).setLimit(1000).findInBackground((objects, e) -> {
 			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
 				ParseObject.pinAllInBackground(objects);
 				mAdapter.setItems(objects);
@@ -81,6 +82,6 @@ public final class ChannelsFragment extends TrackedFragment {
 	}
 
 	public interface OnChannelSelected {
-		void onChannelSelected(@NonNull final ParseObject o);
+		void onChannelSelected(@NonNull final Channel o);
 	}
 }
