@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,26 +28,27 @@ import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 
 /**
- * The primary activity containing a single {@link android.support.v4.app.Fragment}.
+ * The primary activity that displays a {@link ChannelsFragment}.
  *
  * @author kevincoughlin
  */
 public final class MainActivity extends AppCompatActivity implements ChannelsFragment.OnChannelSelected {
 	/**
-	 * The primary {@link Toolbar}.
+	 * Action name for selecting an item.
 	 */
-	@Nullable
-	@Bind(R.id.toolbar)
-	Toolbar mToolbar;
+	public static final String ACTION_SELECTED = "SELECTED";
 	/**
-	 * The {@link AdView} displayed.
+	 * Displays the app name and menu actions.
 	 */
-	@Nullable
-	@Bind(R.id.ad)
-	AdView mAdView;
-
-	@Nullable
-	private NetworkStateReceiver mNetworkStateReceiver;
+	@Bind(R.id.toolbar) Toolbar mToolbar;
+	/**
+	 * Displays an ad below the {@link Fragment}.
+	 */
+	@Bind(R.id.ad) AdView mAdView;
+	/**
+	 * Receiver for network connectivity events.
+	 */
+	@Nullable private NetworkStateReceiver mNetworkStateReceiver;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -58,9 +60,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		registerReceiver(mNetworkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 		final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
-		if (mAdView != null) {
-			mAdView.loadAd(adRequest);
-		}
+		mAdView.loadAd(adRequest);
 		setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
@@ -115,8 +115,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     private void trackChannelSelected(@NonNull final Channel channel) {
 	    final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 	    t.send(new HitBuilders.EventBuilder()
-			    .setCategory("CHANNEL")
-			    .setAction("SELECTED")
+			    .setCategory(Channel.class.getSimpleName().toUpperCase())
+			    .setAction(ACTION_SELECTED)
 			    .setLabel(channel.getTitle())
 			    .build());
     }
@@ -129,6 +129,11 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_disconnected);
 	}
 
+	/**
+	 * Receiver for network connectivity events.
+	 *
+	 * @author kevintcoughlin
+	 */
 	public final class NetworkStateReceiver extends BroadcastReceiver {
 
 		private boolean mLastConnectivityState = true;
