@@ -18,22 +18,45 @@ import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Episode;
+import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewBinder;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.List;
+
 /**
- * {@link com.kevintcoughlin.smodr.models.Channel} detail
+ * {@link com.kevintcoughlin.smodr.models.Channel} detail view.
+ *
  * @author kevincoughlin
  */
-public final class DetailActivity extends AppCompatActivity {
-
+public final class DetailActivity extends AppCompatActivity implements BinderAdapter.OnItemClickListener {
+	/**
+	 * Key for a {@link com.kevintcoughlin.smodr.models.Channel}'s title.
+	 */
 	public static final String EXTRA_NAME = ".name";
+	/**
+	 * Key for a {@link com.kevintcoughlin.smodr.models.Channel}'s image url.
+	 */
 	public static final String EXTRA_IMAGE_URL = ".image_url";
+	/**
+	 * Displays a {@link List<Episode>}.
+	 */
 	@Bind(R.id.list) RecyclerView mRecyclerView;
+	/**
+	 * Displays the screen's title.
+	 */
+	@Bind(R.id.toolbar) Toolbar mToolbar;
+	/**
+	 * Contains a {@link List<Episode>} for {@link #mRecyclerView}.
+	 */
 	@Nullable private BinderAdapter mAdapter;
+	/**
+	 * The display title.
+	 */
 	@NonNull private String mChannelName = "Smodcast";
 
 	@Override
@@ -45,11 +68,11 @@ public final class DetailActivity extends AppCompatActivity {
 		final Intent intent = getIntent();
 		if (intent != null) {
 			mChannelName = intent.getStringExtra(EXTRA_NAME);
-			loadBackdrop(intent.getStringExtra(EXTRA_IMAGE_URL));
+			final ImageView imageView = ButterKnife.findById(this, R.id.backdrop);
+			Glide.with(this).load(intent.getStringExtra(EXTRA_IMAGE_URL)).centerCrop().into(imageView);
 		}
 
-		final Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
-		setSupportActionBar(toolbar);
+		setSupportActionBar(mToolbar);
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
@@ -59,21 +82,29 @@ public final class DetailActivity extends AppCompatActivity {
 
 		mAdapter = new BinderAdapter(this);
 		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Episode.class);
+		mAdapter.setOnItemClickListener(this);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		mRecyclerView.setAdapter(mAdapter);
 		refresh(mChannelName);
 	}
 
-	private void loadBackdrop(final String url) {
-		final ImageView imageView = ButterKnife.findById(this, R.id.backdrop);
-		Glide.with(this).load(url).centerCrop().into(imageView);
+	@Override
+	public void onItemClick(@NonNull Object item) {
+		final Episode episode = (Episode) item;
+		final Intent intent = new Intent(this, MediaPlaybackService.class);
+		intent.setAction(MediaPlaybackService.ACTION_PLAY);
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.getEnclosureUrl());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.getTitle());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.getDescription());
+		startService(intent);
+		trackEpisodeSelected(episode.getTitle());
 	}
 
 	/**
-	 * Refreshes the channel's feed of episodes.
+	 * Refreshes the {@link #mAdapter}'s {@link List<Episode>}.
 	 *
 	 * @param name
-	 *      the name of the channel to refresh.
+	 *     the {@link Channel} name to query.
 	 */
 	private void refresh(@NonNull final String name) {
 		ParseQuery.getQuery(Episode.class)
@@ -101,6 +132,12 @@ public final class DetailActivity extends AppCompatActivity {
 				});
 	}
 
+	/**
+	 * Sends an event when an {@link Episode} is selected.
+	 *
+	 * @param episodeTitle
+	 *      the title of the {@link Episode} selected.
+	 */
 	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
 		final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 		t.send(new HitBuilders.EventBuilder()
@@ -109,12 +146,4 @@ public final class DetailActivity extends AppCompatActivity {
 				.setLabel(episodeTitle)
 				.build());
 	}
-
-//	final Intent intent = new Intent(this, MediaPlaybackService.class);
-//	intent.setAction(MediaPlaybackService.ACTION_PLAY);
-//	intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, item.getEnclosureUrl());
-//	intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.getTitle());
-//	intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.getDescription());
-//	startService(intent);
-//	trackEpisodeSelected(item.getString("title"));
 }
