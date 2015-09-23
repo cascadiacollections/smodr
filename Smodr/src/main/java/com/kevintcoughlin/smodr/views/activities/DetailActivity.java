@@ -43,6 +43,10 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	 */
 	public static final String EXTRA_IMAGE_URL = ".image_url";
 	/**
+	 * Action name for selecting an item.
+	 */
+	public static final String ACTION_SELECTED = "SELECTED";
+	/**
 	 * Displays a {@link List<Episode>}.
 	 */
 	@Bind(R.id.list) RecyclerView mRecyclerView;
@@ -108,8 +112,8 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	 */
 	private void refresh(@NonNull final String name) {
 		ParseQuery.getQuery(Episode.class)
-				.whereEqualTo("feed_title", name)
-				.orderByDescending("pubDate")
+				.whereEqualTo(Episode.FEED_TITLE, name)
+				.orderByDescending(Episode.PUB_DATE)
 				.fromLocalDatastore()
 				.setLimit(1000)
 				.findInBackground((episodes, e) -> {
@@ -119,8 +123,8 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 				});
 
 		ParseQuery.getQuery(Episode.class)
-				.whereEqualTo("feed_title", name)
-				.orderByDescending("pubDate")
+				.whereEqualTo(Episode.FEED_TITLE, name)
+				.orderByDescending(Episode.PUB_DATE)
 				.setLimit(1000)
 				.findInBackground((episodes, e) -> {
 					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
@@ -141,8 +145,8 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
 		final Tracker t = ((SmodrApplication) getApplication()).getTracker();
 		t.send(new HitBuilders.EventBuilder()
-				.setCategory("EPISODE")
-				.setAction("SELECTED")
+				.setCategory(Episode.class.getSimpleName().toUpperCase())
+				.setAction(ACTION_SELECTED)
 				.setLabel(episodeTitle)
 				.build());
 	}
