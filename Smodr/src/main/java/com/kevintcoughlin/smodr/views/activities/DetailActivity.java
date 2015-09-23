@@ -29,7 +29,8 @@ import com.parse.ParseQuery;
 import java.util.List;
 
 /**
- * {@link com.kevintcoughlin.smodr.models.Channel} detail view.
+ * A detail view for a given {@link Channel} containing cover art
+ * and a @link List<Episode>}.
  *
  * @author kevincoughlin
  */
