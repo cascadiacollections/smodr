@@ -145,13 +145,13 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 				return;
 			}
 			if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && intent.getExtras() != null) {
-				final NetworkInfo networkInfo = (NetworkInfo) intent.getExtras().get(ConnectivityManager
-						.EXTRA_NETWORK_INFO);
-				if (networkInfo != null) {
-					if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
-							|| networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+				final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context
+						.CONNECTIVITY_SERVICE);
+				final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+				if (networkInfo != null
+						&& (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
+						|| networkInfo.getType() == ConnectivityManager.TYPE_WIFI)) {
 						onConnectivityChange(context);
-					}
 				}
 			}
 		}
