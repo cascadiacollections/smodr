@@ -47,6 +47,10 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	 */
 	public static final String ACTION_SELECTED = "SELECTED";
 	/**
+	 * Upper-bound for episodes to retrieve.
+	 */
+	private static final int LIMIT = 1000;
+	/**
 	 * Displays a {@link List<Episode>}.
 	 */
 	@Bind(R.id.list) RecyclerView mRecyclerView;
@@ -115,7 +119,7 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 				.whereEqualTo(Episode.FEED_TITLE, name)
 				.orderByDescending(Episode.PUB_DATE)
 				.fromLocalDatastore()
-				.setLimit(1000)
+				.setLimit(LIMIT)
 				.findInBackground((episodes, e) -> {
 					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
 						mAdapter.setItems(episodes);
@@ -125,7 +129,7 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 		ParseQuery.getQuery(Episode.class)
 				.whereEqualTo(Episode.FEED_TITLE, name)
 				.orderByDescending(Episode.PUB_DATE)
-				.setLimit(1000)
+				.setLimit(LIMIT)
 				.findInBackground((episodes, e) -> {
 					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
 						ParseObject.pinAllInBackground(episodes);
