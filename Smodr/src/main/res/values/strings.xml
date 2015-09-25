@@ -8,4 +8,5 @@
     <string name="notification_action_play">Play</string>
     <string name="on_network_connected">Whew. Looks like the internet is back.</string>
     <string name="on_network_disconnected">Uh oh. Looks like we\'ve lost internet.</string>
+    <string name="content_description_cover_art">Cover art</string>
 </resources>
