@@ -16,7 +16,6 @@ import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.viewholders.ChannelViewBinder;
-import com.kevintcoughlin.smodr.views.activities.MainActivity;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -39,15 +38,29 @@ public final class ChannelsFragment extends TrackedFragment {
 	@Nullable
 	private BinderAdapter mAdapter;
 
+	@Nullable
+	private OnChannelSelected mListener;
+
 	@Bind(R.id.list)
 	RecyclerView mRecyclerView;
 
 	@Override
 	public void onAttach(final Context context) {
 		super.onAttach(context);
+		if (context instanceof OnChannelSelected) {
+			mListener = ((OnChannelSelected) context);
+		}
 		mAdapter = new BinderAdapter(context);
 		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Channel.class);
-		mAdapter.setOnItemClickListener(item -> ((MainActivity) getActivity()).onChannelSelected((Channel) item));
+		if (mListener != null) {
+			mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Channel) item));
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
 	}
 
 	@Nullable
