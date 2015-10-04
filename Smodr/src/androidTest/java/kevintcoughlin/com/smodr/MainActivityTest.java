@@ -23,6 +23,9 @@ public class MainActivityTest {
 
 	@Test
 	public void layout_viewsExist() {
-		onView(withId(R.id.list)).check(matches(isDisplayed()));
+		onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
+		onView(withId(R.id.ad)).check(matches(isDisplayed()));
+		onView(withId(R.id.coordinator_layout)).check(matches(isDisplayed()));
+		onView(withId(R.id.container)).check(matches(isDisplayed()));
 	}
 }
