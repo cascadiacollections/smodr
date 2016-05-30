@@ -1,7 +1,5 @@
-//noinspection GradleCompatible
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'me.tatarka.retrolambda'
 
 buildscript {
     repositories {
@@ -9,10 +7,9 @@ buildscript {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.2'
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'io.fabric.tools:gradle:1.19.2'
         classpath 'com.android.tools.build:gradle:2.1.0'
     }
@@ -28,7 +25,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '24.0.0 rc4'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -39,16 +36,20 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
+        jackOptions {
+            enabled true
         }
     }
 
-    dataBinding {
-        enabled = true
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+        }
     }
 }
 
@@ -88,5 +89,11 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'com.android.support:support-annotations:23.4.0'
+    compile 'com.google.firebase:firebase-core:9.0.1'
+    compile 'com.google.firebase:firebase-database:9.0.1'
+    compile 'com.google.firebase:firebase-crash:9.0.1'
+    compile 'com.google.android.gms:play-services-appindexing:9.0.1'
     androidTestCompile 'com.android.support:support-annotations:23.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
