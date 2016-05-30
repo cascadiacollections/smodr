@@ -10,49 +10,35 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.bumptech.glide.Glide;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.SmodrApplication;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
-import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.models.Episode;
+import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
-import com.kevintcoughlin.smodr.utils.AppUtil;
-import com.kevintcoughlin.smodr.viewholders.EpisodeViewBinder;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
- * A detail view for a given {@link Channel} containing cover art
+ * A detail view for a given {@link Item} containing cover art
  * and a @link List<Episode>}.
  *
  * @author kevincoughlin
  */
 public final class DetailActivity extends AppCompatActivity implements BinderAdapter.OnItemClickListener {
 	/**
-	 * Key for a {@link com.kevintcoughlin.smodr.models.Channel}'s title.
+	 * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s title.
 	 */
 	public static final String EXTRA_NAME = ".name";
 	/**
-	 * Key for a {@link com.kevintcoughlin.smodr.models.Channel}'s image url.
+	 * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s image url.
 	 */
 	public static final String EXTRA_IMAGE_URL = ".image_url";
 	/**
-	 * Action name for selecting an item.
-	 */
-	public static final String ACTION_SELECTED = "SELECTED";
-	/**
-	 * Upper-bound for episodes to retrieve.
-	 */
-	private static final int LIMIT = 1000;
-	/**
-	 * Displays a {@link List<Episode>}.
+	 * Displays a {@link List<Item>}.
 	 */
 	@Bind(R.id.list) RecyclerView mRecyclerView;
 	/**
@@ -60,7 +46,7 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	 */
 	@Bind(R.id.toolbar) Toolbar mToolbar;
 	/**
-	 * Contains a {@link List<Episode>} for {@link #mRecyclerView}.
+	 * Contains a {@link List<Item>} for {@link #mRecyclerView}.
 	 */
 	@Nullable private BinderAdapter mAdapter;
 	/**
@@ -90,69 +76,20 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 		collapsingToolbar.setTitle(mChannelName);
 
 		mAdapter = new BinderAdapter(this);
-		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Episode.class);
+//		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Item.class);
 		mAdapter.setOnItemClickListener(this);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		mRecyclerView.setAdapter(mAdapter);
-		refresh(mChannelName);
 	}
 
 	@Override
 	public void onItemClick(@NonNull Object item) {
-		final Episode episode = (Episode) item;
+		final Item episode = (Item) item;
 		final Intent intent = new Intent(this, MediaPlaybackService.class);
 		intent.setAction(MediaPlaybackService.ACTION_PLAY);
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.getEnclosureUrl());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.getTitle());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.getDescription());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.enclosures().get(0).url());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.title());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.description());
 		startService(intent);
-		trackEpisodeSelected(episode.getTitle());
-	}
-
-	/**
-	 * Refreshes the {@link #mAdapter}'s {@link List<Episode>}.
-	 *
-	 * @param name
-	 *     the {@link Channel} name to query.
-	 */
-	private void refresh(@NonNull final String name) {
-		ParseQuery.getQuery(Episode.class)
-				.whereEqualTo(Episode.FEED_TITLE, name)
-				.orderByDescending(Episode.PUB_DATE)
-				.fromLocalDatastore()
-				.setLimit(LIMIT)
-				.findInBackground((episodes, e) -> {
-					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
-						mAdapter.setItems(episodes);
-					}
-				});
-
-		ParseQuery.getQuery(Episode.class)
-				.whereEqualTo(Episode.FEED_TITLE, name)
-				.orderByDescending(Episode.PUB_DATE)
-				.setLimit(LIMIT)
-				.findInBackground((episodes, e) -> {
-					if (e == null && mAdapter != null && episodes != null && !episodes.isEmpty()) {
-						ParseObject.pinAllInBackground(episodes);
-						mAdapter.setItems(episodes);
-					} else if (e != null) {
-						AppUtil.toast(this, e.getLocalizedMessage());
-					}
-				});
-	}
-
-	/**
-	 * Sends an event when an {@link Episode} is selected.
-	 *
-	 * @param episodeTitle
-	 *      the title of the {@link Episode} selected.
-	 */
-	private void trackEpisodeSelected(@NonNull final String episodeTitle) {
-		final Tracker t = ((SmodrApplication) getApplication()).getTracker();
-		t.send(new HitBuilders.EventBuilder()
-				.setCategory(Episode.class.getSimpleName().toUpperCase())
-				.setAction(ACTION_SELECTED)
-				.setLabel(episodeTitle)
-				.build());
 	}
 }

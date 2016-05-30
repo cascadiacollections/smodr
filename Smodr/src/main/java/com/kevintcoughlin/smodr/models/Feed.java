@@ -5,8 +5,8 @@ import com.google.auto.value.AutoValue;
 import java.util.List;
 
 @AutoValue
-abstract class Feed {
-    abstract String title();
-    abstract String url();
-    abstract List<Item> items();
+public abstract class Feed {
+    public abstract String title();
+    public abstract String url();
+    public abstract List<Item> items();
 }

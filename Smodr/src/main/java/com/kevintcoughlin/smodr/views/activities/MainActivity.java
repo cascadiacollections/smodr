@@ -14,18 +14,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import com.facebook.appevents.AppEventsLogger;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.SmodrApplication;
-import com.kevintcoughlin.smodr.models.Channel;
+import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * The primary activity that displays a {@link ChannelsFragment}.
@@ -33,10 +31,6 @@ import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
  * @author kevincoughlin
  */
 public final class MainActivity extends AppCompatActivity implements ChannelsFragment.OnChannelSelected {
-	/**
-	 * Action name for selecting an item.
-	 */
-	public static final String ACTION_SELECTED = "SELECTED";
 	/**
 	 * Displays the app name and menu actions.
 	 */
@@ -73,29 +67,16 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		AppEventsLogger.activateApp(this);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		AppEventsLogger.deactivateApp(this);
-	}
-
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(mNetworkStateReceiver);
 	}
 
 	@Override
-	public void onChannelSelected(@NonNull final Channel channel) {
-		trackChannelSelected(channel);
+	public void onChannelSelected(@NonNull final Item item) {
 		final Intent intent = new Intent(this, DetailActivity.class);
-		intent.putExtra(DetailActivity.EXTRA_NAME, channel.getTitle());
-		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, channel.getImageUrl());
+		intent.putExtra(DetailActivity.EXTRA_NAME, item.title());
+		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, item.image().url());
 		startActivity(intent);
     }
 
@@ -111,15 +92,6 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		getSupportFragmentManager().popBackStack();
 		return super.onNavigateUp();
 	}
-
-    private void trackChannelSelected(@NonNull final Channel channel) {
-	    final Tracker t = ((SmodrApplication) getApplication()).getTracker();
-	    t.send(new HitBuilders.EventBuilder()
-			    .setCategory(Channel.class.getSimpleName().toUpperCase())
-			    .setAction(ACTION_SELECTED)
-			    .setLabel(channel.getTitle())
-			    .build());
-    }
 
 	private void onNetworkConnected() {
 		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_connected);

@@ -9,15 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
-import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.utils.AppUtil;
-import com.kevintcoughlin.smodr.viewholders.ChannelViewBinder;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.kevintcoughlin.smodr.models.Item;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A fragment that displays a collection of channels.
@@ -51,9 +49,9 @@ public final class ChannelsFragment extends TrackedFragment {
 			mListener = ((OnChannelSelected) context);
 		}
 		mAdapter = new BinderAdapter(context);
-		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Channel.class);
+//		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Item.class);
 		if (mListener != null) {
-			mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Channel) item));
+			mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Item) item));
 		}
 	}
 
@@ -75,26 +73,9 @@ public final class ChannelsFragment extends TrackedFragment {
 		super.onViewCreated(view, savedInstanceState);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
 		mRecyclerView.setAdapter(mAdapter);
-
-		ParseQuery.getQuery(Channel.class).setLimit(1000).fromLocalDatastore().findInBackground((objects, e) -> {
-			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
-				mAdapter.setItems(objects);
-			} else if (e != null) {
-				AppUtil.toast(getContext(), e.getLocalizedMessage());
-			}
-		});
-
-		ParseQuery.getQuery(Channel.class).setLimit(1000).findInBackground((objects, e) -> {
-			if (e == null && mAdapter != null && objects != null && !objects.isEmpty()) {
-				ParseObject.pinAllInBackground(objects);
-				mAdapter.setItems(objects);
-			} else if (e != null) {
-				AppUtil.toast(getContext(), e.getLocalizedMessage());
-			}
-		});
 	}
 
 	public interface OnChannelSelected {
-		void onChannelSelected(@NonNull final Channel o);
+		void onChannelSelected(@NonNull final Item item);
 	}
 }
