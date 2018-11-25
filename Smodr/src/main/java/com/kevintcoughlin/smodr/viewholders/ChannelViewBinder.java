@@ -10,7 +10,7 @@ public final class ChannelViewBinder implements BinderAdapter.Binder<Channel, Ch
 	@Override
 	public void bind(@NonNull final Channel model, @NonNull final ChannelViewHolder viewHolder) {
 		Glide.with(viewHolder.itemView.getContext())
-				.load(model.getImageUrl())
+				.load(model.imageUrl())
 				.fitCenter()
 				.into(viewHolder.mImage);
 	}
