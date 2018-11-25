@@ -6,12 +6,13 @@ buildscript {
         mavenCentral()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'io.fabric.tools:gradle:1.19.2'
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
@@ -24,8 +25,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '24.0.0 rc4'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,11 +35,8 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
     }
 
     buildTypes {
@@ -69,13 +67,13 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.1'
     compile 'com.google.android.gms:play-services-analytics:9.0.1'
     compile 'com.google.android.gms:play-services-ads:9.0.1'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:gridlayout-v7:23.4.0'
-    compile 'com.android.support:mediarouter-v7:23.4.0'
-    compile 'com.android.support:palette-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:support-v4:27.1.1'
+    compile 'com.android.support:gridlayout-v7:27.1.1'
+    compile 'com.android.support:mediarouter-v7:27.1.1'
+    compile 'com.android.support:palette-v7:27.1.1'
+    compile 'com.android.support:recyclerview-v7:27.1.1'
+    compile 'com.android.support:design:27.1.1'
     compile 'io.reactivex:rxjava:1.0.2'
     compile 'io.reactivex:rxandroid:1.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'

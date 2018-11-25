@@ -4,9 +4,10 @@ project.ext.preDexLibs = !project.hasProperty('disablePreDex')
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:3.0.0'
     }
 }
@@ -14,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
