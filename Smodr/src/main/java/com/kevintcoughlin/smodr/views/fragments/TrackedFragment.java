@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.kevintcoughlin.smodr.SmodrApplication;
 
 /**
  * Fragment that tracks analytics.
@@ -31,8 +28,8 @@ public abstract class TrackedFragment extends Fragment {
 	 * using the @{link #TAG} as the screen name.
 	 */
 	private void track() {
-		final Tracker t = ((SmodrApplication) getActivity().getApplication()).getTracker();
-		t.setScreenName(TAG);
-		t.send(new HitBuilders.AppViewBuilder().build());
+//		final Tracker t = ((SmodrApplication) getActivity().getApplication()).getTracker();
+//		t.setScreenName(TAG);
+//		t.send(new HitBuilders.AppViewBuilder().build());
 	}
 }
