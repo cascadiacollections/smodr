@@ -9,11 +9,11 @@ import com.kevintcoughlin.smodr.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ChannelViewHolder extends RecyclerView.ViewHolder {
+final class ChannelViewHolder extends RecyclerView.ViewHolder {
 	@Bind(R.id.image)
 	SimpleDraweeView mImage;
 
-	public ChannelViewHolder(View itemView) {
+	ChannelViewHolder(View itemView) {
 		super(itemView);
 		ButterKnife.bind(this, itemView);
 	}

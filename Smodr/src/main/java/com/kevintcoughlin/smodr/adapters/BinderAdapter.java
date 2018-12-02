@@ -80,7 +80,7 @@ public final class BinderAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		return mItems.size();
 	}
 
-	public Object getItemByPosition(final int position) {
+	private Object getItemByPosition(final int position) {
 		return mItems.get(position);
 	}
 

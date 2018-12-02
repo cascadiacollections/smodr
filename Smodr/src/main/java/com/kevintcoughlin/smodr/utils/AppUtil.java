@@ -61,12 +61,8 @@ public final class AppUtil {
 		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_SHORT).show();
 	}
 
-	public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res, final int length) {
-		Snackbar.make(parent, res, length).show();
-	}
-
 	public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res) {
-		snackbar(parent, res, Snackbar.LENGTH_SHORT);
+		Snackbar.make(parent, res, Snackbar.LENGTH_SHORT).show();
 	}
 
 	/**
