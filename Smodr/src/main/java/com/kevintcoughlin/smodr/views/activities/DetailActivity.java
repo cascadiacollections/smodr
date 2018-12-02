@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.views.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,9 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 import com.kevintcoughlin.smodr.models.Item;
@@ -63,8 +63,8 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 		final Intent intent = getIntent();
 		if (intent != null) {
 			mChannelName = intent.getStringExtra(EXTRA_NAME);
-			final ImageView imageView = ButterKnife.findById(this, R.id.backdrop);
-			Glide.with(this).load(intent.getStringExtra(EXTRA_IMAGE_URL)).centerCrop().into(imageView);
+			final SimpleDraweeView imageView = ButterKnife.findById(this, R.id.backdrop);
+			imageView.setImageURI(Uri.parse(intent.getStringExtra(EXTRA_IMAGE_URL)));
 		}
 
 		setSupportActionBar(mToolbar);
