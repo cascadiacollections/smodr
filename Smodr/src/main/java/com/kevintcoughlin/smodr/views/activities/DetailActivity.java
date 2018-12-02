@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,10 +45,6 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 	 */
 	@Bind(R.id.toolbar) Toolbar mToolbar;
 	/**
-	 * Contains a {@link List<Item>} for {@link #mRecyclerView}.
-	 */
-	@Nullable private BinderAdapter mAdapter;
-	/**
 	 * The display title.
 	 */
 	@NonNull private String mChannelName = "Smodcast";
@@ -75,7 +70,7 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 		final CollapsingToolbarLayout collapsingToolbar = ButterKnife.findById(this, R.id.collapsing_toolbar);
 		collapsingToolbar.setTitle(mChannelName);
 
-		mAdapter = new BinderAdapter(this);
+		BinderAdapter mAdapter = new BinderAdapter(this);
 //		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Item.class);
 		mAdapter.setOnItemClickListener(this);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

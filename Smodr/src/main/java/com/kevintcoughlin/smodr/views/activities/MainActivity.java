@@ -94,7 +94,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
 	private void onNetworkConnected() {
-		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_connected);
+		AppUtil.snackbar(findViewById(R.id.coordinator_layout), R.string.on_network_connected);
 	}
 
 	private void onNetworkDisconnected() {
@@ -111,14 +111,13 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		private boolean mLastConnectivityState = true;
 
 		public void onReceive(Context context, Intent intent) {
-			if (intent == null || context == null) {
+			if ((intent == null) || (context == null)) {
 				return;
-			} else if (!intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+			} else if (!ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
 				return;
 			}
-			if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && intent.getExtras() != null) {
-				final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context
-						.CONNECTIVITY_SERVICE);
+			if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && (intent.getExtras() != null)) {
+				final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
 				final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 				if (networkInfo != null
 						&& (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
@@ -140,7 +139,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 		}
 
 		private boolean isNetworkAvailable(final Context context) {
-			final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
 			final NetworkInfo netInfo = cm.getActiveNetworkInfo();
 			return netInfo != null && netInfo.isConnected();
 		}

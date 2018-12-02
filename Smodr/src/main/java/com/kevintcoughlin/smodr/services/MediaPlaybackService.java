@@ -48,10 +48,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 
-		if (intent != null && intent.getAction() == null) {
+		if ((intent != null) && (intent.getAction() == null)) {
 			stopPlayback();
 		} else if (intent != null) {
-			if (intent.getAction().equals(ACTION_PLAY)) {
+			if (ACTION_PLAY.equals(intent.getAction())) {
 				final String url = intent.getStringExtra(INTENT_EPISODE_URL);
 				mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
 				mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
@@ -125,7 +125,9 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		final NotificationManager mNotificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		mNotificationManager.cancel(NOTIFICATION_ID);
+		if (mNotificationManager != null) {
+			mNotificationManager.cancel(NOTIFICATION_ID);
+		}
 		stopForeground(true);
 	}
 
@@ -135,7 +137,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 		final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		final NotificationCompat.Action action = new NotificationCompat.Action.Builder(
 				getIcon(),
-				getTitle(),
+				getString(getTitle()),
 				mPendingIntent).build();
 
 		final NotificationCompat.Builder mBuilder =
@@ -162,7 +164,9 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
 		final Notification notification = mBuilder.build();
 
-		mNotificationManager.notify(NOTIFICATION_ID, notification);
+		if (mNotificationManager != null) {
+			mNotificationManager.notify(NOTIFICATION_ID, notification);
+		}
 		startForeground(NOTIFICATION_ID, notification);
 	}
 
@@ -181,10 +185,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 	}
 
 	@StringRes
-	private String getTitle() {
+	private int getTitle() {
 		return (mMediaPlayer != null && mMediaPlayer.isPlaying())
-				? getString(R.string.notification_action_pause)
-				: getString(R.string.notification_action_play);
+				? R.string.notification_action_pause
+				: R.string.notification_action_play;
 	}
 
 	private String getAction() {
