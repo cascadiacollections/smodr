@@ -82,9 +82,9 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
 		final Item episode = (Item) item;
 		final Intent intent = new Intent(this, MediaPlaybackService.class);
 		intent.setAction(MediaPlaybackService.ACTION_PLAY);
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.enclosures().get(0).url());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.title());
-		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.description());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.getEnclosures().get(0).getUrl());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.getTitle());
+		intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.getDescription());
 		startService(intent);
 	}
 }

@@ -33,7 +33,7 @@ public final class BinderAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 		final View view = mLayoutInflater.inflate(viewType, null);
 		return mViewTypesLayoutMap.get(viewType).getBinder().createViewHolder(view);
 	}
@@ -41,7 +41,7 @@ public final class BinderAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	@Override
 	public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 		final Object object = getItemByPosition(position);
-		mViewTypes.get(object.getClass().getName()).getBinder().bind(object, holder);
+		//mViewTypes.get(object.getClass().getName()).getBinder().bind(object, holder);
 		if (mListener != null) {
 			holder.itemView.setOnClickListener(v -> {
 				if (mListener != null) {

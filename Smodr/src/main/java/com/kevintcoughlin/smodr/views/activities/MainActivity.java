@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -75,8 +74,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	@Override
 	public void onChannelSelected(@NonNull final Item item) {
 		final Intent intent = new Intent(this, DetailActivity.class);
-		intent.putExtra(DetailActivity.EXTRA_NAME, item.title());
-		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, item.image().url());
+		intent.putExtra(DetailActivity.EXTRA_NAME, item.getTitle());
+		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, item.getImage().getUrl());
 		startActivity(intent);
     }
 
@@ -98,7 +97,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	}
 
 	private void onNetworkDisconnected() {
-		AppUtil.snackbar((ViewGroup) findViewById(R.id.coordinator_layout), R.string.on_network_disconnected);
+		AppUtil.snackbar(findViewById(R.id.coordinator_layout), R.string.on_network_disconnected);
 	}
 
 	/**

@@ -69,7 +69,7 @@ public final class ChannelsFragment extends TrackedFragment {
 		return view;
 	}
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
 		mRecyclerView.setAdapter(mAdapter);
