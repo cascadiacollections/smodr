@@ -3,23 +3,30 @@ package com.kevintcoughlin.smodr.models;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import javax.annotation.Nullable;
+
 @Root(name="item", strict = false)
 public class Item {
-    @Element
+    @Element(required = false)
     public String guid;
 
     @Element(required = false)
+    @Nullable
     public String title;
 
-    @Element
+    @Element(required = false)
+    @Nullable
     public String pubDate;
 
-    @Element
+    @Element(required = false)
+    @Nullable
     public String link;
 
-    @Element
+    @Element(required = false)
+    @Nullable
     public String description;
 
-    @Element
+    @Element(required = false)
+    @Nullable
     public Enclosure enclosure;
 }

@@ -97,7 +97,7 @@ public final class ChannelsFragment extends TrackedFragment {
 
 			@Override
 			public void onFailure(Call<Feed> call, Throwable t) {
-
+				System.out.println(t.getMessage());
 			}
 		});
 	}
