@@ -12,10 +12,17 @@ import android.view.ViewGroup;
 
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.adapters.BinderAdapter;
+import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.services.FeedService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * A fragment that displays a collection of channels.
@@ -73,6 +80,26 @@ public final class ChannelsFragment extends TrackedFragment {
 		super.onViewCreated(view, savedInstanceState);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
 		mRecyclerView.setAdapter(mAdapter);
+
+		final Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl("https://www.smodcast.com/")
+				.addConverterFactory(SimpleXmlConverterFactory.create())
+				.build();
+
+		final FeedService service = retrofit.create(FeedService.class);
+		final Call<Feed> feed = service.feed("http://feeds.feedburner.com/SModcasts");
+		feed.enqueue(new Callback<Feed>() {
+			@Override
+			public void onResponse(Call<Feed> call, Response<Feed> response) {
+				Feed feed = response.body();
+				System.out.println(feed.channel.title);
+			}
+
+			@Override
+			public void onFailure(Call<Feed> call, Throwable t) {
+
+			}
+		});
 	}
 
 	public interface OnChannelSelected {

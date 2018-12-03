@@ -74,8 +74,8 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 	@Override
 	public void onChannelSelected(@NonNull final Item item) {
 		final Intent intent = new Intent(this, DetailActivity.class);
-		intent.putExtra(DetailActivity.EXTRA_NAME, item.getTitle());
-		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, item.getImage().getUrl());
+		intent.putExtra(DetailActivity.EXTRA_NAME, item.title);
+		intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, "foo"); // @TODO: Cleanup
 		startActivity(intent);
     }
 

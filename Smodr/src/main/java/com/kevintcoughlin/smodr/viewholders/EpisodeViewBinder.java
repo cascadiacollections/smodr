@@ -8,8 +8,8 @@ import com.kevintcoughlin.smodr.models.Item;
 public final class EpisodeViewBinder implements BinderAdapter.Binder<Item, EpisodeViewHolder> {
 	@Override
 	public void bind(@NonNull Item model, @NonNull EpisodeViewHolder viewHolder) {
-		viewHolder.mTitle.setText(model.getTitle());
-		viewHolder.mDescription.setText(model.getDescription());
+		viewHolder.mTitle.setText(model.title);
+		viewHolder.mDescription.setText(model.description);
 	}
 
 	@NonNull

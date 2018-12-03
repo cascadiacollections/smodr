@@ -53,6 +53,11 @@ android {
     }
 }
 
+configurations {
+    compile.exclude group: 'stax'
+    compile.exclude group: 'xpp3'
+}
+
 dependencies {
     api('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true
@@ -81,8 +86,7 @@ dependencies {
     api 'com.squareup.okhttp:okhttp:2.5.0'
     api 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     api 'com.squareup.retrofit:retrofit:1.6.0'
-    api 'com.squareup.retrofit2:converter-jaxb:2.5.0'
-    api 'com.android.support:support-annotations:28.0.0'
+    api 'com.squareup.retrofit2:converter-simplexml:2.5.0'
     api 'com.google.firebase:firebase-core:16.0.5'
     api 'com.google.firebase:firebase-database:16.0.5'
     api 'com.google.firebase:firebase-crash:16.2.1'

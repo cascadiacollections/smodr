@@ -9,7 +9,7 @@ import com.kevintcoughlin.smodr.models.Channel;
 public final class ChannelViewBinder implements BinderAdapter.Binder<Channel, ChannelViewHolder> {
 	@Override
 	public void bind(@NonNull final Channel model, @NonNull final ChannelViewHolder viewHolder) {
-		viewHolder.mImage.setImageURI(model.getImageUrl());
+		//viewHolder.mImage.setImageURI(model.image.url);
 	}
 
 	@NonNull
