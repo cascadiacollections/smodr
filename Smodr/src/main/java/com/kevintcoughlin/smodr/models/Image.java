@@ -4,7 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Root(name="image", strict = false)
+@Root(name = "image", strict = false)
 public class Image {
     @Element(required = false)
     public String title;

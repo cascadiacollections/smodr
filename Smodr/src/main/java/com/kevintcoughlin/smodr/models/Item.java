@@ -5,7 +5,7 @@ import org.simpleframework.xml.Root;
 
 import javax.annotation.Nullable;
 
-@Root(name="item", strict = false)
+@Root(name = "item", strict = false)
 public class Item {
     @Element(required = false)
     public String guid;

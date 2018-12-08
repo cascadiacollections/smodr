@@ -10,13 +10,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 class EpisodeViewHolder extends RecyclerView.ViewHolder {
-	@Bind(R.id.title)
-	TextView mTitle;
-	@Bind(R.id.description)
-	TextView mDescription;
+    @Bind(R.id.title)
+    TextView mTitle;
+    @Bind(R.id.description)
+    TextView mDescription;
 
-	EpisodeViewHolder(final View view) {
-		super(view);
-		ButterKnife.bind(this, view);
-	}
+    EpisodeViewHolder(final View view) {
+        super(view);
+        ButterKnife.bind(this, view);
+    }
 }

@@ -10,11 +10,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 final class ChannelViewHolder extends RecyclerView.ViewHolder {
-	@Bind(R.id.image)
-	SimpleDraweeView mImage;
+    @Bind(R.id.image)
+    SimpleDraweeView mImage;
 
-	ChannelViewHolder(View itemView) {
-		super(itemView);
-		ButterKnife.bind(this, itemView);
-	}
+    ChannelViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+    }
 }

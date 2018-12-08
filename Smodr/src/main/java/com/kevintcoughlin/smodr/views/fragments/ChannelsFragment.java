@@ -30,84 +30,85 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
  * @author kevincoughlin
  */
 public final class ChannelsFragment extends TrackedFragment {
-	/**
-	 * Screen name for this view.
-	 */
-	@NonNull
-	public static final String TAG = ChannelsFragment.class.getSimpleName();
-	/**
-	 * The number of columns to display in the {@link #mRecyclerView}.
-	 */
-	private static final int NUM_COLUMNS = 4;
+    /**
+     * Screen name for this view.
+     */
+    @NonNull
+    public static final String TAG = ChannelsFragment.class.getSimpleName();
+    /**
+     * The number of columns to display in the {@link #mRecyclerView}.
+     */
+    private static final int NUM_COLUMNS = 4;
 
-	@Nullable
-	private BinderAdapter mAdapter;
+    @Nullable
+    private BinderAdapter mAdapter;
 
-	@Nullable
-	private OnChannelSelected mListener;
+    @Nullable
+    private OnChannelSelected mListener;
 
-	@Bind(R.id.list)
-	RecyclerView mRecyclerView;
+    @Bind(R.id.list)
+    RecyclerView mRecyclerView;
 
-	@Override
-	public void onAttach(final Context context) {
-		super.onAttach(context);
-		if (context instanceof OnChannelSelected) {
-			mListener = ((OnChannelSelected) context);
-		}
-		mAdapter = new BinderAdapter(context);
+    @Override
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+        if (context instanceof OnChannelSelected) {
+            mListener = ((OnChannelSelected) context);
+        }
+        mAdapter = new BinderAdapter(context);
 //		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Item.class);
-		if (mListener != null) {
-			mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Item) item));
-		}
-	}
+        if (mListener != null) {
+            mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Item) item));
+        }
+    }
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
-		ButterKnife.bind(this, view);
-		return view;
-	}
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
-		mRecyclerView.setAdapter(mAdapter);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
 
-		final Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl("https://www.smodcast.com/")
-				.addConverterFactory(SimpleXmlConverterFactory.create())
-				.build();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
+        mRecyclerView.setAdapter(mAdapter);
 
-		final FeedService service = retrofit.create(FeedService.class);
-		final Call<Feed> feed = service.feed("http://feeds.feedburner.com/SModcasts");
-		feed.enqueue(new Callback<Feed>() {
-			@Override
-			public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
-				final Feed feed = response.body();
-				if (feed != null) {
-					System.out.println(feed.channel.title);
-					if (mAdapter != null) {
-						mAdapter.setItems((feed.channel.item));
-					}
-				}
-			}
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.smodcast.com/")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
 
-			@Override
-			public void onFailure(@NonNull Call<Feed> call, Throwable t) {
-				System.out.println(t.getMessage());
-			}
-		});
-	}
+        final FeedService service = retrofit.create(FeedService.class);
+        final Call<Feed> feed = service.feed("http://feeds.feedburner.com/SModcasts");
+        feed.enqueue(new Callback<Feed>() {
+            @Override
+            public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
+                final Feed feed = response.body();
+                if (feed != null) {
+                    System.out.println(feed.channel.title);
+                    if (mAdapter != null) {
+                        mAdapter.setItems((feed.channel.item));
+                    }
+                }
+            }
 
-	public interface OnChannelSelected {
-		void onChannelSelected(@NonNull final Item item);
-	}
+            @Override
+            public void onFailure(@NonNull Call<Feed> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
+    public interface OnChannelSelected {
+        void onChannelSelected(@NonNull final Item item);
+    }
 }

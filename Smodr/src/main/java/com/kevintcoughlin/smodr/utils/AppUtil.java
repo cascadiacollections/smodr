@@ -15,67 +15,59 @@ import android.widget.Toast;
  * @author kevincoughlin
  */
 public final class AppUtil {
-	/**
-	 * Returns a {@link String[]} for the given resource id.
-	 *
-	 * @param context
-	 * 		the context to use.
-	 * @param id
-	 * 		the resource id to fetch.
-	 * @return the {@link String[]} for the given resource id.
-	 */
-	public static String[] getStrings(@Nullable final Context context, final int id) {
-		if (context == null) {
-			return new String[] {};
-		}
-		return context.getResources().getStringArray(id);
-	}
+    /**
+     * Returns a {@link String[]} for the given resource id.
+     *
+     * @param context the context to use.
+     * @param id      the resource id to fetch.
+     * @return the {@link String[]} for the given resource id.
+     */
+    public static String[] getStrings(@Nullable final Context context, final int id) {
+        if (context == null) {
+            return new String[]{};
+        }
+        return context.getResources().getStringArray(id);
+    }
 
-	/**
-	 * Displays a {@link Toast} with the given {@link String} message.
-	 *
-	 * @param context
-	 *      the context to use.
-	 * @param message
-	 *      the {@link String} message to display.
-	 */
-	public static void toast(@Nullable final Context context, @NonNull final String message) {
-		if (context == null) {
-			return;
-		}
-		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-	}
+    /**
+     * Displays a {@link Toast} with the given {@link String} message.
+     *
+     * @param context the context to use.
+     * @param message the {@link String} message to display.
+     */
+    public static void toast(@Nullable final Context context, @NonNull final String message) {
+        if (context == null) {
+            return;
+        }
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
 
-	/**
-	 * Displays a {@link Toast} with the given string resource identifier's contents.
-	 *
-	 * @param context
-	 *      the context to use.
-	 * @param id
-	 *      the string resource identifier to use.
-	 */
-	public static void toast(@Nullable final Context context, @StringRes final int id) {
-		if (context == null) {
-			return;
-		}
-		Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_SHORT).show();
-	}
+    /**
+     * Displays a {@link Toast} with the given string resource identifier's contents.
+     *
+     * @param context the context to use.
+     * @param id      the string resource identifier to use.
+     */
+    public static void toast(@Nullable final Context context, @StringRes final int id) {
+        if (context == null) {
+            return;
+        }
+        Toast.makeText(context, context.getResources().getText(id), Toast.LENGTH_SHORT).show();
+    }
 
-	public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res) {
-		Snackbar.make(parent, res, Snackbar.LENGTH_SHORT).show();
-	}
+    public static void snackbar(@NonNull final ViewGroup parent, @StringRes final int res) {
+        Snackbar.make(parent, res, Snackbar.LENGTH_SHORT).show();
+    }
 
-	/**
-	 * Toggle a {@link View}'s visibility.
-	 *
-	 * @param v
-	 *      the {@link View} to manipulate.
-	 * @param visible
-	 *      if true then {@link View#VISIBLE} else {@link View#INVISIBLE}.
-	 */
-	public static void setVisible(@Nullable View v, final boolean visible) {
-		if (v != null) {
-			v.setVisibility(visible ? View.VISIBLE : View.GONE);
-		}
-	}
+    /**
+     * Toggle a {@link View}'s visibility.
+     *
+     * @param v       the {@link View} to manipulate.
+     * @param visible if true then {@link View#VISIBLE} else {@link View#INVISIBLE}.
+     */
+    public static void setVisible(@Nullable View v, final boolean visible) {
+        if (v != null) {
+            v.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
 }
