@@ -90,13 +90,18 @@ public final class ChannelsFragment extends TrackedFragment {
 		final Call<Feed> feed = service.feed("http://feeds.feedburner.com/SModcasts");
 		feed.enqueue(new Callback<Feed>() {
 			@Override
-			public void onResponse(Call<Feed> call, Response<Feed> response) {
-				Feed feed = response.body();
-				System.out.println(feed.channel.title);
+			public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
+				final Feed feed = response.body();
+				if (feed != null) {
+					System.out.println(feed.channel.title);
+					if (mAdapter != null) {
+						mAdapter.setItems((feed.channel.item));
+					}
+				}
 			}
 
 			@Override
-			public void onFailure(Call<Feed> call, Throwable t) {
+			public void onFailure(@NonNull Call<Feed> call, Throwable t) {
 				System.out.println(t.getMessage());
 			}
 		});
