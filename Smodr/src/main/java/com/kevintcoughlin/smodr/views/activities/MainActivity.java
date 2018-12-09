@@ -17,13 +17,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.utils.AppUtil;
-import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
+import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * The primary activity that displays a {@link ChannelsFragment}.
+ * The primary activity that displays a {@link EpisodesFragment}.
  *
  * @author kevincoughlin
  */
@@ -59,9 +59,9 @@ public final class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
-            final ChannelsFragment fragment = new ChannelsFragment();
+            final EpisodesFragment fragment = new EpisodesFragment();
             fm.beginTransaction()
-                    .add(R.id.container, fragment, ChannelsFragment.TAG)
+                    .add(R.id.container, fragment, EpisodesFragment.TAG)
                     .commit();
         }
     }
