@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.adapters.BinderAdapter;
+import com.kevintcoughlin.smodr.adapters.ItemsAdapter;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
@@ -30,65 +31,40 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
  * @author kevincoughlin
  */
 public final class ChannelsFragment extends TrackedFragment {
-    /**
-     * Screen name for this view.
-     */
     @NonNull
     public static final String TAG = ChannelsFragment.class.getSimpleName();
-    /**
-     * The number of columns to display in the {@link #mRecyclerView}.
-     */
-    private static final int NUM_COLUMNS = 4;
 
     @Nullable
-    private BinderAdapter mAdapter;
-
-    @Nullable
-    private OnChannelSelected mListener;
+    private ItemsAdapter mAdapter = new ItemsAdapter();
 
     @Bind(R.id.list)
-    RecyclerView mRecyclerView;
-
-    @Override
-    public void onAttach(final Context context) {
-        super.onAttach(context);
-        if (context instanceof OnChannelSelected) {
-            mListener = ((OnChannelSelected) context);
-        }
-        mAdapter = new BinderAdapter(context);
-//		mAdapter.registerViewType(R.layout.item_grid_channel_layout, new ChannelViewBinder(), Item.class);
-        if (mListener != null) {
-            mAdapter.setOnItemClickListener(item -> mListener.onChannelSelected((Item) item));
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+    public RecyclerView mRecyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_COLUMNS));
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.smodcast.com/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
-
         final FeedService service = retrofit.create(FeedService.class);
         final Call<Feed> feed = service.feed("https://feeds.feedburner.com/SModcasts");
+
         feed.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
@@ -106,9 +82,5 @@ public final class ChannelsFragment extends TrackedFragment {
                 System.out.println(t.getMessage());
             }
         });
-    }
-
-    public interface OnChannelSelected {
-        void onChannelSelected(@NonNull final Item item);
     }
 }

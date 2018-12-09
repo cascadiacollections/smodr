@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.adapters.BinderAdapter;
 import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ import butterknife.ButterKnife;
  *
  * @author kevincoughlin
  */
-public final class DetailActivity extends AppCompatActivity implements BinderAdapter.OnItemClickListener {
+public final class DetailActivity extends AppCompatActivity {
     /**
      * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s title.
      */
@@ -73,21 +70,21 @@ public final class DetailActivity extends AppCompatActivity implements BinderAda
         final CollapsingToolbarLayout collapsingToolbar = ButterKnife.findById(this, R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(mChannelName);
 
-        BinderAdapter mAdapter = new BinderAdapter(this);
+//        BinderAdapter mAdapter = new BinderAdapter(this);
 //		mAdapter.registerViewType(R.layout.item_list_episode_layout, new EpisodeViewBinder(), Item.class);
-        mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter.setOnItemClickListener(this);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onItemClick(@NonNull Object item) {
-        final Item episode = (Item) item;
-        final Intent intent = new Intent(this, MediaPlaybackService.class);
-        intent.setAction(MediaPlaybackService.ACTION_PLAY);
-        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.enclosure.url);
-        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.title);
-        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.description);
-        startService(intent);
-    }
+//    @Override
+//    public void onItemClick(@NonNull Object item) {
+//        final Item episode = (Item) item;
+//        final Intent intent = new Intent(this, MediaPlaybackService.class);
+//        intent.setAction(MediaPlaybackService.ACTION_PLAY);
+//        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, episode.enclosure.url);
+//        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, episode.title);
+//        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, episode.description);
+//        startService(intent);
+//    }
 }

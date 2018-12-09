@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 
@@ -29,7 +27,7 @@ import butterknife.ButterKnife;
  *
  * @author kevincoughlin
  */
-public final class MainActivity extends AppCompatActivity implements ChannelsFragment.OnChannelSelected {
+public final class MainActivity extends AppCompatActivity {
     /**
      * Displays the app name and menu actions.
      */
@@ -73,14 +71,14 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
         super.onDestroy();
         unregisterReceiver(mNetworkStateReceiver);
     }
-
-    @Override
-    public void onChannelSelected(@NonNull final Item item) {
-        final Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_NAME, item.title);
-        intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, "foo"); // @TODO: Cleanup
-        startActivity(intent);
-    }
+//
+//    @Override
+//    public void onChannelSelected(@NonNull final Item item) {
+//        final Intent intent = new Intent(this, DetailActivity.class);
+//        intent.putExtra(DetailActivity.EXTRA_NAME, item.title);
+//        intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, "foo"); // @TODO: Cleanup
+//        startActivity(intent);
+//    }
 
     @Override
     public void setTitle(final CharSequence title) {

@@ -4,30 +4,33 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.kevintcoughlin.smodr.viewholders.Binder;
+
+import java.util.ArrayList;
 import java.util.List;
-
-interface Binder<T, VH extends RecyclerView.ViewHolder> {
-    void bind(@NonNull final T model, @NonNull final VH viewHolder);
-
-    VH createViewHolder();
-}
 
 public class BinderRecyclerAdapter <T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     private List<T> items;
     private Binder<T, VH> binderViewHolder;
 
+    BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
+        super();
+        this.items = new ArrayList<>();
+        this.binderViewHolder = binderViewHolder;
+    }
+
     public void setItems(List<T> items) {
         this.items = items;
     }
 
-    public void setBinderViewHolder(@NonNull final Binder<T, VH> binderViewHolder) {
-        this.binderViewHolder = binderViewHolder;
+    public T getItem(int index) {
+        return items.get(index);
     }
 
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
-        return binderViewHolder.createViewHolder();
+        return binderViewHolder.createViewHolder(viewGroup);
     }
 
     @Override
