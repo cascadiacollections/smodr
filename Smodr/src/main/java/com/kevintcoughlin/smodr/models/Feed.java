@@ -9,6 +9,6 @@ public class Feed {
     @Element
     public Channel channel;
 
-    @Attribute
+    @Attribute(required = false)
     public String version;
 }

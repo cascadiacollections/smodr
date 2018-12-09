@@ -88,7 +88,7 @@ public final class ChannelsFragment extends TrackedFragment {
                 .build();
 
         final FeedService service = retrofit.create(FeedService.class);
-        final Call<Feed> feed = service.feed("http://feeds.feedburner.com/SModcasts");
+        final Call<Feed> feed = service.feed("https://feeds.feedburner.com/SModcasts");
         feed.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {

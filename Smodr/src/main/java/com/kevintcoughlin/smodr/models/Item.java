@@ -7,8 +7,9 @@ import javax.annotation.Nullable;
 
 @Root(name = "item", strict = false)
 public class Item {
-    @Element(required = false)
-    public String guid;
+//    @Element(required = false)
+//    @Nullable
+//    public String guid;
 
     @Element(required = false)
     @Nullable

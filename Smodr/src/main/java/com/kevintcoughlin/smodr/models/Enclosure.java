@@ -3,7 +3,9 @@ package com.kevintcoughlin.smodr.models;
 import android.support.annotation.Nullable;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
 
+@Root(name = "enclosure", strict = false)
 public class Enclosure {
     @Attribute(required = false)
     @Nullable
