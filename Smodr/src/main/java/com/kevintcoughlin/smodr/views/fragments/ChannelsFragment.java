@@ -73,6 +73,7 @@ public final class ChannelsFragment extends TrackedFragment {
                     System.out.println(feed.channel.title);
                     if (mAdapter != null) {
                         mAdapter.setItems((feed.channel.item));
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
             }
