@@ -12,16 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.adapters.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.adapters.ItemsAdapter;
+import com.kevintcoughlin.smodr.models.Item;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ChannelsFragment extends Fragment {
+public final class ChannelsFragment extends Fragment implements BinderRecyclerAdapter.OnClick<Item> {
     private static final int NUM_OF_COLUMNS = 2;
 
     @NonNull
-    private final RecyclerView.Adapter mAdapter = new ItemsAdapter();
+    private final RecyclerView.Adapter mAdapter = new ItemsAdapter(this);
 
     @Bind(R.id.list)
     RecyclerView mRecyclerView;
@@ -43,5 +45,10 @@ public final class ChannelsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), NUM_OF_COLUMNS));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onClick(Item item) {
+
     }
 }

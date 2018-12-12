@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.adapters.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.adapters.ItemsAdapter;
 import com.kevintcoughlin.smodr.models.Feed;
+import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
 
 import butterknife.Bind;
@@ -23,12 +25,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
-public final class EpisodesFragment extends Fragment implements Callback<Feed> {
+public final class EpisodesFragment extends Fragment implements Callback<Feed>,BinderRecyclerAdapter.OnClick<Item> {
     @NonNull
     public static final String TAG = EpisodesFragment.class.getSimpleName();
 
     @NonNull
-    private final ItemsAdapter mAdapter = new ItemsAdapter();
+    private final ItemsAdapter mAdapter = new ItemsAdapter(this);
 
     @Bind(R.id.list)
     RecyclerView mRecyclerView;
@@ -71,6 +73,11 @@ public final class EpisodesFragment extends Fragment implements Callback<Feed> {
 
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
+
+    }
+
+    @Override
+    public void onClick(@NonNull final Item item) {
 
     }
 }

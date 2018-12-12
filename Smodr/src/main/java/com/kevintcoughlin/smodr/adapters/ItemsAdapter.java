@@ -27,10 +27,23 @@ class EpisodeViewHolder extends RecyclerView.ViewHolder {
 }
 
 class EpisodeView implements Binder<Item, EpisodeViewHolder> {
+
+    private BinderRecyclerAdapter.OnClick<Item> mOnClickListener;
+
+    EpisodeView(BinderRecyclerAdapter.OnClick<Item> onClick) {
+        this.mOnClickListener = onClick;
+    }
+
     @Override
-    public void bind(@NonNull Item model, @NonNull EpisodeViewHolder viewHolder) {
+    public void bind(@NonNull final Item model, @NonNull final EpisodeViewHolder viewHolder) {
         viewHolder.mTitle.setText(model.title);
         viewHolder.mDescription.setText(model.description);
+
+        viewHolder.itemView.setOnClickListener(v -> {
+            if (this.mOnClickListener != null) {
+                this.mOnClickListener.onClick(model);
+            }
+        });
     }
 
     @Override
@@ -41,7 +54,7 @@ class EpisodeView implements Binder<Item, EpisodeViewHolder> {
 }
 
 public class ItemsAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
-    public ItemsAdapter() {
-        super(new EpisodeView());
+    public ItemsAdapter(final OnClick<Item> onClickListener) {
+        super(new EpisodeView(onClickListener));
     }
 }
