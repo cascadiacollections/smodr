@@ -7,7 +7,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
 
 import java.io.IOException;
@@ -32,11 +35,11 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     @NonNull
     public static final String ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY";
     @NonNull
-    private static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
+    public static final String ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE";
     @NonNull
-    private static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
+    public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
     @NonNull
-    private static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+    public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
     @NonNull
     private String mTitle = "";
     @NonNull
@@ -46,48 +49,27 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     private boolean mPrepared = false;
     private static final int NOTIFICATION_ID = 37;
 
+    public static Intent createIntent(@NonNull Context context, @NonNull final Item item) {
+        final Intent intent = new Intent(context, MediaPlaybackService.class);
+        final String mediaUrlString = item.origEnclosureLink.replace("http://", "https://");
+
+        intent.setAction(MediaPlaybackService.ACTION_PLAY);
+        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, mediaUrlString);
+        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_TITLE, item.title);
+        intent.putExtra(MediaPlaybackService.INTENT_EPISODE_DESCRIPTION, item.description);
+
+        return intent;
+    }
+
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        final String url = intent.getStringExtra(INTENT_EPISODE_URL);
 
-        if ((intent != null) && (intent.getAction() == null)) {
-            stopPlayback();
-        } else if (intent != null) {
-            if (ACTION_PLAY.equals(intent.getAction())) {
-                final String url = intent.getStringExtra(INTENT_EPISODE_URL);
-                mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
-                mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
-                if (url != null) {
-                    try {
-                        if (mMediaPlayer == null) {
-                            mMediaPlayer = new MediaPlayer();
-                            mMediaPlayer.setOnPreparedListener(this);
-                        } else {
-                            stopPlayback();
-                        }
-                        mMediaPlayer.setDataSource(url);
-                        mMediaPlayer.prepareAsync();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    stopPlayback();
-                }
-            } else if (intent.getAction().equals(ACTION_PAUSE)) {
-                pausePlayback();
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_RESUME)) {
-                if (mPrepared) {
-                    if (mMediaPlayer != null) {
-                        mMediaPlayer.start();
-                    }
-                } else {
-                    stopPlayback();
-                }
-                createNotification();
-            } else if (intent.getAction().equals(ACTION_STOP)) {
-                stopPlayback();
-            }
-        }
+        mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
+        mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
+        System.out.println(Uri.parse(url));
+        mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
+        mMediaPlayer.start();
 
         return Service.START_REDELIVER_INTENT;
     }

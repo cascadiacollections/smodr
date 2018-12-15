@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.kevintcoughlin.smodr.adapters.ItemsAdapter;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
+import com.kevintcoughlin.smodr.services.MediaPlaybackService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,11 +75,12 @@ public final class EpisodesFragment extends Fragment implements Callback<Feed>,B
 
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
-
+        System.out.println(t.getMessage());
     }
 
     @Override
     public void onClick(@NonNull final Item item) {
-
+        final Intent intent = MediaPlaybackService.createIntent(getContext(), item);
+        getActivity().startService(intent);
     }
 }

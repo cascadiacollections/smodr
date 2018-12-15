@@ -8,7 +8,4 @@ import org.simpleframework.xml.Root;
 public class Feed {
     @Element
     public Channel channel;
-
-    @Attribute(required = false)
-    public String version;
 }

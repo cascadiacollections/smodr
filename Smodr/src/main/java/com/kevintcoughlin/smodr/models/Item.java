@@ -1,15 +1,18 @@
 package com.kevintcoughlin.smodr.models;
 
+import android.support.annotation.NonNull;
+
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
 import javax.annotation.Nullable;
 
 @Root(name = "item", strict = false)
 public class Item {
-//    @Element(required = false)
-//    @Nullable
-//    public String guid;
+    @Element(required = false)
+    @Nullable
+    public String guid;
 
     @Element(required = false)
     @Nullable
@@ -30,4 +33,9 @@ public class Item {
     @Element(required = false)
     @Nullable
     public Enclosure enclosure;
+
+    @Element
+    @Namespace(prefix="feedburner")
+    @NonNull
+    public String origEnclosureLink;
 }
