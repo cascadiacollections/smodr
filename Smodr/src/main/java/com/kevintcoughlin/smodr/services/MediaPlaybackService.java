@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
@@ -21,8 +20,6 @@ import android.support.v4.app.TaskStackBuilder;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.views.activities.MainActivity;
-
-import java.io.IOException;
 
 public final class MediaPlaybackService extends Service implements MediaPlayer.OnErrorListener,
         MediaPlayer.OnPreparedListener {
@@ -41,17 +38,20 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     @NonNull
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
     @NonNull
-    private String mTitle = "";
+    private static final String HTTP_PROTOCOL = "http://";
     @NonNull
-    private String mDescription = "";
+    private static final String HTTPS_PROTOCOL = "https://";
+    @Nullable
+    private String mTitle;
+    @Nullable
+    private String mDescription;
     @Nullable
     private MediaPlayer mMediaPlayer;
-    private boolean mPrepared = false;
     private static final int NOTIFICATION_ID = 37;
 
     public static Intent createIntent(@NonNull Context context, @NonNull final Item item) {
         final Intent intent = new Intent(context, MediaPlaybackService.class);
-        final String mediaUrlString = item.origEnclosureLink.replace("http://", "https://");
+        final String mediaUrlString = item.origEnclosureLink.replace(HTTP_PROTOCOL, HTTPS_PROTOCOL);
 
         intent.setAction(MediaPlaybackService.ACTION_PLAY);
         intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, mediaUrlString);
@@ -61,13 +61,13 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         return intent;
     }
 
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
         super.onStartCommand(intent, flags, startId);
         final String url = intent.getStringExtra(INTENT_EPISODE_URL);
 
         mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
         mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
-        System.out.println(Uri.parse(url));
+
         mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
         mMediaPlayer.start();
 
@@ -82,7 +82,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         stopPlayback();
-        mPrepared = false;
         return true;
     }
 
@@ -90,7 +89,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     public void onDestroy() {
         super.onDestroy();
         stopPlayback();
-        mPrepared = false;
     }
 
     private void pausePlayback() {
@@ -103,7 +101,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         if (mMediaPlayer != null) {
             mMediaPlayer.reset();
         }
-        mPrepared = false;
 
         final NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -157,7 +154,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
         createNotification();
-        mPrepared = true;
     }
 
     @DrawableRes
