@@ -1,12 +1,12 @@
 package com.kevintcoughlin.smodr.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
-import javax.annotation.Nullable;
 
 @Root(name = "item", strict = false)
 public class Item {

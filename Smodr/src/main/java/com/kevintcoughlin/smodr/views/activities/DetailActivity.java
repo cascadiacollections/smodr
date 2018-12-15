@@ -1,7 +1,6 @@
 package com.kevintcoughlin.smodr.views.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 
@@ -29,10 +27,10 @@ public final class DetailActivity extends AppCompatActivity {
      * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s title.
      */
     public static final String EXTRA_NAME = ".name";
-    /**
-     * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s image url.
-     */
-    public static final String EXTRA_IMAGE_URL = ".image_url";
+//    /**
+//     * Key for a {@link com.kevintcoughlin.smodr.models.Item}'s image url.
+//     */
+//    public static final String EXTRA_IMAGE_URL = ".image_url";
     /**
      * Displays a {@link List<Item>}.
      */
@@ -58,8 +56,8 @@ public final class DetailActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         if (intent != null) {
             mChannelName = intent.getStringExtra(EXTRA_NAME);
-            final SimpleDraweeView imageView = ButterKnife.findById(this, R.id.backdrop);
-            imageView.setImageURI(Uri.parse(intent.getStringExtra(EXTRA_IMAGE_URL)));
+//            final SimpleDraweeView imageView = ButterKnife.findById(this, R.id.backdrop);
+//            imageView.setImageURI(Uri.parse(intent.getStringExtra(EXTRA_IMAGE_URL)));
         }
 
         setSupportActionBar(mToolbar);
