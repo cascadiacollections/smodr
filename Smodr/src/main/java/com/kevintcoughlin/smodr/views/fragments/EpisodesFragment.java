@@ -23,11 +23,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
+
+    private final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
+        ItemAdapter(final OnClick<Item> onClick) {
+            super(new EpisodeView(onClick));
+        }
+    }
+
     @NonNull
     public static final String TAG = EpisodesFragment.class.getSimpleName();
 
     @NonNull
-    private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new BinderRecyclerAdapter<>(new EpisodeView(this));
+    private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new ItemAdapter(this);
 
     @NonNull
     private final RecyclerView.LayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());

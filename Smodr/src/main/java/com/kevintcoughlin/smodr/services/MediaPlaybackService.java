@@ -71,6 +71,25 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
         mMediaPlayer.start();
 
+        final String action = intent.getAction();
+
+        if (action != null) {
+            switch (action) {
+                case ACTION_PAUSE:
+                    pausePlayback();
+                    break;
+                case ACTION_PLAY:
+//                    startPlayback();
+                    break;
+                case ACTION_RESUME:
+//                    resumePlayback();
+                    break;
+                case ACTION_STOP:
+                    stopPlayback();
+                    break;
+            }
+        }
+
         return Service.START_REDELIVER_INTENT;
     }
 

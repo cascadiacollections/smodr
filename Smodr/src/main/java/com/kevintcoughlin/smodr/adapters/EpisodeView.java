@@ -9,24 +9,21 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.viewholders.Binder;
 
+import java.lang.ref.WeakReference;
+
 public class EpisodeView implements Binder<Item, EpisodeViewHolder> {
 
-    private BinderRecyclerAdapter.OnClick<Item> mOnClickListener;
+    private WeakReference<BinderRecyclerAdapter.OnClick<Item>> mOnClickListener;
 
-    public EpisodeView(BinderRecyclerAdapter.OnClick<Item> onClick) {
-        this.mOnClickListener = onClick;
+    public EpisodeView(@NonNull final BinderRecyclerAdapter.OnClick<Item> onClick) {
+        this.mOnClickListener = new WeakReference<>(onClick);
     }
 
     @Override
     public void bind(@NonNull final Item model, @NonNull final EpisodeViewHolder viewHolder) {
         viewHolder.mTitle.setText(model.title);
         viewHolder.mDescription.setText(model.description);
-
-        viewHolder.itemView.setOnClickListener(v -> {
-            if (this.mOnClickListener != null) {
-                this.mOnClickListener.onClick(model);
-            }
-        });
+        viewHolder.itemView.setOnClickListener(v -> this.mOnClickListener.get().onClick(model));
     }
 
     @Override
