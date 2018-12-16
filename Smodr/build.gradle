@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 
 buildscript {
     repositories {
-        mavenCentral()
         jcenter()
         google()
     }
@@ -14,11 +13,6 @@ buildscript {
     }
 
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
-}
-
-repositories {
-    mavenCentral()
-    jcenter()
 }
 
 android {
