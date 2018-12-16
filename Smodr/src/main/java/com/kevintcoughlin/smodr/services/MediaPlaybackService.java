@@ -38,6 +38,8 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     @NonNull
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
     @NonNull
+    private static final String NOTIFICATION_CHANNEL_ID = "com.kevintcoughlin.smodr.app.notifications";
+    @NonNull
     private static final String HTTP_PROTOCOL = "http://";
     @NonNull
     private static final String HTTPS_PROTOCOL = "https://";
@@ -121,7 +123,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
                 mPendingIntent).build();
 
         final NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
                         .setSmallIcon(getIcon())
                         .setOngoing(true)
