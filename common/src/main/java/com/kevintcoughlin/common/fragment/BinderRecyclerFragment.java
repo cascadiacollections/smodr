@@ -9,14 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kevintcoughlin.common.R;
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
-import com.kevintcoughlin.smodr.R;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
-    @Bind(R.id.list)
     protected RecyclerView mRecyclerView;
 
     protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
@@ -28,7 +24,7 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
 
-        ButterKnife.bind(this, view);
+        mRecyclerView = view.findViewById(R.id.list);
 
         return view;
     }

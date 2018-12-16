@@ -69,6 +69,7 @@ dependencies {
     api 'com.google.android.gms:play-services-measurement-base:16.0.5'
     api 'com.google.firebase:firebase-appindexing:17.1.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api project(path: ':common')
 }
 
 apply plugin: 'com.google.gms.google-services'
