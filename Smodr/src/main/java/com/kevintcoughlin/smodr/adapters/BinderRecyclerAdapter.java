@@ -18,7 +18,7 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
     private Binder<T, VH> binderViewHolder;
     private OnClick<T> mOnClickListener;
 
-    BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
+    public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
         super();
         this.items = new ArrayList<>();
         this.binderViewHolder = binderViewHolder;
