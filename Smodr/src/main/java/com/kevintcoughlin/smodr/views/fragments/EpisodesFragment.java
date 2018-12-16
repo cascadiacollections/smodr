@@ -8,7 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.kevintcoughlin.smodr.adapters.BinderRecyclerAdapter;
+import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
+import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
 import com.kevintcoughlin.smodr.adapters.EpisodeView;
 import com.kevintcoughlin.smodr.adapters.EpisodeViewHolder;
 import com.kevintcoughlin.smodr.models.Feed;
@@ -25,7 +26,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
 
     private final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
-        ItemAdapter(final OnClick<Item> onClick) {
+        ItemAdapter(final BinderRecyclerAdapter.OnClick<Item> onClick) {
             super(new EpisodeView(onClick));
         }
     }

@@ -1,10 +1,8 @@
-package com.kevintcoughlin.smodr.adapters;
+package com.kevintcoughlin.common.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
-import com.kevintcoughlin.smodr.viewholders.Binder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,12 @@ import java.util.List;
 public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     public interface OnClick<T> {
         void onClick(T item);
+    }
+
+    public interface Binder<T, VH extends RecyclerView.ViewHolder> {
+        void bind(@NonNull final T model, @NonNull final VH viewHolder);
+
+        VH createViewHolder(@NonNull final ViewGroup parent);
     }
 
     private List<T> items;

@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.viewholders.Binder;
 
 import java.lang.ref.WeakReference;
 
-public class EpisodeView implements Binder<Item, EpisodeViewHolder> {
+public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
 
     private WeakReference<BinderRecyclerAdapter.OnClick<Item>> mOnClickListener;
 

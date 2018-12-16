@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr.views.fragments;
+package com.kevintcoughlin.common.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,19 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;
-import com.kevintcoughlin.smodr.adapters.BinderRecyclerAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
+public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
     @Bind(R.id.list)
     protected RecyclerView mRecyclerView;
 
-    abstract BinderRecyclerAdapter<T, VH> getAdapter();
+    protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
 
-    abstract RecyclerView.LayoutManager getLayoutManager();
+    protected abstract RecyclerView.LayoutManager getLayoutManager();
 
     @Nullable
     @Override
