@@ -1,1 +1,1 @@
-include ':Smodr', ':common'
+include ':Smodr', ':common-android'
