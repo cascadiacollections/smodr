@@ -17,6 +17,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.utils.AppUtil;
+import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
 import butterknife.Bind;
@@ -59,9 +60,9 @@ public final class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
-            final EpisodesFragment fragment = new EpisodesFragment();
+            final Fragment fragment = new ChannelsFragment();
             fm.beginTransaction()
-                    .add(R.id.container, fragment, EpisodesFragment.TAG)
+                    .add(R.id.container, fragment, ChannelsFragment.TAG)
                     .commit();
         }
     }

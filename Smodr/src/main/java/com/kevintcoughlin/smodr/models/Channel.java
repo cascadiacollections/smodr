@@ -10,6 +10,12 @@ import java.util.List;
 
 @Root(name = "channel", strict = false)
 public class Channel {
+
+    public Channel(String title, String imageUriString) {
+        this.title = title;
+        this.image = new Image(imageUriString);
+    }
+
     @Element
     public String title;
 
