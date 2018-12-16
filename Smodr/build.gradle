@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath 'io.fabric.tools:gradle:1.25.4'
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.google.gms:google-services:4.1.0'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
@@ -78,8 +78,11 @@ dependencies {
     api 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     api 'com.squareup.retrofit:retrofit:1.6.0'
     api 'com.squareup.retrofit2:converter-simplexml:2.5.0'
-    api 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
     api 'com.google.firebase:firebase-crash:16.2.1'
+    api 'com.google.android.gms:play-services-measurement-base:16.0.5'
     api 'com.google.firebase:firebase-appindexing:17.1.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+apply plugin: 'com.google.gms.google-services'
