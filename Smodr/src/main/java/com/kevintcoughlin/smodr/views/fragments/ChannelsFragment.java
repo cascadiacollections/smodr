@@ -59,12 +59,12 @@ public class ChannelsFragment extends BinderRecyclerFragment<Channel, ChannelsFr
     class ChannelView implements BinderRecyclerAdapter.Binder<Channel,ChannelViewHolder> {
         @Override
         public void bind(@NonNull Channel model, @NonNull ChannelViewHolder viewHolder) {
-            viewHolder.mCoverArtView.setImageURI(model.image.href);
+            viewHolder.mCoverArtView.setImageURI(model.image.url);
         }
 
         @Override
         public ChannelViewHolder createViewHolder(@NonNull final ViewGroup parent) {
-            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_channel_layout, parent, false);
+            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_channel_layout, parent, false);
             return new ChannelViewHolder(view);
         }
     }
