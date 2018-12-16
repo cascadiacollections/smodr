@@ -37,12 +37,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
     @NonNull
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
-    @NonNull
-    private static final String NOTIFICATION_CHANNEL_ID = "com.kevintcoughlin.smodr.app.notifications";
-    @NonNull
-    private static final String HTTP_PROTOCOL = "http://";
-    @NonNull
-    private static final String HTTPS_PROTOCOL = "https://";
     @Nullable
     private String mTitle;
     @Nullable
@@ -53,7 +47,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
     public static Intent createIntent(@NonNull Context context, @NonNull final Item item) {
         final Intent intent = new Intent(context, MediaPlaybackService.class);
-        final String mediaUrlString = item.origEnclosureLink.replace(HTTP_PROTOCOL, HTTPS_PROTOCOL);
+        final String mediaUrlString = item.getUri().toString();
 
         intent.setAction(MediaPlaybackService.ACTION_PLAY);
         intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, mediaUrlString);
@@ -72,6 +66,25 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
         mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
         mMediaPlayer.start();
+
+        final String action = intent.getAction();
+
+        if (action != null) {
+            switch (action) {
+                case ACTION_PAUSE:
+                    pausePlayback();
+                    break;
+                case ACTION_PLAY:
+//                    startPlayback();
+                    break;
+                case ACTION_RESUME:
+//                    resumePlayback();
+                    break;
+                case ACTION_STOP:
+                    stopPlayback();
+                    break;
+            }
+        }
 
         return Service.START_REDELIVER_INTENT;
     }
@@ -123,7 +136,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
                 mPendingIntent).build();
 
         final NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                new NotificationCompat.Builder(this)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
                         .setSmallIcon(getIcon())
                         .setOngoing(true)

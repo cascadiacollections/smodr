@@ -1,12 +1,13 @@
-package com.kevintcoughlin.smodr.adapters;
+package com.kevintcoughlin.common.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
-import com.kevintcoughlin.smodr.viewholders.Binder;
-
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
@@ -14,22 +15,28 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         void onClick(T item);
     }
 
-    private List<T> items;
-    private Binder<T, VH> binderViewHolder;
-    private OnClick<T> mOnClickListener;
+    public interface Binder<T, VH extends RecyclerView.ViewHolder> {
+        void bind(@NonNull final T model, @NonNull final VH viewHolder);
 
-    BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
+        VH createViewHolder(@NonNull final ViewGroup parent);
+    }
+
+    private final List<T> items = new ArrayList<>();
+    private final Binder<T, VH> binderViewHolder;
+    private WeakReference<OnClick<T>> mOnClickListener;
+
+    public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
         super();
-        this.items = new ArrayList<>();
         this.binderViewHolder = binderViewHolder;
     }
 
     public void setOnClickListener(@NonNull final OnClick<T> onClickListener) {
-        this.mOnClickListener = onClickListener;
+        this.mOnClickListener = new WeakReference<>(onClickListener);
     }
 
-    public void setItems(List<T> items) {
-        this.items = items;
+    public void setItems(Collection<T> items) {
+        this.items.clear();
+        this.items.addAll(items);
     }
 
     public T getItem(int index) {
@@ -46,7 +53,12 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
     public void onBindViewHolder(@NonNull final VH viewHolder, int i) {
         final T item = this.items.get(i);
 
-        viewHolder.itemView.setOnClickListener(v -> this.mOnClickListener.onClick(item));
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnClickListener.get().onClick(item);
+            }
+        });
 
         this.binderViewHolder.bind(item, viewHolder);
     }

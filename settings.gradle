@@ -1,1 +1,1 @@
-include ':Smodr'
+include ':Smodr', ':common'
