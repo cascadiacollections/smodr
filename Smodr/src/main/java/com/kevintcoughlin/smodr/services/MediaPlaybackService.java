@@ -37,10 +37,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
     @NonNull
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
-    @NonNull
-    private static final String HTTP_PROTOCOL = "http://";
-    @NonNull
-    private static final String HTTPS_PROTOCOL = "https://";
     @Nullable
     private String mTitle;
     @Nullable
@@ -51,7 +47,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
 
     public static Intent createIntent(@NonNull Context context, @NonNull final Item item) {
         final Intent intent = new Intent(context, MediaPlaybackService.class);
-        final String mediaUrlString = item.origEnclosureLink.replace(HTTP_PROTOCOL, HTTPS_PROTOCOL);
+        final String mediaUrlString = item.getUri().toString();
 
         intent.setAction(MediaPlaybackService.ACTION_PLAY);
         intent.putExtra(MediaPlaybackService.INTENT_EPISODE_URL, mediaUrlString);
