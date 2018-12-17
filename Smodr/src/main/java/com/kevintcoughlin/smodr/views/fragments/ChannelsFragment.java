@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +17,15 @@ import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.models.Item;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ChannelsFragment extends BinderRecyclerFragment<Channel, ChannelsFragment.ChannelViewHolder> {
-    private static ArrayMap<String, Channel> CHANNEL_MAP;
+    private static Map<String, Channel> CHANNEL_MAP;
 
     public ChannelsFragment() {
         final int NUMBER_OF_CHANNELS = 14;
@@ -46,12 +43,12 @@ public class ChannelsFragment extends BinderRecyclerFragment<Channel, ChannelsFr
         CHANNEL_MAP.put("Netheads", new Channel("Netheads", "https://feeds.feedburner.com/NetHeadsOnAir", "https://i1.sndcdn.com/avatars-000342515609-lucm4t-original.jpg"));
         CHANNEL_MAP.put("Nooner", new Channel("Nooner", "https://feeds.feedburner.com/NoonerPod", "https://i1.sndcdn.com/avatars-000170407225-ax2vmg-original.jpg"));
         CHANNEL_MAP.put("PodU", new Channel("Pod U", "https://feeds.feedburner.com/Podu", "https://i1.sndcdn.com/avatars-000292224694-w7wbkc-original.jpg"));
-        CHANNEL_MAP.put("The Wayne Foundation", new Channel("The Wayne Foundation", "https://feeds.feedburner.com/thewaynefoundation", "https://smodcast.com/channels/the-wayne-foundation-podcast/"));
+        CHANNEL_MAP.put("The Wayne Foundation", new Channel("The Wayne Foundation", "https://feeds.feedburner.com/thewaynefoundation", "https://i1.sndcdn.com/avatars-000191437900-zwb68x-original.jpg"));
     }
 
     public static final String TAG = ChannelsFragment.class.getSimpleName();
 
-    final class ChannelViewHolder extends RecyclerView.ViewHolder {
+    static final class ChannelViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.cover_art)
         SimpleDraweeView mCoverArtView;
 
@@ -103,18 +100,6 @@ public class ChannelsFragment extends BinderRecyclerFragment<Channel, ChannelsFr
     @Override
     protected RecyclerView.LayoutManager getLayoutManager() {
         return this.mLayoutManager;
-    }
-
-    @Override
-    public void onClick(@NonNull final Channel item) {
-        final FragmentManager fragmentManager = getFragmentManager();
-        final Fragment fragment = EpisodesFragment.create(item);
-        if (fragmentManager != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.container, fragment, EpisodesFragment.TAG)
-                    .commit();
-        }
     }
 
     @Override

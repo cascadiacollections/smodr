@@ -10,15 +10,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +32,7 @@ import butterknife.ButterKnife;
  *
  * @author kevincoughlin
  */
-public final class MainActivity extends AppCompatActivity {
+public final class MainActivity extends AppCompatActivity implements ChannelsFragment.OnItemSelected<Channel> {
     /**
      * Displays the app name and menu actions.
      */
@@ -72,14 +76,6 @@ public final class MainActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(mNetworkStateReceiver);
     }
-//
-//    @Override
-//    public void onChannelSelected(@NonNull final Item item) {
-//        final Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra(DetailActivity.EXTRA_NAME, item.title);
-//        intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, "foo"); // @TODO: Cleanup
-//        startActivity(intent);
-//    }
 
     @Override
     public void setTitle(final CharSequence title) {
@@ -88,18 +84,49 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onNavigateUp() {
-        getSupportFragmentManager().popBackStack();
-        return super.onNavigateUp();
-    }
-
     private void onNetworkConnected() {
         AppUtil.snackbar(findViewById(R.id.coordinator_layout), R.string.on_network_connected);
     }
 
     private void onNetworkDisconnected() {
         AppUtil.snackbar(findViewById(R.id.coordinator_layout), R.string.on_network_disconnected);
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof ChannelsFragment) {
+            final ChannelsFragment channelsFragment = (ChannelsFragment) fragment;
+            channelsFragment.setOnItemSelectedListener(this);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(EpisodesFragment.TAG)));
+        fragmentTransaction.commit();
+        getSupportFragmentManager().popBackStack();
+        mToolbar.setTitle(getString(R.string.app_name));
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onItemSelected(Channel item) {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment fragment = EpisodesFragment.create(item);
+
+        if (mToolbar != null) {
+            mToolbar.setTitle(item.title);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        if (fragmentManager != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.container, fragment, EpisodesFragment.TAG)
+                    .commit();
+        }
     }
 
     /**

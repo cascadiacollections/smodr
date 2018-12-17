@@ -12,12 +12,29 @@ import android.view.ViewGroup;
 import com.kevintcoughlin.common.R;
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 
+import java.lang.ref.WeakReference;
+
 public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
     protected RecyclerView mRecyclerView;
+
+    protected WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
 
     protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
 
     protected abstract RecyclerView.LayoutManager getLayoutManager();
+
+    public interface OnItemSelected<T> {
+        void onItemSelected(T item);
+    }
+
+    public void setOnItemSelectedListener(OnItemSelected<T> activity) {
+        mOnItemSelectedCallback = new WeakReference<>(activity);
+    }
+
+    @Override
+    public void onClick(@NonNull final T item) {
+        this.mOnItemSelectedCallback.get().onItemSelected(item);
+    }
 
     @Nullable
     @Override
