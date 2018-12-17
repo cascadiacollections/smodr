@@ -125,7 +125,20 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     }
 
     private void pausePlayback() {
-        stopPlayback();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.pause();
+        }
+
+        final NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (mNotificationManager != null) {
+            mNotificationManager.cancel(NOTIFICATION_ID);
+        }
+
+        stopForeground(true);
+
+        createNotification();
     }
 
     private void stopPlayback() {
