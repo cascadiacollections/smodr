@@ -1,16 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:paddingRight="16dp"
-	android:paddingLeft="16dp"
-	android:paddingTop="8dp"
-	android:paddingBottom="8dp"
-	android:orientation="vertical"
-	android:background="?android:attr/selectableItemBackground">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground">
 
 	<com.facebook.drawee.view.SimpleDraweeView
-		android:layout_width="100dp"
-		android:layout_height="100dp"
-		android:id="@+id/cover_art"/>
+		android:layout_width="164dp"
+		android:layout_height="164dp"
+		android:id="@+id/cover_art"
+		fresco:actualImageScaleType="centerCrop"
+        fresco:roundedCornerRadius="5dp"/>
 
 </LinearLayout>
