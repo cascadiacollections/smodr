@@ -1,18 +1,22 @@
 package com.kevintcoughlin.smodr.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -64,9 +68,6 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         mTitle = intent.getStringExtra(INTENT_EPISODE_TITLE);
         mDescription = intent.getStringExtra(INTENT_EPISODE_DESCRIPTION);
 
-        mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
-        mMediaPlayer.start();
-
         final String action = intent.getAction();
 
         if (action != null) {
@@ -75,10 +76,10 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
                     pausePlayback();
                     break;
                 case ACTION_PLAY:
-//                    startPlayback();
+                    startPlayback(url);
                     break;
                 case ACTION_RESUME:
-//                    resumePlayback();
+                    resumePlayback();
                     break;
                 case ACTION_STOP:
                     stopPlayback();
@@ -87,6 +88,23 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         }
 
         return Service.START_REDELIVER_INTENT;
+    }
+
+    private void resumePlayback() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.start();
+        }
+    }
+
+    private void startPlayback(final String url) {
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            stopPlayback();
+        }
+
+        mMediaPlayer = MediaPlayer.create(this, Uri.parse(url));
+        mMediaPlayer.start();
+
+        createNotification();
     }
 
     @Override
@@ -107,14 +125,12 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
     }
 
     private void pausePlayback() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.pause();
-        }
+        stopPlayback();
     }
 
     private void stopPlayback() {
         if (mMediaPlayer != null) {
-            mMediaPlayer.reset();
+            mMediaPlayer.stop();
         }
 
         final NotificationManager mNotificationManager =
@@ -123,12 +139,31 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         if (mNotificationManager != null) {
             mNotificationManager.cancel(NOTIFICATION_ID);
         }
+
         stopForeground(true);
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private String createNotificationChannel() {
+        final String channelName = "media_service";
+        final NotificationChannel chan = new NotificationChannel(channelName, "smodr", NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        service.createNotificationChannel(chan);
+        return channelName;
     }
 
     private void createNotification() {
         final Intent mIntent = new Intent(this, MediaPlaybackService.class);
         mIntent.setAction(getAction());
+
+        String channelId = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channelId = createNotificationChannel();
+        }
+
         final PendingIntent mPendingIntent = PendingIntent.getService(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         final NotificationCompat.Action action = new NotificationCompat.Action.Builder(
                 getIcon(),
@@ -136,7 +171,7 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
                 mPendingIntent).build();
 
         final NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, channelId)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
                         .setSmallIcon(getIcon())
                         .setOngoing(true)
