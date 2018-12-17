@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
+import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
@@ -24,6 +26,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
+    public static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
+
+    public static Fragment create(@NonNull Channel channel) {
+        final Fragment fragment = new EpisodesFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString(EPISODE_FEED_URL, channel.link);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     private final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
         ItemAdapter(final BinderRecyclerAdapter.OnClick<Item> onClick) {
@@ -59,8 +70,13 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
         final FeedService service = retrofit.create(FeedService.class);
+        final Bundle arguments = getArguments();
 
-        service.feed("https://feeds.feedburner.com/SModcasts").enqueue(this);
+        if (arguments != null) {
+            final String feedUrl = arguments.getString(EPISODE_FEED_URL);
+            service.feed(feedUrl).enqueue(this);
+
+        }
     }
 
     @Override
@@ -74,7 +90,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
-
+        System.out.println(t.getMessage());
     }
 
     @Override

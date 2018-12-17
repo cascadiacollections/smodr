@@ -11,8 +11,13 @@ import java.util.List;
 @Root(name = "channel", strict = false)
 public class Channel {
 
-    public Channel(String title, String imageUriString) {
+    Channel() {
+
+    }
+
+    public Channel(String title, String link, String imageUriString) {
         this.title = title;
+        this.link = link;
         this.image = new Image(imageUriString);
     }
 
