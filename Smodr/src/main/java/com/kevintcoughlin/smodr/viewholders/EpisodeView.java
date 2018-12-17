@@ -1,4 +1,4 @@
-package com.kevintcoughlin.smodr.adapters;
+package com.kevintcoughlin.smodr.viewholders;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;

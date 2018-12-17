@@ -10,12 +10,12 @@ import android.view.View;
 
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
-import com.kevintcoughlin.smodr.adapters.EpisodeView;
-import com.kevintcoughlin.smodr.adapters.EpisodeViewHolder;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
 import com.kevintcoughlin.smodr.services.MediaPlaybackService;
+import com.kevintcoughlin.smodr.viewholders.EpisodeView;
+import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
 
 import retrofit2.Call;
 import retrofit2.Callback;

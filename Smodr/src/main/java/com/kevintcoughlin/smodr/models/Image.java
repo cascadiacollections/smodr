@@ -6,6 +6,11 @@ import org.simpleframework.xml.Root;
 
 @Root(name = "image", strict = false)
 public class Image {
+
+    Image(String url) {
+        this.url = url;
+    }
+
     @Element(required = false)
     public String title;
 

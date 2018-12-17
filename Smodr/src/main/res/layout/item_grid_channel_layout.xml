@@ -1,6 +1,0 @@
-<com.facebook.drawee.view.SimpleDraweeView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/image"
-    android:layout_width="90dp"
-    android:layout_height="90dp"
-    android:contentDescription="@string/cover_art" />
