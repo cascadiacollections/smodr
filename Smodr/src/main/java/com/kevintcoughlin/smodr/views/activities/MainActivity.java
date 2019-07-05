@@ -7,12 +7,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -26,6 +27,8 @@ import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static android.net.ConnectivityManager.*;
 
 /**
  * The primary activity that displays a {@link EpisodesFragment}.
@@ -56,7 +59,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
         ButterKnife.bind(this);
 
         mNetworkStateReceiver = new NetworkStateReceiver();
-        registerReceiver(mNetworkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        registerReceiver(mNetworkStateReceiver, new IntentFilter(CONNECTIVITY_ACTION));
 
         final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
         mAdView.loadAd(adRequest);
@@ -79,9 +82,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
 
     @Override
     public void setTitle(final CharSequence title) {
-        if (getActionBar() != null) {
-            getActionBar().setTitle(title);
-        }
+        if (getActionBar() != null) getActionBar().setTitle(title );
     }
 
     private void onNetworkConnected() {
@@ -139,17 +140,15 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
         private boolean mLastConnectivityState = true;
 
         public void onReceive(Context context, Intent intent) {
-            if ((intent == null) || (context == null)) {
-                return;
-            } else if (!ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+            if (intent == null || context == null || !CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 return;
             }
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && (intent.getExtras() != null)) {
+            if (intent.getAction().equals(CONNECTIVITY_ACTION) && (intent.getExtras() != null)) {
                 final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
                 final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
                 if (networkInfo != null
-                        && (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
-                        || networkInfo.getType() == ConnectivityManager.TYPE_WIFI)) {
+                        && (networkInfo.getType() == TYPE_MOBILE
+                        || networkInfo.getType() == TYPE_WIFI)) {
                     onConnectivityChange(context);
                 }
             }

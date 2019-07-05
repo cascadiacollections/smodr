@@ -1,9 +1,10 @@
 package com.kevintcoughlin.smodr.viewholders;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;

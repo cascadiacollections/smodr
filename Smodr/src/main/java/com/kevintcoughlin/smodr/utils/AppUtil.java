@@ -1,13 +1,15 @@
 package com.kevintcoughlin.smodr.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Contains common {@link android.app.Application} utilities.

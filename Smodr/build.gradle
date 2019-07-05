@@ -6,36 +6,30 @@ buildscript {
         jcenter()
         google()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.google.gms:google-services:4.3.0'
     }
-
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         debug {
             applicationIdSuffix ".debug"
         }
@@ -49,10 +43,10 @@ configurations {
 
 dependencies {
     androidTestImplementation 'com.android.support:support-annotations:28.0.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    api 'com.google.android.gms:play-services-ads:17.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    api 'com.google.android.gms:play-services-ads:18.0.0'
     api "com.android.support:customtabs:28.0.0"
     api 'com.android.support:support-v4:28.0.0'
     api 'com.android.support:recyclerview-v7:28.0.0'
@@ -65,10 +59,10 @@ dependencies {
     api 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     api 'com.squareup.retrofit:retrofit:1.6.0'
     api 'com.squareup.retrofit2:converter-simplexml:2.5.0'
-    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-core:17.0.0'
     api 'com.google.firebase:firebase-crash:16.2.1'
-    api 'com.google.android.gms:play-services-measurement-base:16.0.5'
-    api 'com.google.firebase:firebase-appindexing:17.1.0'
+    api 'com.google.android.gms:play-services-measurement-base:17.0.0'
+    api 'com.google.firebase:firebase-appindexing:19.0.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(path: ':common-android')
 }

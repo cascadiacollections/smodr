@@ -1,7 +1,5 @@
 package com.kevintcoughlin.smodr.models;
 
-import android.support.annotation.Nullable;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 

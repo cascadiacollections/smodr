@@ -6,7 +6,7 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
-	<android.support.v7.widget.Toolbar
+	<androidx.appcompat.widget.Toolbar
 		tools:ignore="UnusedAttribute"
 		android:id="@+id/toolbar"
 		android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 		ads:adUnitId="ca-app-pub-6967310132431626/8150044399"
 		ads:adSize="SMART_BANNER" />
 
-	<android.support.design.widget.CoordinatorLayout
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:id="@+id/coordinator_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -38,5 +38,5 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-	</android.support.design.widget.CoordinatorLayout>
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>
