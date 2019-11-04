@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,18 +18,25 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.utils.AppUtil;
 import com.kevintcoughlin.smodr.views.fragments.ChannelsFragment;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static android.net.ConnectivityManager.*;
+import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
+import static android.net.ConnectivityManager.TYPE_MOBILE;
+import static android.net.ConnectivityManager.TYPE_WIFI;
+import static com.kevintcoughlin.smodr.views.fragments.ChannelsFragment.CHANNEL_MAP;
 
 /**
  * The primary activity that displays a {@link EpisodesFragment}.
@@ -55,21 +63,28 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppCenter.start(getApplication(), "4933507b-9621-4fe6-87c6-150a352d7f47",
+                Analytics.class, Crashes.class);
+
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
         mNetworkStateReceiver = new NetworkStateReceiver();
         registerReceiver(mNetworkStateReceiver, new IntentFilter(CONNECTIVITY_ACTION));
 
-        final AdRequest adRequest = new AdRequest.Builder().addTestDevice(getString(R.string.test_device_id)).build();
+        MobileAds.initialize(this, "ca-app-pub-6967310132431626~6673311196");
+        final AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
         setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
-            final Fragment fragment = new ChannelsFragment();
+            final Fragment fragment = EpisodesFragment.create(CHANNEL_MAP.get("Tell 'Em Steve-Dave"));
+
             fm.beginTransaction()
-                    .add(R.id.container, fragment, ChannelsFragment.TAG)
+                    .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
                     .commit();
         }
     }
@@ -94,7 +109,7 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
+    public void onAttachFragment(@NonNull Fragment fragment) {
         if (fragment instanceof ChannelsFragment) {
             final ChannelsFragment channelsFragment = (ChannelsFragment) fragment;
             channelsFragment.setOnItemSelectedListener(this);
@@ -122,12 +137,10 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        if (fragmentManager != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.container, fragment, EpisodesFragment.TAG)
-                    .commit();
-        }
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.container, fragment, EpisodesFragment.TAG)
+                .commit();
     }
 
     /**

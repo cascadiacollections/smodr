@@ -13,6 +13,8 @@ import butterknife.ButterKnife;
 public class EpisodeViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.title)
     TextView mTitle;
+    @Bind(R.id.metadata)
+    TextView mMetadata;
     @Bind(R.id.description)
     TextView mDescription;
 

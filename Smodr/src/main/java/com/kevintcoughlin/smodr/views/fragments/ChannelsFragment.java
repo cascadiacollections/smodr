@@ -24,9 +24,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ChannelsFragment extends BinderRecyclerFragment<Channel, ChannelsFragment.ChannelViewHolder> {
-    private static Map<String, Channel> CHANNEL_MAP;
+    public static Map<String, Channel> CHANNEL_MAP;
 
-    public ChannelsFragment() {
+    static  {
         final int NUMBER_OF_CHANNELS = 14;
         CHANNEL_MAP = new ArrayMap<>(NUMBER_OF_CHANNELS);
         CHANNEL_MAP.put("Smodcast", new Channel("Smodcast", "https://feeds.feedburner.com/SModcasts", "https://static1.squarespace.com/static/55c25a62e4b0030db3b1280e/t/5b15787d758d4695c53d5adb/1528133780814/smodcast2.png"));

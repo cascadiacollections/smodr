@@ -16,9 +16,9 @@ import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import java.lang.ref.WeakReference;
 
 public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
-    protected RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
-    protected WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
+    private WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
 
     protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
 

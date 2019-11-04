@@ -14,10 +14,6 @@ import org.simpleframework.xml.Root;
 public class Item implements IMediaPlayback {
     @Element(required = false)
     @Nullable
-    public String guid;
-
-    @Element(required = false)
-    @Nullable
     public String title;
 
     @Element(required = false)
@@ -26,15 +22,21 @@ public class Item implements IMediaPlayback {
 
     @Element(required = false)
     @Nullable
-    public String link;
-
-    @Element(required = false)
-    @Nullable
     public String description;
 
     @Element(required = false)
     @Nullable
     public Enclosure enclosure;
+
+    @Element
+    @Namespace(prefix="itunes")
+    @Nullable
+    public String duration;
+
+    @Element
+    @Namespace(prefix="itunes")
+    @Nullable
+    public String summary;
 
     @Element
     @Namespace(prefix="feedburner")

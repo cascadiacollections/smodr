@@ -25,10 +25,11 @@ public final class AppUtil {
      * @return the {@link String[]} for the given resource id.
      */
     public static String[] getStrings(@Nullable final Context context, final int id) {
-        if (context == null) {
-            return new String[]{};
-        }
-        return context.getResources().getStringArray(id);
+        return context != null ? context.getResources().getStringArray(id) : new String[0];
+    }
+
+    public static String getString(@Nullable final Context context, @StringRes final int id, Object... args) {
+        return context != null ? context.getResources().getString(id, args) : "";
     }
 
     /**

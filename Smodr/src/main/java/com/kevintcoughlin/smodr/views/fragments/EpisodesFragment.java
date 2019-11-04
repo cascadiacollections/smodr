@@ -76,7 +76,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         if (arguments != null) {
             final String feedUrl = arguments.getString(EPISODE_FEED_URL);
             service.feed(feedUrl).enqueue(this);
-
         }
     }
 
