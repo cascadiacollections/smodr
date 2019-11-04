@@ -184,5 +184,4 @@ public final class MainActivity extends AppCompatActivity implements ChannelsFra
             return netInfo != null && netInfo.isConnected();
         }
     }
-
 }
