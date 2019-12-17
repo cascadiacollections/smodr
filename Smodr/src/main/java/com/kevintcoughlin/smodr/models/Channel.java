@@ -10,7 +10,6 @@ import java.util.List;
 
 @Root(name = "channel", strict = false)
 public class Channel {
-
     Channel() {
 
     }
@@ -24,16 +23,6 @@ public class Channel {
     @Element
     public String title;
 
-    @Path("description")
-    @Text(required = false)
-    public String description;
-
-    @Element
-    public String pubDate;
-
-    @Element
-    public String lastBuildDate;
-
     @Element(required = false)
     public String link;
 
@@ -42,8 +31,4 @@ public class Channel {
 
     @ElementList(inline = true, entry = "item")
     public List<Item> item;
-
-    public String getTitle() {
-        return this.title;
-    }
 }

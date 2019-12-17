@@ -165,7 +165,11 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        service.createNotificationChannel(chan);
+
+        if (service != null) {
+            service.createNotificationChannel(chan);
+        }
+
         return channelName;
     }
 

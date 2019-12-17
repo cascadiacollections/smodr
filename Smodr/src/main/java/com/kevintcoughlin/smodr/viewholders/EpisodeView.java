@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.utils.AppUtil;
+import com.kevintcoughlin.smodr.utils.StringResourceUtilities;
 
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
@@ -24,9 +24,9 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
 
     @SuppressLint("NewApi")
     private String formatDate(String dateTimeString) {
-        // @todo perf
-        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
+        // @todo Profile and if necessary reuse String formatter object
+        final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
 
         Date date = null;
         String dateString = "";
@@ -51,7 +51,7 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
     public void bind(@NonNull final Item model, @NonNull final EpisodeViewHolder viewHolder) {
         viewHolder.mTitle.setText(model.title);
         viewHolder.mDescription.setText(Html.fromHtml(model.summary));
-        viewHolder.mMetadata.setText(AppUtil.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.pubDate), model.duration));
+        viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.pubDate), model.duration));
         viewHolder.itemView.setOnClickListener(v -> this.mOnClickListener.get().onClick(model));
     }
 
