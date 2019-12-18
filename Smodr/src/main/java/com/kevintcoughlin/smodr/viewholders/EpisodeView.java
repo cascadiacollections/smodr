@@ -19,7 +19,6 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
-
     private WeakReference<BinderRecyclerAdapter.OnClick<Item>> mOnClickListener;
 
     @SuppressLint("NewApi")

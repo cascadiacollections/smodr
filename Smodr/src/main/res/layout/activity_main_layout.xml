@@ -1,11 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
 	<androidx.appcompat.widget.Toolbar
-		tools:ignore="UnusedAttribute"
 		android:id="@+id/toolbar"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
@@ -14,20 +12,16 @@
 		android:elevation="4dp"
 		android:layout_alignParentTop="true" />
 
-	<com.google.android.gms.ads.AdView
-		xmlns:ads="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/ad"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_alignParentBottom="true"
-		ads:adUnitId="ca-app-pub-6967310132431626/8150044399"
-		ads:adSize="BANNER" />
-
-	<androidx.coordinatorlayout.widget.CoordinatorLayout
+	<RelativeLayout
 		android:id="@+id/coordinator_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_below="@id/toolbar"
 		android:layout_above="@id/ad" />
+
+	<RelativeLayout
+		android:id="@+id/ad"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true" />
 </RelativeLayout>

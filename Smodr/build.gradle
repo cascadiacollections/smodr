@@ -67,7 +67,7 @@ dependencies {
     api 'com.google.firebase:firebase-crash:16.2.1'
     api 'com.google.android.gms:play-services-measurement-base:17.2.1'
     api 'com.google.firebase:firebase-appindexing:19.0.0'
-    implementation 'com.google.firebase:firebase-ads:18.2.0'
+    implementation 'com.google.firebase:firebase-ads:18.3.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(path: ':common-android')
 }

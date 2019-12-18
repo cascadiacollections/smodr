@@ -1,6 +1,9 @@
 package com.kevintcoughlin.smodr.views.activities;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.kevintcoughlin.smodr.R;
@@ -20,44 +24,70 @@ import com.microsoft.appcenter.crashes.Crashes;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * The primary activity that displays a {@link EpisodesFragment}.
- *
- * @author kevincoughlin
- */
 public final class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.ad)
-    AdView mAdView;
+    RelativeLayout mAdView;
+    AdView adView;
 
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
     private final static String AD_ID = "ca-app-pub-6967310132431626~6673311196";
+    private final Channel mChannel = new Channel(
+            "Tell 'Em Steve-Dave",
+            "https://feeds.feedburner.com/TellEmSteveDave",
+            "https://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg"
+    );
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppCenter.start(getApplication(), APP_CENTER_ID,
-                Analytics.class, Crashes.class);
-
+        AppCenter.start(getApplication(), APP_CENTER_ID, Analytics.class, Crashes.class);
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
         MobileAds.initialize(this, AD_ID);
-        final AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        MobileAds.initialize(this, initializationStatus -> { });
+        mAdView = findViewById(R.id.ad);
+        adView = new AdView(this);
+        adView.setAdUnitId("ca-app-pub-6967310132431626/8150044399");
+        mAdView.addView(adView);
+        loadBanner();
 
         setSupportActionBar(mToolbar);
 
-        final Channel channel = new Channel("Tell 'Em Steve-Dave", "https://feeds.feedburner.com/TellEmSteveDave", "https://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg");
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
-            final Fragment fragment = EpisodesFragment.create(channel);
+            final Fragment fragment = EpisodesFragment.create(mChannel);
 
             fm.beginTransaction()
                     .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
                     .commit();
         }
+    }
+
+    private void loadBanner() {
+        AdRequest adRequest =
+                new AdRequest.Builder()
+                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                        .build();
+
+        AdSize adSize = getAdSize();
+        adView.setAdSize(adSize);
+        adView.loadAd(adRequest);
+    }
+
+    private AdSize getAdSize() {
+        final Display display = getWindowManager().getDefaultDisplay();
+        final DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+
+        int adWidth = (int) (widthPixels / density);
+
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 }
