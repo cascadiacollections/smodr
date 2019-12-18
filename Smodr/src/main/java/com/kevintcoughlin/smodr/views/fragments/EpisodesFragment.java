@@ -29,7 +29,6 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
     private static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
-    private DividerItemDecoration mDividerItemDecoration;
 
     public static Fragment create(@NonNull Channel channel) {
         final Fragment fragment = new EpisodesFragment();
@@ -69,7 +68,10 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         super.onViewCreated(view, savedInstanceState);
 
         // @todo: remove cast
-        mDividerItemDecoration = new DividerItemDecoration(getRecyclerView().getContext(), ((LinearLayoutManager) getLayoutManager()).getOrientation());
+        final DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                getRecyclerView().getContext(),
+                ((LinearLayoutManager) getLayoutManager()).getOrientation()
+        );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
 
         final Retrofit retrofit = new Retrofit.Builder()
