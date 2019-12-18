@@ -20,13 +20,14 @@ import java.util.Date;
 
 public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
     private WeakReference<BinderRecyclerAdapter.OnClick<Item>> mOnClickListener;
+    @SuppressLint("NewApi")
+    private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+    @SuppressLint("NewApi")
+    private static final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
 
     @SuppressLint("NewApi")
-    private String formatDate(String dateTimeString) {
-        // @todo Profile and if necessary reuse String formatter object
-        final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
-        final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
-
+    private static String formatDate(String dateTimeString) {
+        // @todo: optimize
         Date date = null;
         String dateString = "";
         try {
