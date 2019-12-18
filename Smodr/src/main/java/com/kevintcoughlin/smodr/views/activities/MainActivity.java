@@ -32,7 +32,7 @@ public final class MainActivity extends AppCompatActivity {
     AdView adView;
 
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
-    private final static String AD_ID = "ca-app-pub-6967310132431626~6673311196";
+    private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
     private final Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave",
@@ -47,14 +47,9 @@ public final class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
-        MobileAds.initialize(this, AD_ID);
         MobileAds.initialize(this, initializationStatus -> { });
-        mAdView = findViewById(R.id.ad);
-        adView = new AdView(this);
-        adView.setAdUnitId("ca-app-pub-6967310132431626/8150044399");
-        mAdView.addView(adView);
-        loadBanner();
 
+        initializeAds();
         setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
@@ -67,13 +62,17 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadBanner() {
-        AdRequest adRequest =
-                new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        .build();
+    private void initializeAds() {
+        mAdView = findViewById(R.id.ad);
+        adView = new AdView(this);
+        adView.setAdUnitId(AD_ID);
+        mAdView.addView(adView);
 
-        AdSize adSize = getAdSize();
+        final AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        final AdSize adSize = getAdSize();
+
         adView.setAdSize(adSize);
         adView.loadAd(adRequest);
     }
