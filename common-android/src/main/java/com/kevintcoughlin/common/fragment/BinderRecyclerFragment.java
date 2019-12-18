@@ -24,6 +24,10 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
 
     protected abstract RecyclerView.LayoutManager getLayoutManager();
 
+    protected RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
     public interface OnItemSelected<T> {
         void onItemSelected(T item);
     }
