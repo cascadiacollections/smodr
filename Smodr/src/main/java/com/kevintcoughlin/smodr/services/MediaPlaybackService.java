@@ -224,11 +224,12 @@ public final class MediaPlaybackService extends Service implements MediaPlayer.O
         createNotification();
     }
 
+    // @todo fix icons
     @DrawableRes
     private int getIcon() {
         return (mMediaPlayer != null && mMediaPlayer.isPlaying())
-                ? R.drawable.ic_action_pause
-                : R.drawable.ic_action_play;
+                ? R.drawable.round_play_arrow_black_18dp
+                : R.drawable.round_forward_30_black_18dp;
     }
 
     @StringRes
