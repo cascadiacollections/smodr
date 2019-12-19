@@ -17,7 +17,7 @@ import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
-import com.kevintcoughlin.smodr.services.MediaPlaybackService;
+import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.viewholders.EpisodeView;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
 
@@ -104,7 +104,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public void onClick(@NonNull final Item item) {
-        final Intent intent = MediaPlaybackService.createIntent(getContext(), item);
+        final Intent intent = MediaService.createIntent(getContext(), item);
         getActivity().startService(intent);
     }
 }
