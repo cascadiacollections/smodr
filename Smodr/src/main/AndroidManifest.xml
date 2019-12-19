@@ -45,7 +45,7 @@
         <service
             android:enabled="true"
             android:label="Playback Service"
-            android:name=".services.MediaPlaybackService" />
+            android:name=".services.MediaService" />
 
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
