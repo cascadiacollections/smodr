@@ -14,6 +14,7 @@ import com.kevintcoughlin.smodr.models.Item;
 
 public final class MediaService extends Service implements MediaPlayer.OnErrorListener,
         MediaPlayer.OnPreparedListener {
+    private static final int THIRTY_SECONDS_IN_MILLISECONDS = 30000;
     @NonNull
     public static final String INTENT_EPISODE_URL = "intent_episode_url";
     @NonNull
@@ -28,6 +29,10 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
     public static final String ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME";
     @NonNull
     public static final String ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP";
+    @NonNull
+    public static final String ACTION_FORWARD = "com.kevintcoughlin.smodr.app.FORWARD";
+    @NonNull
+    public static final String ACTION_REWIND = "com.kevintcoughlin.smodr.app.REWIND";
     @Nullable
     private MediaPlayer mMediaPlayer;
 
@@ -62,6 +67,12 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
                 case ACTION_STOP:
                     stopPlayback();
                     break;
+                case ACTION_FORWARD:
+                    seekTo(THIRTY_SECONDS_IN_MILLISECONDS);
+                    break;
+                case ACTION_REWIND:
+                    seekTo(-THIRTY_SECONDS_IN_MILLISECONDS);
+                    break;
             }
         }
 
@@ -85,6 +96,12 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         mMediaPlayer.start();
     }
 
+    private void seekTo(final int milliseconds) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.seekTo(milliseconds);
+        }
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -100,6 +117,9 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
     public void onDestroy() {
         super.onDestroy();
         stopPlayback();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
     }
 
     private void pausePlayback() {
