@@ -1,10 +1,14 @@
 package com.kevintcoughlin.smodr.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -16,6 +20,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
+import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
@@ -23,10 +28,17 @@ import com.microsoft.appcenter.crashes.Crashes;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.play)
+    ImageView mPlay;
+    @Bind(R.id.replay)
+    ImageView mReplay;
+    @Bind(R.id.forward)
+    ImageView mForward;
     @Bind(R.id.ad)
     RelativeLayout mAdView;
     AdView adView;
@@ -60,6 +72,26 @@ public final class MainActivity extends AppCompatActivity {
                     .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
                     .commit();
         }
+    }
+
+    @OnClick(R.id.forward)
+    public void onForwardClick(@NonNull View view) {
+        final Intent intent = MediaService.createAction(
+                this,
+                MediaService.ACTION_FORWARD
+        );
+
+        startService(intent);
+    }
+
+    @OnClick(R.id.replay)
+    public void onRewindClick(@NonNull View view) {
+        final Intent intent = MediaService.createAction(
+                this,
+                MediaService.ACTION_REWIND
+        );
+
+        startService(intent);
     }
 
     private void initializeAds() {

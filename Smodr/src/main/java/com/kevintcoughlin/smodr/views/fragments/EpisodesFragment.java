@@ -3,6 +3,7 @@ package com.kevintcoughlin.smodr.views.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -99,7 +100,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
-        System.out.println(t.getMessage());
+        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT);
     }
 
     @Override

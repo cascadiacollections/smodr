@@ -20,6 +20,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildToolsVersion = '29.0.2'
+    viewBinding.enabled = true
 }
 
 dependencies {

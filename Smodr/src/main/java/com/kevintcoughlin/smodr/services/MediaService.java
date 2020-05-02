@@ -48,8 +48,17 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         return intent;
     }
 
+    public static Intent createAction(@NonNull Context context, @NonNull final String action) {
+        final Intent intent = new Intent(context, MediaService.class);
+
+        intent.setAction(action);
+
+        return intent;
+    }
+
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
         super.onStartCommand(intent, flags, startId);
+        // This could be null currently
         final String url = intent.getStringExtra(INTENT_EPISODE_URL);
         final String action = intent.getAction();
 
@@ -98,7 +107,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
     private void seekTo(final int milliseconds) {
         if (mMediaPlayer != null) {
-            mMediaPlayer.seekTo(milliseconds);
+            mMediaPlayer.seekTo(mMediaPlayer.getCurrentPosition() + milliseconds);
         }
     }
 

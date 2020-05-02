@@ -10,7 +10,7 @@ import com.kevintcoughlin.smodr.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class EpisodeViewHolder extends RecyclerView.ViewHolder {
+public final class EpisodeViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.metadata)

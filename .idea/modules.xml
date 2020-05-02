@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Smodr/Smodr.iml" filepath="$PROJECT_DIR$/Smodr/Smodr.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Smodr-Android.iml" filepath="$PROJECT_DIR$/Smodr-Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common-android/Smodr-Android-common-android.iml" filepath="$PROJECT_DIR$/common-android/Smodr-Android-common-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Smodr/Smodr.iml" filepath="$PROJECT_DIR$/Smodr/Smodr.iml" group="Smodr-Android/Smodr" />
+      <module fileurl="file://$PROJECT_DIR$/Smodr-Android.iml" filepath="$PROJECT_DIR$/Smodr-Android.iml" group="Smodr-Android" />
+      <module fileurl="file://$PROJECT_DIR$/common-android/Smodr-Android-common-android.iml" filepath="$PROJECT_DIR$/common-android/Smodr-Android-common-android.iml" group="Smodr-Android/common-android" />
       <module fileurl="file://$PROJECT_DIR$/common-android/common-android.iml" filepath="$PROJECT_DIR$/common-android/common-android.iml" />
     </modules>
   </component>
