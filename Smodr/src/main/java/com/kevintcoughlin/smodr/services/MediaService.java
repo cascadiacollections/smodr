@@ -139,14 +139,12 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         if (mMediaPlayer != null) {
             mMediaPlayer.pause();
         }
-//        stopForeground(true);
     }
 
     private void stopPlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
         }
-//        stopForeground(true);
     }
 
 
