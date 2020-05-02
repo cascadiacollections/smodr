@@ -30,6 +30,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
     private static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
+    private static final String BASE_URL = "https://www.smodcast.com/";
 
     public static Fragment create(@NonNull Channel channel) {
         final Fragment fragment = new EpisodesFragment();
@@ -76,7 +77,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
 
         final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.smodcast.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
