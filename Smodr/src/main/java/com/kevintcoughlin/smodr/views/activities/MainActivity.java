@@ -26,20 +26,20 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class MainActivity extends AppCompatActivity {
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.play)
+    @BindView(R.id.play)
     ImageView mPlay;
-    @Bind(R.id.replay)
+    @BindView(R.id.replay)
     ImageView mReplay;
-    @Bind(R.id.forward)
+    @BindView(R.id.forward)
     ImageView mForward;
-    @Bind(R.id.ad)
+    @BindView(R.id.ad)
     RelativeLayout mAdView;
     AdView adView;
 
