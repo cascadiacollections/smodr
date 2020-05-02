@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,8 +59,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
         super.onStartCommand(intent, flags, startId);
-        // This could be null currently
-        final String url = intent.getStringExtra(INTENT_EPISODE_URL);
+        final @Nullable String url = intent.getStringExtra(INTENT_EPISODE_URL);
         final String action = intent.getAction();
 
         if (action != null) {
@@ -94,15 +94,19 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         }
     }
 
-    private void startPlayback(final String url) {
+    private void startPlayback(@Nullable final String url) {
         if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
             stopPlayback();
         }
 
-        final Uri uri = Uri.parse(url);
+        try {
+            final Uri uri = Uri.parse(url);
 
-        mMediaPlayer = MediaPlayer.create(this, uri);
-        mMediaPlayer.start();
+            mMediaPlayer = MediaPlayer.create(this, uri);
+            mMediaPlayer.start();
+        } catch (NullPointerException exception) {
+            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT);
+        }
     }
 
     private void seekTo(final int milliseconds) {
