@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
@@ -53,7 +52,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new ItemAdapter(this);
 
     @NonNull
-    private final RecyclerView.LayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
+    private final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
 
     @Override
     protected BinderRecyclerAdapter<Item, EpisodeViewHolder> getAdapter() {
@@ -61,7 +60,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     }
 
     @Override
-    protected RecyclerView.LayoutManager getLayoutManager() {
+    protected LinearLayoutManager getLayoutManager() {
         return mLinearLayoutManager;
     }
 
@@ -72,7 +71,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         // @todo: remove cast
         final DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
                 getRecyclerView().getContext(),
-                ((LinearLayoutManager) getLayoutManager()).getOrientation()
+                getLayoutManager().getOrientation()
         );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
 
