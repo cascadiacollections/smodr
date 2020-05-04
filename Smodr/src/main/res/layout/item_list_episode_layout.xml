@@ -8,14 +8,14 @@
 	android:paddingTop="16dp"
 	android:paddingBottom="16dp"
 	android:orientation="vertical"
-	android:background="?android:attr/selectableItemBackground">
+	android:background="?android:attr/colorBackground">
 
 	<TextView
 		android:id="@+id/title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
-		android:textColor="#343434"
+		android:textColor="?android:attr/textColorPrimary"
 		tools:text="SModcast 241: Another Episode" />
 
 	<TextView
@@ -23,7 +23,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="12sp"
-		android:textColor="#343434"
+		android:textColor="?android:attr/textColorPrimary"
 		android:textAllCaps="true"
 		tools:text="Oct 10 • 1:10:21" />
 
@@ -32,6 +32,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="12sp"
+		android:textColor="?android:attr/textColorPrimary"
 		android:maxLines="1"
 		android:ellipsize="end"
 		tools:text="Episode description." />

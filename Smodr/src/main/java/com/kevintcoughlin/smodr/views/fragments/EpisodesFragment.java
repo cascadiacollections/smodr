@@ -68,7 +68,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // @todo: remove cast
         final DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
                 getRecyclerView().getContext(),
                 getLayoutManager().getOrientation()
