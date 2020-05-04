@@ -1,16 +1,59 @@
 package com.kevintcoughlin.smodr.models;
 
-import com.google.auto.value.AutoValue;
+import android.net.Uri;
 
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-@AutoValue
-public abstract class Item {
-    public abstract String title();
-    public abstract String description();
-    public abstract String link();
-    public abstract String author();
-    public abstract String date();
-    public abstract Image image();
-    public abstract List<Enclosure> enclosures();
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
+import org.simpleframework.xml.Root;
+
+
+@Root(name = "item", strict = false)
+public class Item implements IMediaPlayback {
+    @Element(required = false)
+    @Nullable
+    public String title;
+
+    @Element(required = false)
+    @Nullable
+    public String pubDate;
+
+    @Element(required = false)
+    @Nullable
+    public String description;
+
+    @Element(required = false)
+    @Nullable
+    public Enclosure enclosure;
+
+    @Element
+    @Namespace(prefix="itunes")
+    @Nullable
+    public String duration;
+
+    @Element
+    @Namespace(prefix="itunes")
+    @Nullable
+    public String summary;
+
+    @Element
+    @Namespace(prefix="feedburner")
+    @Nullable
+    private String origEnclosureLink;
+
+    @NonNull
+    private static final String HTTP_PROTOCOL = "http://";
+    @NonNull
+    private static final String HTTPS_PROTOCOL = "https://";
+
+    @Override
+    public Uri getUri() {
+        if (this.origEnclosureLink != null) {
+            final String uriString = this.origEnclosureLink.replace(HTTP_PROTOCOL, HTTPS_PROTOCOL);
+            return Uri.parse(uriString);
+        }
+        return Uri.parse(null);
+    }
 }

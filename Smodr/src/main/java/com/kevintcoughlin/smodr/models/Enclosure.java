@@ -1,10 +1,10 @@
 package com.kevintcoughlin.smodr.models;
 
-import com.google.auto.value.AutoValue;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
 
-@AutoValue
-public abstract class Enclosure {
-    public abstract String url();
-    public abstract String type();
-    public abstract int length();
+@Root(name = "enclosure", strict = false)
+public class Enclosure {
+    @Attribute
+    public int length;
 }

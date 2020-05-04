@@ -1,8 +1,15 @@
 package com.kevintcoughlin.smodr.models;
 
-import com.google.auto.value.AutoValue;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
-@AutoValue
-public abstract class Image {
-    public abstract String url();
+@Root(name = "image", strict = false)
+public class Image {
+
+    Image(String url) {
+        this.url = url;
+    }
+
+    @Element(required = false)
+    public String url;
 }

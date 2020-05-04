@@ -1,20 +1,25 @@
 package com.kevintcoughlin.smodr.viewholders;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.kevintcoughlin.smodr.R;
 
-public class EpisodeViewHolder extends RecyclerView.ViewHolder {
-	@Bind(R.id.title)
-	TextView mTitle;
-	@Bind(R.id.description)
-	TextView mDescription;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-	public EpisodeViewHolder(final View view) {
-		super(view);
-		ButterKnife.bind(this, view);
-	}
+public final class EpisodeViewHolder extends RecyclerView.ViewHolder {
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.metadata)
+    TextView mMetadata;
+    @BindView(R.id.description)
+    TextView mDescription;
+
+    EpisodeViewHolder(final View view) {
+        super(view);
+        ButterKnife.bind(this, view);
+    }
 }

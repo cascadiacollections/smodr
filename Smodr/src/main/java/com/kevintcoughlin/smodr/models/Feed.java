@@ -1,12 +1,10 @@
 package com.kevintcoughlin.smodr.models;
 
-import com.google.auto.value.AutoValue;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
-import java.util.List;
-
-@AutoValue
-public abstract class Feed {
-    public abstract String title();
-    public abstract String url();
-    public abstract List<Item> items();
+@Root(name = "rss", strict = false)
+public class Feed {
+    @Element
+    public Channel channel;
 }

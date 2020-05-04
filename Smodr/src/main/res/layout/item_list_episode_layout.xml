@@ -1,31 +1,38 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
 	android:paddingRight="16dp"
 	android:paddingLeft="16dp"
-	android:paddingTop="8dp"
-	android:paddingBottom="8dp"
+	android:paddingTop="16dp"
+	android:paddingBottom="16dp"
 	android:orientation="vertical"
-	android:background="?android:attr/selectableItemBackground"
-	tools:context=".EpisodesFragment">
+	android:background="?android:attr/selectableItemBackground">
 
 	<TextView
 		android:id="@+id/title"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
 		android:textColor="#343434"
-		android:textStyle="bold"
 		tools:text="SModcast 241: Another Episode" />
 
 	<TextView
-		android:id="@+id/description"
-		android:layout_width="wrap_content"
+		android:id="@+id/metadata"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="12sp"
-		android:maxLines="2"
+		android:textColor="#343434"
+		android:textAllCaps="true"
+		tools:text="Oct 10 • 1:10:21" />
+
+	<TextView
+		android:id="@+id/description"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textSize="12sp"
+		android:maxLines="1"
 		android:ellipsize="end"
 		tools:text="Episode description." />
 

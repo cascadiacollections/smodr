@@ -2,9 +2,7 @@ package com.kevintcoughlin.smodr;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
  * The Smodr {@link Application}.
@@ -15,6 +13,6 @@ public final class SmodrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        Fresco.initialize(this);
     }
 }
