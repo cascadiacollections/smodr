@@ -93,7 +93,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public void onResponse(@NonNull final Call<Feed> call, @NonNull final Response<Feed> response) {
         final Feed feed = response.body();
         if (feed != null) {
-            mAdapter.setItems((feed.channel.item));
+            mAdapter.setItems(feed.channel.item);
             mAdapter.notifyDataSetChanged();
         }
     }
