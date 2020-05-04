@@ -9,4 +9,7 @@
     <string name="content_description_cover_art">Cover art</string>
     <string name="metadata">%1$s • %2$s</string>
     <string name="privacy_policy">Privacy policy</string>
+    <string name="replay_30_seconds">Replay 30 seconds</string>
+    <string name="play_and_pause_toggle_button">Toggle playback</string>
+    <string name="forward_30_seconds">Seek 30 seconds forward</string>
 </resources>

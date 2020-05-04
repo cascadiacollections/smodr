@@ -250,6 +250,6 @@
     <orderEntry type="library" name="Gradle: com.facebook.fresco:imagepipeline-base:1.11.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.fresco:nativeimagefilters:1.11.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-base:19.1.0@aar" level="project" />
-    <orderEntry type="module" module-name="Smodr-Android-common-android" />
+    <orderEntry type="module" module-name="common-android" />
   </component>
 </module>

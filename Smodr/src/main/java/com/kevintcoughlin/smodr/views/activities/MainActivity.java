@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -31,8 +30,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class MainActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.play)
     ImageView mPlay;
     @BindView(R.id.replay)
@@ -62,7 +59,6 @@ public final class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, initializationStatus -> { });
 
         initializeAds();
-        setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
