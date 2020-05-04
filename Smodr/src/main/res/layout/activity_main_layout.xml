@@ -3,20 +3,10 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
-	<androidx.appcompat.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		android:elevation="4dp"
-		android:layout_alignParentTop="true" />
-
 	<RelativeLayout
 		android:id="@+id/coordinator_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_below="@id/toolbar"
 		android:layout_above="@id/ad" />
 
 	<RelativeLayout
@@ -39,7 +29,7 @@
 			android:padding="16dp"
 			android:layout_toStartOf="@id/play"
 			android:src="@drawable/round_replay_30_black_18dp"
-			android:contentDescription="Replay 30 seconds" />
+			android:contentDescription="@string/replay_30_seconds" />
 
 		<ImageView
 			android:id="@+id/play"
@@ -48,7 +38,7 @@
 			android:padding="16dp"
 			android:layout_centerHorizontal="true"
 			android:src="@drawable/round_play_arrow_black_18dp"
-			android:contentDescription="Play and pause toggle button" />
+			android:contentDescription="@string/play_and_pause_toggle_button" />
 
 		<ImageView
 			android:id="@+id/forward"
@@ -57,6 +47,6 @@
 			android:padding="16dp"
 			android:layout_toEndOf="@+id/play"
 			android:src="@drawable/round_forward_30_black_18dp"
-			android:contentDescription="Forward 30 seconds" />
+			android:contentDescription="@string/forward_30_seconds" />
 	</RelativeLayout>
 </RelativeLayout>
