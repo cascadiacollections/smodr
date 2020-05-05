@@ -99,11 +99,12 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
-        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT);
+        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(@NonNull final Item item) {
+        // @todo: refactor to MainActivity
         final Intent intent = MediaService.createIntent(getContext(), item);
         getActivity().startService(intent);
     }
