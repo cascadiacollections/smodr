@@ -40,6 +40,8 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
     @Nullable
     private MediaPlayer mMediaPlayer;
     private final IBinder mBinder = new MediaServiceBinder();
+    @Nullable
+    private IPlaybackListener mListener;
 
     public class MediaServiceBinder extends Binder {
         public MediaService getService() {
@@ -111,6 +113,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }
+        mListener = null;
     }
 
     public void seekTo(final int milliseconds) {
@@ -126,19 +129,31 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
     public void resumePlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.start();
+            mListener.onStartPlayback();
         }
     }
 
     public void pausePlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.pause();
+            mListener.onStopPlayback();
         }
     }
 
     public void stopPlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
+            mListener.onStopPlayback();
         }
+    }
+
+    public interface IPlaybackListener {
+        void onStartPlayback();
+        void onStopPlayback();
+    }
+
+    public void setPlaybackListener(final IPlaybackListener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -156,6 +171,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
             mMediaPlayer = MediaPlayer.create(this, uri);
             mMediaPlayer.start();
+            mListener.onStartPlayback();
         } catch (NullPointerException exception) {
             Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
         }

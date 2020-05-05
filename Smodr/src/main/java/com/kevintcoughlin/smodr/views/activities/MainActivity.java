@@ -77,6 +77,17 @@ public final class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             final MediaService.MediaServiceBinder binder = (MediaService.MediaServiceBinder) service;
             mService = binder.getService();
+            mService.setPlaybackListener(new MediaService.IPlaybackListener() {
+                @Override
+                public void onStartPlayback() {
+                    mPlay.setImageDrawable(getDrawable(R.drawable.baseline_pause_black_18dp));
+                }
+
+                @Override
+                public void onStopPlayback() {
+                    mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
+                }
+            });
             mBound = true;
         }
 
