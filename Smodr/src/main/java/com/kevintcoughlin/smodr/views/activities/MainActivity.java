@@ -17,6 +17,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.services.MediaService;
@@ -24,6 +25,8 @@ import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,9 +99,12 @@ public final class MainActivity extends AppCompatActivity {
         adView.setAdUnitId(AD_ID);
         mAdView.addView(adView);
 
-        final AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        final RequestConfiguration configuration = new RequestConfiguration.Builder()
+                .setTestDeviceIds(Arrays.asList(AdRequest.DEVICE_ID_EMULATOR))
                 .build();
+        MobileAds.setRequestConfiguration(configuration);
+        MobileAds.initialize(this);
+        final AdRequest adRequest = new AdRequest.Builder().build();
         final AdSize adSize = getAdSize();
 
         adView.setAdSize(adSize);
