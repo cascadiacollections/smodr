@@ -1,7 +1,11 @@
 package com.kevintcoughlin.smodr.views.activities;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -42,7 +46,8 @@ public final class MainActivity extends AppCompatActivity {
     @BindView(R.id.ad)
     RelativeLayout mAdView;
     AdView adView;
-
+    private MediaService mService;
+    private boolean mBound = false;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
     private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
     private final Channel mChannel = new Channel(
@@ -50,6 +55,36 @@ public final class MainActivity extends AppCompatActivity {
             "https://feeds.feedburner.com/TellEmSteveDave",
             "https://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg"
     );
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        final Intent intent = new Intent(this, MediaService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        unbindService(connection);
+        mBound = false;
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            final MediaService.MediaServiceBinder binder = (MediaService.MediaServiceBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -70,24 +105,29 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.play)
+    public void onTogglePlaybackClick(@NonNull View view) {
+        if (mBound) {
+            if (this.mService.isPlaying()) {
+                this.mService.pausePlayback();
+            } else {
+                this.mService.resumePlayback();
+            }
+        }
+    }
+
     @OnClick(R.id.forward)
     public void onForwardClick(@NonNull View view) {
-        final Intent intent = MediaService.createAction(
-                this,
-                MediaService.ACTION_FORWARD
-        );
-
-        startService(intent);
+        if (mBound) {
+            this.mService.seekTo(MediaService.THIRTY_SECONDS_IN_MILLISECONDS);
+        }
     }
 
     @OnClick(R.id.replay)
     public void onRewindClick(@NonNull View view) {
-        final Intent intent = MediaService.createAction(
-                this,
-                MediaService.ACTION_REWIND
-        );
-
-        startService(intent);
+        if (mBound) {
+            this.mService.seekTo(-MediaService.THIRTY_SECONDS_IN_MILLISECONDS);
+        }
     }
 
     private void initializeAds() {
