@@ -58,9 +58,6 @@ public final class MainActivity extends AppCompatActivity {
         AppCenter.start(getApplication(), APP_CENTER_ID, Analytics.class, Crashes.class);
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
-
-        MobileAds.initialize(this, initializationStatus -> { });
-
         initializeAds();
 
         if (savedInstanceState == null) {
