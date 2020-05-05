@@ -39,7 +39,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         return fragment;
     }
 
-    private final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
+    private static final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
         ItemAdapter(final BinderRecyclerAdapter.OnClick<Item> onClick) {
             super(new EpisodeView(onClick));
         }
