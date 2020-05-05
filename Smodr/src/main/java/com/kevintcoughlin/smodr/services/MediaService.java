@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 
 import com.kevintcoughlin.smodr.models.Item;
 
+import org.jetbrains.annotations.Contract;
+
 public final class MediaService extends Service implements MediaPlayer.OnErrorListener,
         MediaPlayer.OnPreparedListener {
     public static final int THIRTY_SECONDS_IN_MILLISECONDS = 30000;
@@ -45,11 +47,13 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         }
     }
 
+    @Contract(pure = true)
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
+    @NonNull
     public static Intent createIntent(@NonNull final Context context, @NonNull final Item item) {
         final Intent intent = new Intent(context, MediaService.class);
         final String mediaUrlString = item.getUri().toString();

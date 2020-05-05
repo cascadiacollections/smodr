@@ -30,7 +30,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -137,7 +137,7 @@ public final class MainActivity extends AppCompatActivity {
         mAdView.addView(adView);
 
         final RequestConfiguration configuration = new RequestConfiguration.Builder()
-                .setTestDeviceIds(Arrays.asList(AdRequest.DEVICE_ID_EMULATOR))
+                .setTestDeviceIds(Collections.singletonList(AdRequest.DEVICE_ID_EMULATOR))
                 .build();
         MobileAds.setRequestConfiguration(configuration);
         MobileAds.initialize(this);

@@ -21,6 +21,8 @@ import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.viewholders.EpisodeView;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
 
+import org.jetbrains.annotations.Contract;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,11 +56,13 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     @NonNull
     private final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
 
+    @Contract(pure = true)
     @Override
     protected BinderRecyclerAdapter<Item, EpisodeViewHolder> getAdapter() {
         return mAdapter;
     }
 
+    @Contract(pure = true)
     @Override
     protected LinearLayoutManager getLayoutManager() {
         return mLinearLayoutManager;
