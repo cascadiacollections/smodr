@@ -13,7 +13,13 @@
 		android:id="@+id/ad"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/player" />
+		android:layout_above="@id/seekbar" />
+
+	<SeekBar
+		android:id="@+id/seekbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/player"/>
 
 	<RelativeLayout
 		android:id="@+id/player"

@@ -16,8 +16,36 @@ import com.kevintcoughlin.smodr.models.Item;
 
 import org.jetbrains.annotations.Contract;
 
+interface IMediaService {
+    void seekTo(final int milliseconds);
+
+    boolean isPlaying();
+
+    int getDurationInMilliseconds();
+
+    int currentPositionInMilliseconds();
+
+    void resumePlayback();
+
+    void pausePlayback();
+
+    void stopPlayback();
+
+    void forward();
+
+    void rewind();
+
+    void setPlaybackListener(final MediaService.IPlaybackListener listener);
+}
+
 public final class MediaService extends Service implements MediaPlayer.OnErrorListener,
-        MediaPlayer.OnPreparedListener {
+        MediaPlayer.OnPreparedListener, IMediaService {
+
+    public interface IPlaybackListener {
+        void onStartPlayback();
+        void onStopPlayback();
+    }
+
     public static final int THIRTY_SECONDS_IN_MILLISECONDS = 30000;
     @NonNull
     public static final String INTENT_EPISODE_URL = "intent_episode_url";
@@ -89,10 +117,10 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
                     stopPlayback();
                     break;
                 case ACTION_FORWARD:
-                    seekTo(THIRTY_SECONDS_IN_MILLISECONDS);
+                    rewind();
                     break;
                 case ACTION_REWIND:
-                    seekTo(-THIRTY_SECONDS_IN_MILLISECONDS);
+                    forward();
                     break;
             }
         }
@@ -118,7 +146,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
     public void seekTo(final int milliseconds) {
         if (mMediaPlayer != null) {
-            mMediaPlayer.seekTo(mMediaPlayer.getCurrentPosition() + milliseconds);
+            mMediaPlayer.seekTo(milliseconds);
         }
     }
 
@@ -126,30 +154,51 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
         return mMediaPlayer != null && mMediaPlayer.isPlaying();
     }
 
+    @Override
+    public int getDurationInMilliseconds() {
+        return mMediaPlayer != null ? mMediaPlayer.getDuration() : -1;
+    }
+
+    @Override
+    public int currentPositionInMilliseconds() {
+        return mMediaPlayer != null ? mMediaPlayer.getCurrentPosition() : -1;
+    }
+
     public void resumePlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.start();
-            mListener.onStartPlayback();
+            if (mListener != null) {
+                mListener.onStartPlayback();
+            }
         }
     }
 
     public void pausePlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.pause();
-            mListener.onStopPlayback();
+            if (mListener != null) {
+                mListener.onStopPlayback();
+            }
         }
     }
 
     public void stopPlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
-            mListener.onStopPlayback();
+            if (mListener != null) {
+                mListener.onStopPlayback();
+            }
         }
     }
 
-    public interface IPlaybackListener {
-        void onStartPlayback();
-        void onStopPlayback();
+    @Override
+    public void forward() {
+        seekTo(mMediaPlayer.getCurrentPosition() + THIRTY_SECONDS_IN_MILLISECONDS);
+    }
+
+    @Override
+    public void rewind() {
+        seekTo(mMediaPlayer.getCurrentPosition() - THIRTY_SECONDS_IN_MILLISECONDS);
     }
 
     public void setPlaybackListener(final IPlaybackListener listener) {
@@ -171,7 +220,9 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
             mMediaPlayer = MediaPlayer.create(this, uri);
             mMediaPlayer.start();
-            mListener.onStartPlayback();
+            if (mListener != null) {
+                mListener.onStartPlayback();
+            }
         } catch (NullPointerException exception) {
             Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
         }

@@ -11,6 +11,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,11 +47,13 @@ public final class MainActivity extends AppCompatActivity {
     @BindView(R.id.ad)
     RelativeLayout mAdView;
     AdView adView;
+    @BindView(R.id.seekbar)
+    SeekBar mSeekBar;
     private MediaService mService;
     private boolean mBound = false;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
     private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
-    private final Channel mChannel = new Channel(
+    private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave",
             "https://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg"
@@ -81,6 +84,8 @@ public final class MainActivity extends AppCompatActivity {
                 @Override
                 public void onStartPlayback() {
                     mPlay.setImageDrawable(getDrawable(R.drawable.baseline_pause_black_18dp));
+                    final int duration = mService.getDurationInMilliseconds();
+                    mSeekBar.setMax(duration);
                 }
 
                 @Override
@@ -106,6 +111,25 @@ public final class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initializeAds();
 
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser && mService != null) {
+                    mService.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
             final Fragment fragment = EpisodesFragment.create(mChannel);
@@ -130,15 +154,22 @@ public final class MainActivity extends AppCompatActivity {
     @OnClick(R.id.forward)
     public void onForwardClick(@NonNull View view) {
         if (mBound) {
-            this.mService.seekTo(MediaService.THIRTY_SECONDS_IN_MILLISECONDS);
+            this.mService.forward();
+            this.updateSeekProgress();
         }
     }
 
     @OnClick(R.id.replay)
     public void onRewindClick(@NonNull View view) {
         if (mBound) {
-            this.mService.seekTo(-MediaService.THIRTY_SECONDS_IN_MILLISECONDS);
+            this.mService.rewind();
+            this.updateSeekProgress();
         }
+    }
+
+    private void updateSeekProgress() {
+        final int position = this.mService.currentPositionInMilliseconds();
+        mSeekBar.setProgress(position);
     }
 
     private void initializeAds() {
@@ -150,8 +181,10 @@ public final class MainActivity extends AppCompatActivity {
         final RequestConfiguration configuration = new RequestConfiguration.Builder()
                 .setTestDeviceIds(Collections.singletonList(AdRequest.DEVICE_ID_EMULATOR))
                 .build();
+
         MobileAds.setRequestConfiguration(configuration);
         MobileAds.initialize(this);
+
         final AdRequest adRequest = new AdRequest.Builder().build();
         final AdSize adSize = getAdSize();
 
@@ -164,10 +197,10 @@ public final class MainActivity extends AppCompatActivity {
         final DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
-        float widthPixels = outMetrics.widthPixels;
-        float density = outMetrics.density;
+        final float widthPixels = outMetrics.widthPixels;
+        final float density = outMetrics.density;
 
-        int adWidth = (int) (widthPixels / density);
+        final int adWidth = (int) (widthPixels / density);
 
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
