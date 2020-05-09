@@ -39,11 +39,19 @@ interface IMediaService {
 }
 
 public final class MediaService extends Service implements MediaPlayer.OnErrorListener,
-        MediaPlayer.OnPreparedListener, IMediaService {
+        MediaPlayer.OnPreparedListener, IMediaService, MediaPlayer.OnCompletionListener {
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        if (mListener != null) {
+            mListener.onCompletion();
+        }
+    }
 
     public interface IPlaybackListener {
         void onStartPlayback();
         void onStopPlayback();
+        void onCompletion();
     }
 
     public static final int THIRTY_SECONDS_IN_MILLISECONDS = 30000;
@@ -193,12 +201,16 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
     @Override
     public void forward() {
-        seekTo(mMediaPlayer.getCurrentPosition() + THIRTY_SECONDS_IN_MILLISECONDS);
+        if (mMediaPlayer != null) {
+            seekTo(mMediaPlayer.getCurrentPosition() + THIRTY_SECONDS_IN_MILLISECONDS);
+        }
     }
 
     @Override
     public void rewind() {
-        seekTo(mMediaPlayer.getCurrentPosition() - THIRTY_SECONDS_IN_MILLISECONDS);
+        if (mMediaPlayer != null) {
+            seekTo(mMediaPlayer.getCurrentPosition() - THIRTY_SECONDS_IN_MILLISECONDS);
+        }
     }
 
     public void setPlaybackListener(final IPlaybackListener listener) {
@@ -219,6 +231,7 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
             final Uri uri = Uri.parse(url);
 
             mMediaPlayer = MediaPlayer.create(this, uri);
+            mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.start();
             if (mListener != null) {
                 mListener.onStartPlayback();

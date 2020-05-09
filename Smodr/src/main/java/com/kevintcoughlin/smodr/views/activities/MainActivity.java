@@ -92,6 +92,13 @@ public final class MainActivity extends AppCompatActivity {
                 public void onStopPlayback() {
                     mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
                 }
+
+                @Override
+                public void onCompletion() {
+                    mSeekBar.setMax(0);
+                    mSeekBar.setProgress(0);
+                    mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
+                }
             });
             mBound = true;
         }
