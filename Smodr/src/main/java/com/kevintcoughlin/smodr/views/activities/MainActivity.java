@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -51,6 +52,7 @@ public final class MainActivity extends AppCompatActivity {
     SeekBar mSeekBar;
     private MediaService mService;
     private boolean mBound = false;
+    private final static int UPDATE_TIMER_IN_MILLISECONDS = 1000;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
     private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
     private final static Channel mChannel = new Channel(
@@ -75,6 +77,8 @@ public final class MainActivity extends AppCompatActivity {
         mBound = false;
     }
 
+    private Runnable mUpdateProgress;
+    private Handler mHandler = new Handler();
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -86,6 +90,14 @@ public final class MainActivity extends AppCompatActivity {
                     mPlay.setImageDrawable(getDrawable(R.drawable.baseline_pause_black_18dp));
                     final int duration = mService.getDurationInMilliseconds();
                     mSeekBar.setMax(duration);
+
+                    // @todo: dispose of timer
+                    // @todo: worth backgrounding?
+                    mUpdateProgress = () -> {
+                        updateSeekProgress();
+                        mHandler.postDelayed(mUpdateProgress, UPDATE_TIMER_IN_MILLISECONDS);
+                    };
+                    runOnUiThread(mUpdateProgress);
                 }
 
                 @Override
