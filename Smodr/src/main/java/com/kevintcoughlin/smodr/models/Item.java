@@ -9,6 +9,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.Root;
 
+import java.util.Objects;
+
 
 @Root(name = "item", strict = false)
 public class Item implements IMediaPlayback {
@@ -23,10 +25,6 @@ public class Item implements IMediaPlayback {
     @Element(required = false)
     @Nullable
     public String description;
-
-    @Element(required = false)
-    @Nullable
-    public Enclosure enclosure;
 
     @Element
     @Namespace(prefix="itunes")
@@ -59,15 +57,26 @@ public class Item implements IMediaPlayback {
     }
 
     @Override
-    // @todo
     public boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final Item item = (Item) obj;
+        return Objects.equals(title, item.title) &&
+                Objects.equals(pubDate, item.pubDate) &&
+                Objects.equals(description, item.description) &&
+                Objects.equals(duration, item.duration) &&
+                Objects.equals(summary, item.summary) &&
+                Objects.equals(origEnclosureLink, item.origEnclosureLink);
     }
 
-    @NonNull
     @Override
-    // @todo
-    public String toString() {
-        return super.toString();
+    public int hashCode() {
+        return Objects.hash(title, pubDate, description, duration, summary, origEnclosureLink);
     }
 }
