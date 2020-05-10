@@ -49,11 +49,25 @@ public class Item implements IMediaPlayback {
     private static final String HTTPS_PROTOCOL = "https://";
 
     @Override
+    @Nullable
     public Uri getUri() {
         if (this.origEnclosureLink != null) {
             final String uriString = this.origEnclosureLink.replace(HTTP_PROTOCOL, HTTPS_PROTOCOL);
             return Uri.parse(uriString);
         }
-        return Uri.parse(null);
+        return null;
+    }
+
+    @Override
+    // @todo
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
+    }
+
+    @NonNull
+    @Override
+    // @todo
+    public String toString() {
+        return super.toString();
     }
 }

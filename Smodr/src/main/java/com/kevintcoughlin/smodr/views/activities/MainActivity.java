@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected {
+//    @BindView(R.id.player)
+//    RelativeLayout mPlayer;
     @BindView(R.id.play)
     ImageView mPlay;
     @BindView(R.id.replay)
@@ -51,6 +54,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     AdView adView;
     @BindView(R.id.seekbar)
     SeekBar mSeekBar;
+    @BindView(R.id.current_time)
+    TextView mCurrentTime;
+    @BindView(R.id.remaining_time)
+    TextView mRemainingTime;
+
     private MediaService mService;
     private boolean mBound = false;
     private final static int UPDATE_TIMER_IN_MILLISECONDS = 1000;
@@ -99,6 +107,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                         mHandler.postDelayed(mUpdateProgress, UPDATE_TIMER_IN_MILLISECONDS);
                     };
                     runOnUiThread(mUpdateProgress);
+
+//                    mPlayer.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -129,7 +139,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         AppCenter.start(getApplication(), APP_CENTER_ID, Analytics.class, Crashes.class);
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
-        initializeAds();
+
+        // @todo
+        if (false) {
+            initializeAds();
+        }
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -188,8 +202,16 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     }
 
     private void updateSeekProgress() {
+        if (!mBound) {
+            return;
+        }
+
         final int position = this.mService.currentPositionInMilliseconds();
+        final int remainingTime = this.mService.getDurationInMilliseconds() - position;
+
         mSeekBar.setProgress(position);
+        mCurrentTime.setText(String.valueOf(position));
+        mRemainingTime.setText(String.valueOf(remainingTime));
     }
 
     private void initializeAds() {

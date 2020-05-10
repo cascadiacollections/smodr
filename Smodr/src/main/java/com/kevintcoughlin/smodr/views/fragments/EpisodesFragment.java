@@ -122,7 +122,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public void onClick(@NonNull final Item item) {
-        if(mEpisodeClickListener != null) {
+        if (mEpisodeClickListener != null) {
             mEpisodeClickListener.onItemSelected(item);
         }
     }
