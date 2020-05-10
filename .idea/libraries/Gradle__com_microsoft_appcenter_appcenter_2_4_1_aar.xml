@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.microsoft.appcenter:appcenter:2.4.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1ce079d3192b15665545f4dbe75be017/jetified-appcenter-2.4.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1ce079d3192b15665545f4dbe75be017/jetified-appcenter-2.4.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.appcenter/appcenter/2.4.1/99dc00729e0c8c44a59d767f92d359772858eb25/appcenter-2.4.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.appcenter/appcenter/2.4.1/f3bc2c7e98dc84c9fe7e9090057c3ef5153a6eee/appcenter-2.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
