@@ -26,6 +26,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
+import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.microsoft.appcenter.AppCenter;
@@ -38,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class MainActivity extends AppCompatActivity {
+public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected {
     @BindView(R.id.play)
     ImageView mPlay;
     @BindView(R.id.replay)
@@ -160,7 +161,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.play)
-    public void onTogglePlaybackClick(@NonNull View view) {
+    public final void onTogglePlaybackClick(@NonNull View view) {
         if (mBound) {
             if (this.mService.isPlaying()) {
                 this.mService.pausePlayback();
@@ -171,7 +172,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.forward)
-    public void onForwardClick(@NonNull View view) {
+    public final void onForwardClick(@NonNull View view) {
         if (mBound) {
             this.mService.forward();
             this.updateSeekProgress();
@@ -179,7 +180,7 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.replay)
-    public void onRewindClick(@NonNull View view) {
+    public final void onRewindClick(@NonNull View view) {
         if (mBound) {
             this.mService.rewind();
             this.updateSeekProgress();
@@ -222,5 +223,12 @@ public final class MainActivity extends AppCompatActivity {
         final int adWidth = (int) (widthPixels / density);
 
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+
+
+    @Override
+    public final void onItemSelected(Object item) {
+        final Intent intent = MediaService.createIntent(this, (Item) item);
+        startService(intent);
     }
 }
