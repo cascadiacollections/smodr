@@ -36,7 +36,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public static Fragment create(@NonNull Channel channel) {
         final Fragment fragment = new EpisodesFragment();
         final Bundle bundle = new Bundle();
-        bundle.putString(EPISODE_FEED_URL, channel.link);
+        bundle.putString(EPISODE_FEED_URL, channel.getLink());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -110,7 +110,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public void onResponse(@NonNull final Call<Feed> call, @NonNull final Response<Feed> response) {
         final Feed feed = response.body();
         if (feed != null) {
-            mAdapter.setItems(feed.channel.item);
+            mAdapter.setItems(feed.getChannel().getItem());
             mAdapter.notifyDataSetChanged();
         }
     }

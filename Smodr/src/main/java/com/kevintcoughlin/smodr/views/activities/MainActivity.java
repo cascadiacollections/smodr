@@ -67,8 +67,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
-            "https://feeds.feedburner.com/TellEmSteveDave",
-            "https://i1.sndcdn.com/avatars-000069229441-16gxj6-original.jpg"
+            "https://feeds.feedburner.com/TellEmSteveDave"
     );
     private final static StringBuilder BUILDER = new StringBuilder();
 

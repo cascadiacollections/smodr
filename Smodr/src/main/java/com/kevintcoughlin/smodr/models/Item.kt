@@ -31,15 +31,15 @@ class Item : IMediaPlayback {
     @field:Element
     @field:Namespace(prefix = "feedburner")
     var origEnclosureLink: String? = null
-
-    override fun getUri(): Uri? {
-        if (origEnclosureLink != null) {
-            // @todo
-            val uriString = origEnclosureLink!!.replace(_http, _https)
-            return Uri.parse(uriString)
+    override val uri: Uri?
+        get() {
+            if (origEnclosureLink != null) {
+                // @todo
+                val uriString = origEnclosureLink!!.replace(_http, _https)
+                return Uri.parse(uriString)
+            }
+            return null
         }
-        return null
-    }
 
     override fun equals(other: Any?): Boolean {
         if (other == null) {
