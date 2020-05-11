@@ -49,9 +49,9 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
 
     @Override
     public void bind(@NonNull final Item model, @NonNull final EpisodeViewHolder viewHolder) {
-        viewHolder.mTitle.setText(model.title);
-        viewHolder.mDescription.setText(Html.fromHtml(model.summary));
-        viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.pubDate), model.duration));
+        viewHolder.mTitle.setText(model.getTitle());
+        viewHolder.mDescription.setText(Html.fromHtml(model.getSummary()));
+        viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.getPubDate()), model.getDuration()));
         viewHolder.itemView.setOnClickListener(v -> this.mOnClickListener.get().onClick(model));
     }
 

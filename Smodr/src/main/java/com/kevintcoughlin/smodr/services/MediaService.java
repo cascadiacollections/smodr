@@ -98,8 +98,8 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
 
         intent.setAction(MediaService.ACTION_PLAY);
         intent.putExtra(MediaService.INTENT_EPISODE_URL, mediaUrlString);
-        intent.putExtra(MediaService.INTENT_EPISODE_TITLE, item.title);
-        intent.putExtra(MediaService.INTENT_EPISODE_DESCRIPTION, item.description);
+        intent.putExtra(MediaService.INTENT_EPISODE_TITLE, item.getTitle());
+        intent.putExtra(MediaService.INTENT_EPISODE_DESCRIPTION, item.getDescription());
 
         return intent;
     }
