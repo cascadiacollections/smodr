@@ -1,6 +1,9 @@
 package com.kevintcoughlin.smodr.models
 
 import android.net.Uri
+import android.os.Build
+import android.text.Html
+import android.text.Spanned
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Namespace
 import org.simpleframework.xml.Root
@@ -10,6 +13,14 @@ import java.util.*
 class Item : IMediaPlayback {
     private val _http = "http://"
     private val _https = "https://"
+
+    fun sanitizedHtml(): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(summary, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            Html.fromHtml(summary)
+        }
+    }
 
     @field:Element(required = false)
     var title: String? = null
