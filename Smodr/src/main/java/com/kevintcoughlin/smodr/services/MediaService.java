@@ -202,7 +202,8 @@ public final class MediaService extends Service implements MediaPlayer.OnErrorLi
     @Override
     public void forward() {
         if (mMediaPlayer != null) {
-            seekTo(mMediaPlayer.getCurrentPosition() + THIRTY_SECONDS_IN_MILLISECONDS);
+            final int position = mMediaPlayer.getCurrentPosition() + THIRTY_SECONDS_IN_MILLISECONDS;
+            seekTo(Math.min(position, mMediaPlayer.getDuration()));
         }
     }
 
