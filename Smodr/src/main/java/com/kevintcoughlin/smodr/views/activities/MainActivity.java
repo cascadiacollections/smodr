@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
+import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
@@ -212,12 +212,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         final int remainingTime = this.mService.getDurationInMilliseconds() - position;
 
         mSeekBar.setProgress(position);
-        mCurrentTime.setText(formatTime(position));
-        mRemainingTime.setText(formatTime(remainingTime));
-    }
-
-    private static String formatTime(final int milliseconds) {
-        return DateUtils.formatElapsedTime(BUILDER, milliseconds / ONE_SECOND_IN_MS);
+        TextViewKt.setElapsedTime(mCurrentTime, position);
+        TextViewKt.setElapsedTime(mRemainingTime, remainingTime);
     }
 
     private void initializeAds() {
