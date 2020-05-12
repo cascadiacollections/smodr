@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -42,8 +43,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected {
-//    @BindView(R.id.player)
-//    RelativeLayout mPlayer;
+    @BindView(R.id.player)
+    LinearLayout mPlayer;
     @BindView(R.id.play)
     ImageView mPlay;
     @BindView(R.id.replay)
@@ -69,7 +70,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
     );
-    private final static StringBuilder BUILDER = new StringBuilder();
 
     @Override
     protected void onStart() {
@@ -98,8 +98,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                 @Override
                 public void onStartPlayback() {
                     mPlay.setImageDrawable(getDrawable(R.drawable.baseline_pause_black_18dp));
-                    final int duration = mService.getDurationInMilliseconds();
-                    mSeekBar.setMax(duration);
+                    mSeekBar.setMax(mService.getDuration());
+                    mPlayer.setVisibility(View.VISIBLE);
 
                     // @todo: dispose of timer
                     // @todo: worth backgrounding?
@@ -108,8 +108,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                         mHandler.postDelayed(mUpdateProgress, ONE_SECOND_IN_MS);
                     };
                     runOnUiThread(mUpdateProgress);
-
-//                    mPlayer.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -207,12 +205,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             return;
         }
 
-        final int position = this.mService.currentPositionInMilliseconds();
-        final int remainingTime = this.mService.getDurationInMilliseconds() - position;
-
-        mSeekBar.setProgress(position);
-        TextViewKt.setElapsedTime(mCurrentTime, position);
-        TextViewKt.setElapsedTime(mRemainingTime, remainingTime);
+        mSeekBar.setProgress(this.mService.getCurrentTime());
+        TextViewKt.setElapsedTime(mCurrentTime, this.mService.getCurrentTime());
+        TextViewKt.setElapsedTime(mRemainingTime, this.mService.getRemainingTime());
     }
 
     private void initializeAds() {

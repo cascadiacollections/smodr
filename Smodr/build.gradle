@@ -57,7 +57,6 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.1.0'
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'com.google.android.material:material:1.1.0'
-    implementation 'com.facebook.fresco:fresco:1.11.0'
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
