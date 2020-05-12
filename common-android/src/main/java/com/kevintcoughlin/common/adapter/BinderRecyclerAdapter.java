@@ -1,6 +1,5 @@
 package com.kevintcoughlin.common.adapter;
 
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -40,10 +39,6 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         this.items.addAll(items);
     }
 
-    public T getItem(int index) {
-        return items.get(index);
-    }
-
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
@@ -54,12 +49,7 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
     public void onBindViewHolder(@NonNull final VH viewHolder, int i) {
         final T item = this.items.get(i);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mOnClickListener.get().onClick(item);
-            }
-        });
+        viewHolder.itemView.setOnClickListener(view -> mOnClickListener.get().onClick(item));
 
         this.binderViewHolder.bind(item, viewHolder);
     }

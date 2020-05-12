@@ -1,6 +1,5 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -31,7 +30,6 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
     private static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
     private static final String BASE_URL = "https://www.smodcast.com/";
-    private OnItemSelected<Item> mEpisodeClickListener;
 
     public static Fragment create(@NonNull Channel channel) {
         final Fragment fragment = new EpisodesFragment();
@@ -42,8 +40,8 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     }
 
     private static final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
-        ItemAdapter(final BinderRecyclerAdapter.OnClick<Item> onClick) {
-            super(new EpisodeView(onClick));
+        ItemAdapter() {
+            super(new EpisodeView());
         }
     }
 
@@ -51,7 +49,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public static final String TAG = EpisodesFragment.class.getSimpleName();
 
     @NonNull
-    private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new ItemAdapter(this);
+    private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new ItemAdapter();
 
     @NonNull
     private final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -66,20 +64,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     @Override
     protected LinearLayoutManager getLayoutManager() {
         return mLinearLayoutManager;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        mEpisodeClickListener = (OnItemSelected<Item>) getActivity();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        mEpisodeClickListener = null;
     }
 
     @Override
@@ -118,12 +102,5 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(@NonNull final Item item) {
-        if (mEpisodeClickListener != null) {
-            mEpisodeClickListener.onItemSelected(item);
-        }
     }
 }

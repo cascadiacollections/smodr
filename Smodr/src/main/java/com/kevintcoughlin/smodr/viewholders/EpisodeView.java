@@ -14,12 +14,10 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.StringResourceUtilities;
 
-import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.util.Date;
 
 public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
-    private WeakReference<BinderRecyclerAdapter.OnClick<Item>> mOnClickListener;
     @SuppressLint("NewApi")
     private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
     @SuppressLint("NewApi")
@@ -43,8 +41,8 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
         return dateString;
     }
 
-    public EpisodeView(@NonNull final BinderRecyclerAdapter.OnClick<Item> onClick) {
-        this.mOnClickListener = new WeakReference<>(onClick);
+    public EpisodeView() {
+
     }
 
     @Override
@@ -52,7 +50,6 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
         viewHolder.mTitle.setText(model.getTitle());
         viewHolder.mDescription.setText(Html.fromHtml(model.getSummary()));
         viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.getPubDate()), model.getDuration()));
-        viewHolder.itemView.setOnClickListener(v -> this.mOnClickListener.get().onClick(model));
     }
 
     @Override
