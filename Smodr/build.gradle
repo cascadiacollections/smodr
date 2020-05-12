@@ -34,6 +34,9 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+    lintOptions {
+        abortOnError false
+    }
     viewBinding.enabled = true
 }
 
