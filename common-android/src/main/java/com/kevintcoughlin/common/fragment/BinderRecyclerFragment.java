@@ -9,14 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kevintcoughlin.common.R;
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T> {
+public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T>, SwipeRefreshLayout.OnRefreshListener {
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
 
     private WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
 
@@ -26,6 +29,24 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
 
     protected RecyclerView getRecyclerView() {
         return mRecyclerView;
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mRefreshListener != null) {
+            mRefreshListener.onRefresh();
+        }
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        this.mRefreshListener = null;
     }
 
     public interface OnItemSelected<T> {
@@ -46,6 +67,7 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeContainer);
         mRecyclerView = view.findViewById(R.id.list);
 
         return view;
@@ -58,6 +80,7 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         final BinderRecyclerAdapter<T, VH> adapter = getAdapter();
         adapter.setOnClickListener(this);
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManager());
         mRecyclerView.setAdapter(adapter);
