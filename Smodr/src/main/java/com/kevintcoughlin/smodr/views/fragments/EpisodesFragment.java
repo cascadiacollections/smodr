@@ -67,6 +67,24 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     }
 
     @Override
+    public void onRefresh() {
+        super.onRefresh();
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        final FeedService service = retrofit.create(FeedService.class);
+        final Bundle arguments = getArguments();
+
+        if (arguments != null) {
+            final String feedUrl = arguments.getString(EPISODE_FEED_URL);
+            service.feed(feedUrl).enqueue(this);
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -96,6 +114,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         if (feed != null) {
             mAdapter.setItems(feed.getChannel().getItem());
             mAdapter.notifyDataSetChanged();
+            setRefreshing(false);
         }
     }
 

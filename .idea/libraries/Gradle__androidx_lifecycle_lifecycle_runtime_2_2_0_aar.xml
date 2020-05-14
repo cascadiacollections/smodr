@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.lifecycle:lifecycle-runtime:2.2.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd440b9b6d9a87c1b152d11a45bdc08a/lifecycle-runtime-2.2.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd440b9b6d9a87c1b152d11a45bdc08a/lifecycle-runtime-2.2.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/14bbc8d415e2b2afb7da4a10448422d2/lifecycle-runtime-2.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/14bbc8d415e2b2afb7da4a10448422d2/lifecycle-runtime-2.2.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
