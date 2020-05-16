@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.viewholders;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -50,6 +51,11 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
         viewHolder.mTitle.setText(model.getTitle());
         viewHolder.mDescription.setText(Html.fromHtml(model.getSummary()));
         viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.getPubDate()), model.getDuration()));
+
+        if (model.getCompleted()) {
+            // @todo
+            viewHolder.mTitle.setTextColor(Color.rgb(200,0,0));
+        }
     }
 
     @Override

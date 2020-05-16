@@ -41,17 +41,31 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         return fragment;
     }
 
+    public void markCompleted(Item item) {
+        mAdapter.markCompleted(item);
+    }
+
     private static final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
         ItemAdapter() {
             super(new EpisodeView());
+        }
+
+        void markCompleted(Item item) {
+            final int index = items.indexOf(item);
+            final Item newItem = Item.create(item, true /* completed */);
+
+            // @todo: index may not always be in sync if sorted
+            items.set(index, newItem);
+            notifyItemChanged(index);
         }
     }
 
     @NonNull
     public static final String TAG = EpisodesFragment.class.getSimpleName();
 
+    // @todo
     @NonNull
-    private final BinderRecyclerAdapter<Item, EpisodeViewHolder> mAdapter = new ItemAdapter();
+    private final ItemAdapter mAdapter = new ItemAdapter();
 
     @NonNull
     private final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());

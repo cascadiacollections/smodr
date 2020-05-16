@@ -42,6 +42,9 @@ class Item : IMediaPlayback {
     @field:Element
     @field:Namespace(prefix = "feedburner")
     var origEnclosureLink: String? = null
+
+    var completed: Boolean = false;
+
     override val uri: Uri?
         get() {
             if (origEnclosureLink != null) {
@@ -70,5 +73,22 @@ class Item : IMediaPlayback {
 
     override fun hashCode(): Int {
         return Objects.hash(title, pubDate, description, duration, summary, origEnclosureLink)
+    }
+
+    companion object {
+        @JvmStatic
+        fun create(item: Item, completed: Boolean): Item {
+            var newItem = Item()
+
+            newItem.title = item.title;
+            newItem.description = item.description;
+            newItem.duration = item.duration;
+            newItem.origEnclosureLink = item.origEnclosureLink;
+            newItem.pubDate = item.pubDate;
+            newItem.summary = item.summary;
+            newItem.completed = completed;
+
+            return newItem;
+        }
     }
 }

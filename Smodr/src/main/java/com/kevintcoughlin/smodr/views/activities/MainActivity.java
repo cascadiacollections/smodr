@@ -73,6 +73,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     );
     private Runnable mUpdateProgress;
     private Handler mHandler = new Handler();
+    private EpisodesFragment mBinderRecyclerFragment;
+    private Item mItem;
 
     @Override
     protected void onStart() {
@@ -121,6 +123,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     mSeekBar.setMax(0);
                     mSeekBar.setProgress(0);
                     mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
+                    mBinderRecyclerFragment.markCompleted(mItem);
+                    // @todo
+                    mItem = null;
                 }
             });
             mBound = true;
@@ -178,8 +183,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         super.onAttachFragment(fragment);
 
         if (fragment instanceof EpisodesFragment) {
-            final EpisodesFragment binderRecyclerFragment = (EpisodesFragment) fragment;
-            binderRecyclerFragment.setOnItemSelectedListener(this);
+            mBinderRecyclerFragment = (EpisodesFragment) fragment;
+            mBinderRecyclerFragment.setOnItemSelectedListener(this);
         }
     }
 
@@ -261,6 +266,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             return;
         }
 
+        // @todo: move into service
+        mItem = item;
         mService.startPlayback(item.getUri());
     }
 }

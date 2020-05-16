@@ -21,7 +21,7 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         VH createViewHolder(@NonNull final ViewGroup parent);
     }
 
-    private final List<T> items = new ArrayList<>();
+    protected final List<T> items = new ArrayList<>();
     private final Binder<T, VH> binderViewHolder;
     private WeakReference<OnClick<T>> mOnClickListener;
 
