@@ -30,6 +30,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
     private static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
     private static final String BASE_URL = "https://www.smodcast.com/";
+    private FeedService mFeedService;
 
     @NonNull
     public static Fragment create(@NonNull Channel channel) {
@@ -71,21 +72,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     public void onRefresh() {
         super.onRefresh();
 
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
-                .build();
-
-        final FeedService service = retrofit.create(FeedService.class);
-        final Bundle arguments = getArguments();
-
-        if (arguments != null) {
-            final String feedUrl = arguments.getString(EPISODE_FEED_URL);
-
-            if (feedUrl != null) {
-                service.feed(feedUrl).enqueue(this);
-            }
-        }
+        fetchEpisodes();
     }
 
     @Override
@@ -97,22 +84,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
                 getLayoutManager().getOrientation()
         );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
-
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
-                .build();
-
-        final FeedService service = retrofit.create(FeedService.class);
-        final Bundle arguments = getArguments();
-
-        if (arguments != null) {
-            final String feedUrl = arguments.getString(EPISODE_FEED_URL);
-
-            if (feedUrl != null) {
-                service.feed(feedUrl).enqueue(this);
-            }
-        }
+        fetchEpisodes();
     }
 
     @Override
@@ -129,5 +101,30 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     @Override
     public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void fetchEpisodes() {
+        if (mFeedService == null) {
+            initializeFeedService();
+        }
+
+        final Bundle arguments = getArguments();
+
+        if (arguments != null) {
+            final String feedUrl = arguments.getString(EPISODE_FEED_URL);
+
+            if (feedUrl != null) {
+                mFeedService.feed(feedUrl).enqueue(this);
+            }
+        }
+    }
+    
+    private void initializeFeedService() {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        mFeedService = retrofit.create(FeedService.class);
     }
 }
