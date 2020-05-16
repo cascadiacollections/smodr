@@ -1,6 +1,5 @@
 package com.kevintcoughlin.common.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,16 +46,8 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         void onItemSelected(T item);
     }
 
-    private void setOnItemSelectedListener(OnItemSelected<T> activity) {
+    public void setOnItemSelectedListener(OnItemSelected<T> activity) {
         mOnItemSelectedCallback = new WeakReference<>(activity);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        // @todo
-        this.setOnItemSelectedListener((OnItemSelected<T>) getActivity());
     }
 
     @Override

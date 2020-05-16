@@ -26,6 +26,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
+import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
@@ -42,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected {
+public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item> {
     @BindView(R.id.player)
     LinearLayout mPlayer;
     @BindView(R.id.play)
@@ -139,8 +140,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
-        // @todo
-        if (false) {
+        if (!BuildConfig.DEBUG) {
             initializeAds();
         }
 
@@ -170,6 +170,16 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             fm.beginTransaction()
                     .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
                     .commit();
+        }
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+        if (fragment instanceof EpisodesFragment) {
+            final EpisodesFragment binderRecyclerFragment = (EpisodesFragment) fragment;
+            binderRecyclerFragment.setOnItemSelectedListener(this);
         }
     }
 
@@ -245,8 +255,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
 
     @Override
-    public final void onItemSelected(Object item) {
-        final Intent intent = MediaService.createIntent(this, (Item) item);
+    public final void onItemSelected(Item item) {
+        final Intent intent = MediaService.createIntent(this, item);
         startService(intent);
     }
 }
