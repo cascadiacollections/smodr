@@ -71,6 +71,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
     );
+    private Runnable mUpdateProgress;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onStart() {
@@ -88,8 +90,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mBound = false;
     }
 
-    private Runnable mUpdateProgress;
-    private Handler mHandler = new Handler();
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -240,6 +240,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         adView.loadAd(adRequest);
     }
 
+    @NonNull
     private AdSize getAdSize() {
         final Display display = getWindowManager().getDefaultDisplay();
         final DisplayMetrics outMetrics = new DisplayMetrics();
@@ -255,8 +256,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
 
     @Override
-    public final void onItemSelected(Item item) {
-        final Intent intent = MediaService.createIntent(this, item);
-        startService(intent);
+    public final void onItemSelected(@NonNull Item item) {
+        if (!mBound) {
+            return;
+        }
+
+        mService.startPlayback(item.getUri());
     }
 }

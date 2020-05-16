@@ -1,7 +1,6 @@
 package com.kevintcoughlin.smodr.services
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -10,9 +9,9 @@ import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.widget.Toast
-import com.kevintcoughlin.smodr.models.Item
 import com.kevintcoughlin.smodr.services.MediaService.IPlaybackListener
 import org.jetbrains.annotations.Contract
+import kotlin.math.min
 
 internal interface IMediaService {
     fun seekTo(milliseconds: Int)
@@ -54,17 +53,15 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        val url = intent.getStringExtra(INTENT_EPISODE_URL)
+        val url = Uri.parse(intent.getStringExtra(INTENT_EPISODE_URL))
         val action = intent.action
-        if (action != null) {
-            when (action) {
-                ACTION_PAUSE -> pausePlayback()
-                ACTION_PLAY -> startPlayback(url)
-                ACTION_RESUME -> resumePlayback()
-                ACTION_STOP -> stopPlayback()
-                ACTION_FORWARD -> rewind()
-                ACTION_REWIND -> forward()
-            }
+        if (action != null) when (action) {
+            ACTION_PAUSE -> pausePlayback()
+            ACTION_PLAY -> startPlayback(url)
+            ACTION_RESUME -> resumePlayback()
+            ACTION_STOP -> stopPlayback()
+            ACTION_FORWARD -> rewind()
+            ACTION_REWIND -> forward()
         }
         return START_REDELIVER_INTENT
     }
@@ -131,7 +128,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
     override fun forward() {
         if (mMediaPlayer != null) {
             val position = mMediaPlayer!!.currentPosition + THIRTY_SECONDS_IN_MILLISECONDS
-            seekTo(Math.min(position, mMediaPlayer!!.duration))
+            seekTo(min(position, mMediaPlayer!!.duration))
         }
     }
 
@@ -149,13 +146,12 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
         resumePlayback()
     }
 
-    private fun startPlayback(url: String?) {
+    fun startPlayback(url: Uri?) {
         if (mMediaPlayer != null && mMediaPlayer!!.isPlaying) {
             stopPlayback()
         }
         try {
-            val uri = Uri.parse(url)
-            mMediaPlayer = MediaPlayer.create(this, uri)
+            mMediaPlayer = MediaPlayer.create(this, url)
             mMediaPlayer!!.setOnCompletionListener(this)
             mMediaPlayer!!.start()
             if (mListener != null) {
@@ -169,23 +165,11 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
     companion object {
         const val THIRTY_SECONDS_IN_MILLISECONDS = 30000
         const val INTENT_EPISODE_URL = "intent_episode_url"
-        const val INTENT_EPISODE_TITLE = "intent_episode_title"
-        const val INTENT_EPISODE_DESCRIPTION = "intent_episode_description"
         const val ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY"
         const val ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE"
         const val ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME"
         const val ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP"
         const val ACTION_FORWARD = "com.kevintcoughlin.smodr.app.FORWARD"
         const val ACTION_REWIND = "com.kevintcoughlin.smodr.app.REWIND"
-        @JvmStatic
-        fun createIntent(context: Context, item: Item): Intent {
-            val intent = Intent(context, MediaService::class.java)
-            val mediaUrlString = item.uri.toString()
-            intent.action = ACTION_PLAY
-            intent.putExtra(INTENT_EPISODE_URL, mediaUrlString)
-            intent.putExtra(INTENT_EPISODE_TITLE, item.title)
-            intent.putExtra(INTENT_EPISODE_DESCRIPTION, item.description)
-            return intent
-        }
     }
 }
