@@ -31,6 +31,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     private static final String EPISODE_FEED_URL = "com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
     private static final String BASE_URL = "https://www.smodcast.com/";
 
+    @NonNull
     public static Fragment create(@NonNull Channel channel) {
         final Fragment fragment = new EpisodesFragment();
         final Bundle bundle = new Bundle();
@@ -80,7 +81,10 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
         if (arguments != null) {
             final String feedUrl = arguments.getString(EPISODE_FEED_URL);
-            service.feed(feedUrl).enqueue(this);
+
+            if (feedUrl != null) {
+                service.feed(feedUrl).enqueue(this);
+            }
         }
     }
 
@@ -104,17 +108,21 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
         if (arguments != null) {
             final String feedUrl = arguments.getString(EPISODE_FEED_URL);
-            service.feed(feedUrl).enqueue(this);
+
+            if (feedUrl != null) {
+                service.feed(feedUrl).enqueue(this);
+            }
         }
     }
 
     @Override
     public void onResponse(@NonNull final Call<Feed> call, @NonNull final Response<Feed> response) {
         final Feed feed = response.body();
-        if (feed != null) {
+
+        if (feed != null && feed.getChannel() != null) {
             mAdapter.setItems(feed.getChannel().getItem());
             mAdapter.notifyDataSetChanged();
-            setRefreshing(false);
+            stopRefreshing();
         }
     }
 

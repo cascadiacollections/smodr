@@ -7,5 +7,5 @@ import retrofit2.http.Url
 
 interface FeedService {
     @GET
-    fun feed(@Url url: String?): Call<Feed?>?
+    fun feed(@Url url: String): Call<Feed?>
 }

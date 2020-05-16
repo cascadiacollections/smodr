@@ -39,8 +39,8 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         }
     }
 
-    public void setRefreshing(boolean refreshing) {
-        mSwipeRefreshLayout.setRefreshing(refreshing);
+    protected void stopRefreshing() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public interface OnItemSelected<T> {
