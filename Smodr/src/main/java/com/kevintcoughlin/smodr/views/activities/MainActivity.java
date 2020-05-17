@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.room.Room;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -28,8 +29,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.models.PlaybackRecord;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
@@ -75,10 +78,15 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private Handler mHandler = new Handler();
     private EpisodesFragment mBinderRecyclerFragment;
     private Item mItem;
+    private AppDatabase mDatabase;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        mDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-name")
+                .allowMainThreadQueries() // @todo
+                .build();
 
         final Intent intent = new Intent(this, MediaService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -124,8 +132,12 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     mSeekBar.setProgress(0);
                     mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
                     mBinderRecyclerFragment.markCompleted(mItem);
+
+                    AppDatabase.insertData(mDatabase, PlaybackRecord.fromItem(mItem));
+
                     // @todo
                     mItem = null;
+
                 }
             });
             mBound = true;

@@ -23,6 +23,9 @@ class Item : IMediaPlayback {
     }
 
     @field:Element(required = false)
+    var guid: String? = null
+
+    @field:Element(required = false)
     var title: String? = null
 
     @field:Element(required = false)
