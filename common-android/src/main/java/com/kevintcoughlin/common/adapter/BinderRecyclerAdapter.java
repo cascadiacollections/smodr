@@ -11,8 +11,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-    public interface OnClick<T> {
+    public interface IListeners<T> {
         void onClick(T item);
+        boolean onLongClick(T item);
     }
 
     public interface Binder<T, VH extends RecyclerView.ViewHolder> {
@@ -23,20 +24,20 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
 
     protected final List<T> items = new ArrayList<>();
     private final Binder<T, VH> binderViewHolder;
-    private WeakReference<OnClick<T>> mOnClickListener;
+    private WeakReference<IListeners<T>> onClickListener;
 
-    public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binderViewHolder) {
+    public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binder) {
         super();
-        this.binderViewHolder = binderViewHolder;
+        binderViewHolder = binder;
     }
 
-    public void setOnClickListener(@NonNull final OnClick<T> onClickListener) {
-        this.mOnClickListener = new WeakReference<>(onClickListener);
+    public void setOnClickListener(@NonNull final IListeners<T> onClickListener) {
+        this.onClickListener = new WeakReference<>(onClickListener);
     }
 
-    public void setItems(Collection<T> items) {
-        this.items.clear();
-        this.items.addAll(items);
+    public void setItems(Collection<T> collection) {
+        items.clear();
+        items.addAll(collection);
     }
 
     @NonNull
@@ -47,15 +48,21 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
 
     @Override
     public void onBindViewHolder(@NonNull final VH viewHolder, int i) {
-        final T item = this.items.get(i);
+        final T item = items.get(i);
+        final IListeners<T> listener = onClickListener.get();
 
-        viewHolder.itemView.setOnClickListener(view -> mOnClickListener.get().onClick(item));
+        if (listener != null) {
+            // @todo: generalize view
+            viewHolder.itemView.setOnClickListener(view -> listener.onClick(item));
+            viewHolder.itemView.setOnLongClickListener(view -> listener.onLongClick(item));
+        }
+        
 
-        this.binderViewHolder.bind(item, viewHolder);
+        binderViewHolder.bind(item, viewHolder);
     }
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return items.size();
     }
 }

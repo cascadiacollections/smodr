@@ -16,17 +16,14 @@ import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment implements BinderRecyclerAdapter.OnClick<T>, SwipeRefreshLayout.OnRefreshListener {
+public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment
+        implements BinderRecyclerAdapter.IListeners<T>, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
-
     private WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
-
     protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
-
     protected abstract RecyclerView.LayoutManager getLayoutManager();
-
     protected RecyclerView getRecyclerView() {
         return mRecyclerView;
     }
@@ -46,8 +43,8 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         void onItemSelected(T item);
     }
 
-    public void setOnItemSelectedListener(OnItemSelected<T> activity) {
-        mOnItemSelectedCallback = new WeakReference<>(activity);
+    public void setOnItemSelectedListener(OnItemSelected<T> listener) {
+        mOnItemSelectedCallback = new WeakReference<>(listener);
     }
 
     @Override
@@ -60,7 +57,11 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
 
     @Override
     public void onClick(@NonNull final T item) {
-        this.mOnItemSelectedCallback.get().onItemSelected(item);
+        final OnItemSelected<T> listener = mOnItemSelectedCallback.get();
+
+        if (listener != null) {
+            listener.onItemSelected(item);
+        }
     }
 
     @Nullable

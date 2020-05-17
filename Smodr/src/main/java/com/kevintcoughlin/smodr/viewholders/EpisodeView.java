@@ -23,7 +23,9 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
     private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
     @SuppressLint("NewApi")
     private static final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
-
+    // @todo: theme
+    private static final int COLOR_BLACK = Color.rgb(0,0,0);
+    private static final int COLOR_GRAY = Color.rgb(222,222,222);
     @SuppressLint("NewApi")
     private static String formatDate(String dateTimeString) {
         // @todo: optimize
@@ -53,8 +55,14 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
         viewHolder.mMetadata.setText(StringResourceUtilities.getString(viewHolder.mMetadata.getContext(), R.string.metadata, formatDate(model.getPubDate()), model.getDuration()));
 
         if (model.getCompleted()) {
-            // @todo
-            viewHolder.mTitle.setTextColor(Color.rgb(200,0,0));
+            // @todo extension method?
+            viewHolder.mTitle.setTextColor(COLOR_GRAY);
+            viewHolder.mDescription.setTextColor(COLOR_GRAY);
+            viewHolder.mMetadata.setTextColor(COLOR_GRAY);
+        } else {
+            viewHolder.mTitle.setTextColor(COLOR_BLACK);
+            viewHolder.mDescription.setTextColor(COLOR_BLACK);
+            viewHolder.mMetadata.setTextColor(COLOR_BLACK);
         }
     }
 

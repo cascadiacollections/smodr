@@ -42,7 +42,15 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     }
 
     public void markCompleted(Item item) {
+        // @todo: convert to toggle state
         mAdapter.markCompleted(item);
+    }
+
+    @Override
+    public boolean onLongClick(Item item) {
+        markCompleted(item);
+
+        return true;
     }
 
     private static final class ItemAdapter extends BinderRecyclerAdapter<Item, EpisodeViewHolder> {
@@ -71,12 +79,14 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     private final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
 
     @Contract(pure = true)
+    @NonNull
     @Override
     protected BinderRecyclerAdapter<Item, EpisodeViewHolder> getAdapter() {
         return mAdapter;
     }
 
     @Contract(pure = true)
+    @NonNull
     @Override
     protected LinearLayoutManager getLayoutManager() {
         return mLinearLayoutManager;

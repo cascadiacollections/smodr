@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0-rc01'
         classpath 'com.google.gms:google-services:4.3.3'
     }
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
@@ -25,6 +25,10 @@ android {
         targetSdkVersion 29
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
     buildTypes {
         release {
             minifyEnabled true
@@ -37,7 +41,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    viewBinding.enabled = true
 }
 
 configurations {

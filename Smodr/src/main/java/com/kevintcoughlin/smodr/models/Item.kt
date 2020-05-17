@@ -78,7 +78,7 @@ class Item : IMediaPlayback {
     companion object {
         @JvmStatic
         fun create(item: Item, completed: Boolean): Item {
-            var newItem = Item()
+            val newItem = Item()
 
             newItem.title = item.title;
             newItem.description = item.description;

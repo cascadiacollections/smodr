@@ -15,6 +15,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -23,7 +27,6 @@ android {
         abortOnError false
     }
     buildToolsVersion = '29.0.2'
-    viewBinding.enabled = true
 }
 
 dependencies {
