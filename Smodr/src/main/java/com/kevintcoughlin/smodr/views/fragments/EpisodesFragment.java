@@ -46,15 +46,15 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         return fragment;
     }
 
+    // @todo: cleanup
     public void markCompleted(Item item) {
-        // @todo: convert to toggle state
         mAdapter.markCompleted(item);
     }
 
     @Override
     public boolean onLongClick(Item item) {
-        // @todo
-        //markCompleted(item);
+//        final Item newItem = mAdapter.updateItem(item, !item.getCompleted());
+//        AppDatabase.updateData(getContext(), newItem);
         return true;
     }
 
@@ -63,14 +63,20 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
             super(new EpisodeView());
         }
 
-        // @todo: cleanup lookup
         void markCompleted(Item item) {
+            this.updateItem(item, true);
+        }
+
+        // @todo: cleanup
+        Item updateItem(Item item, boolean completed) {
             final int index = items.indexOf(item);
-            final Item newItem = Item.create(item, true /* completed */);
+            final Item newItem = Item.create(item, completed);
 
             // @todo: index may not always be in sync if sorted
             items.set(index, newItem);
             notifyItemChanged(index);
+
+            return item;
         }
 
         @Override
