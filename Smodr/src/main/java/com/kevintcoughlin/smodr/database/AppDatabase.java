@@ -14,6 +14,7 @@ import java.util.List;
 @Database(entities = {Item.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "smodr-appdatabase";
+    // @todo: reported leak
     private static AppDatabase INSTANCE;
 
     public static void updateData(Context context, Item ...items) {

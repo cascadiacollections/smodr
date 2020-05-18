@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.squareup.leakcanary:leakcanary-object-watcher-android:2.3@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9c55f3a0b31a392922edda866ad9f807/jetified-leakcanary-object-watcher-android-2.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9c55f3a0b31a392922edda866ad9f807/jetified-leakcanary-object-watcher-android-2.3/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android/2.3/c8c9596e3218e2449449b044a73e1081503e6248/leakcanary-object-watcher-android-2.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android/2.3/331461ed69f870fa5fba760a83516127592fbb7/leakcanary-object-watcher-android-2.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
