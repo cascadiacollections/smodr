@@ -53,8 +53,8 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @Override
     public boolean onLongClick(Item item) {
-        markCompleted(item);
-
+        // @todo
+        //markCompleted(item);
         return true;
     }
 
