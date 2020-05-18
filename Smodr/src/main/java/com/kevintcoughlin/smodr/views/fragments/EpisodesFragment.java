@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
+import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
@@ -20,6 +21,10 @@ import com.kevintcoughlin.smodr.viewholders.EpisodeView;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +63,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
             super(new EpisodeView());
         }
 
+        // @todo: cleanup lookup
         void markCompleted(Item item) {
             final int index = items.indexOf(item);
             final Item newItem = Item.create(item, true /* completed */);
@@ -66,12 +72,16 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
             items.set(index, newItem);
             notifyItemChanged(index);
         }
+
+        @Override
+        public void onBindViewHolder(@NonNull EpisodeViewHolder viewHolder, int i) {
+            super.onBindViewHolder(viewHolder, i);
+        }
     }
 
     @NonNull
     public static final String TAG = EpisodesFragment.class.getSimpleName();
 
-    // @todo
     @NonNull
     private final ItemAdapter mAdapter = new ItemAdapter();
 
@@ -108,6 +118,11 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
                 getLayoutManager().getOrientation()
         );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
+
+        // @todo
+        final Collection<Item> items = Arrays.asList(AppDatabase.getData(getContext()));
+        mAdapter.setItems(items);
+        mAdapter.notifyDataSetChanged();
         fetchEpisodes();
     }
 
@@ -116,7 +131,11 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         final Feed feed = response.body();
 
         if (feed != null && feed.getChannel() != null) {
-            mAdapter.setItems(feed.getChannel().getItem());
+            final List<Item> items = feed.getChannel().getItem();
+            AppDatabase.insertData(getContext(), items);
+            // @todo
+            final Collection<Item> dbItems = Arrays.asList(AppDatabase.getData(getContext()));
+            mAdapter.setItems(dbItems);
             mAdapter.notifyDataSetChanged();
             stopRefreshing();
         }

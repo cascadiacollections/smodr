@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr
 
 import android.app.Application
+import com.kevintcoughlin.smodr.database.AppDatabase
 
 /**
  * The Smodr [Application].
@@ -8,7 +9,7 @@ import android.app.Application
  * @author kevincoughlin
  */
 class SmodrApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
+    fun getDatabase(): AppDatabase {
+        return AppDatabase.getInstance(this);
     }
 }

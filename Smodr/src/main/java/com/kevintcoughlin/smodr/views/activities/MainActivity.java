@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.room.Room;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -32,7 +31,6 @@ import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.models.PlaybackRecord;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
@@ -46,7 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item> {
+public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item>, SeekBar.OnSeekBarChangeListener {
     @BindView(R.id.player)
     LinearLayout mPlayer;
     @BindView(R.id.play)
@@ -78,15 +76,10 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private Handler mHandler = new Handler();
     private EpisodesFragment mBinderRecyclerFragment;
     private Item mItem;
-    private AppDatabase mDatabase;
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        mDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-name")
-                .allowMainThreadQueries() // @todo
-                .build();
 
         final Intent intent = new Intent(this, MediaService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -131,13 +124,15 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     mSeekBar.setMax(0);
                     mSeekBar.setProgress(0);
                     mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
-                    mBinderRecyclerFragment.markCompleted(mItem);
 
-                    AppDatabase.insertData(mDatabase, PlaybackRecord.fromItem(mItem));
+                    // @todo: also long click toggle
+                    // @todo: cleanup
+                    mItem.setCompleted(true);
+                    AppDatabase.updateData(getApplicationContext(), mItem);
+                    mBinderRecyclerFragment.markCompleted(mItem);
 
                     // @todo
                     mItem = null;
-
                 }
             });
             mBound = true;
@@ -161,24 +156,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             initializeAds();
         }
 
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser && mService != null) {
-                    mService.seekTo(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        mSeekBar.setOnSeekBarChangeListener(this);
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
@@ -281,5 +259,22 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         // @todo: move into service
         mItem = item;
         mService.startPlayback(item.getUri());
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser && mService != null) {
+            mService.seekTo(progress);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }
