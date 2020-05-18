@@ -16,7 +16,9 @@
         android:icon="@drawable/icon"
         android:allowBackup="false"
         android:theme="@style/Theme.Smodr">
-
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6967310132431626~6673311196" />
