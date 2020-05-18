@@ -18,6 +18,7 @@ import java.lang.ref.WeakReference;
 
 public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment
         implements BinderRecyclerAdapter.IListeners<T>, SwipeRefreshLayout.OnRefreshListener {
+    private static final String VIEW_STATE = "BinderRecyclerFragment.ViewState";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
@@ -72,10 +73,6 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         mSwipeRefreshLayout = view.findViewById(R.id.swipeContainer);
         mRecyclerView = view.findViewById(R.id.list);
 
-        if (savedInstanceState != null) {
-            getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable("RecyclerViewState"));
-        }
-
         return view;
     }
 
@@ -83,7 +80,16 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable("RecyclerViewState", getLayoutManager().onSaveInstanceState());
+        outState.putParcelable(VIEW_STATE, getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE));
+        }
     }
 
     @Override
@@ -93,6 +99,7 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         final BinderRecyclerAdapter<T, VH> adapter = getAdapter();
         adapter.setOnClickListener(this);
         adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManager());
