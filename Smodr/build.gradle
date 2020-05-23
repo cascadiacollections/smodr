@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 buildscript {
     repositories {
@@ -11,6 +12,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.0.0-rc01'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath 'com.google.firebase:perf-plugin:1.3.1'
+        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.2'
     }
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
@@ -54,6 +56,7 @@ dependencies {
     def appCenterSdkVersion = '2.4.1'
     def room_version = "2.2.5"
 
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
