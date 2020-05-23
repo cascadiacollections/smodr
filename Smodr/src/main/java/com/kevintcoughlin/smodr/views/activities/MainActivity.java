@@ -7,8 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,12 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kevintcoughlin.smodr.BuildConfig;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
@@ -68,7 +67,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private boolean mBound = false;
     private final static int ONE_SECOND_IN_MS = 1000;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
-    private final static String AD_ID = "ca-app-pub-6967310132431626/8150044399";
+    private static final String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
@@ -140,6 +139,10 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
                     // @todo
                     mItem = null;
+
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                    }
                 }
             });
             mBound = true;
@@ -151,6 +154,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     };
 
+    private InterstitialAd mInterstitialAd;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,9 +163,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
-        if (!BuildConfig.DEBUG) {
-            initializeAds();
-        }
+        initializeAds();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mSeekBar.setOnSeekBarChangeListener(this);
 
@@ -173,6 +176,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
                     .commit();
         }
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
     }
 
     @Override
@@ -231,11 +239,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     }
 
     private void initializeAds() {
-        mAdView = findViewById(R.id.ad);
-        adView = new AdView(this);
-        adView.setAdUnitId(AD_ID);
-        mAdView.addView(adView);
-
         final RequestConfiguration configuration = new RequestConfiguration.Builder()
                 .setTestDeviceIds(Collections.singletonList(AdRequest.DEVICE_ID_EMULATOR))
                 .build();
@@ -243,27 +246,10 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         MobileAds.setRequestConfiguration(configuration);
         MobileAds.initialize(this);
 
-        final AdRequest adRequest = new AdRequest.Builder().build();
-        final AdSize adSize = getAdSize();
-
-        adView.setAdSize(adSize);
-        adView.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(AD_UNIT_ID);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
-
-    @NonNull
-    private AdSize getAdSize() {
-        final Display display = getWindowManager().getDefaultDisplay();
-        final DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-
-        final float widthPixels = outMetrics.widthPixels;
-        final float density = outMetrics.density;
-
-        final int adWidth = (int) (widthPixels / density);
-
-        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
-    }
-
 
     @Override
     public final void onItemSelected(@NonNull Item item) {
