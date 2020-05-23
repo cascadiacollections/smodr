@@ -1,6 +1,7 @@
 package com.kevintcoughlin.smodr.models
 
 import android.net.Uri
+import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
@@ -88,6 +89,15 @@ class Item : IMediaPlayback {
     @NonNull
     override fun hashCode(): Int {
         return Objects.hash(title, pubDate, description, duration, summary, origEnclosureLink)
+    }
+
+    fun eventBundle(): Bundle {
+        val bundle = Bundle()
+
+        bundle.putString("guid", guid)
+        bundle.putString("title", title)
+
+        return bundle
     }
 
     companion object {

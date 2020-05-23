@@ -68,7 +68,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         }
 
         // @todo: cleanup
-        Item updateItem(Item item, boolean completed) {
+        void updateItem(Item item, boolean completed) {
             final int index = items.indexOf(item);
             final Item newItem = Item.create(item, completed);
 
@@ -76,7 +76,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
             items.set(index, newItem);
             notifyItemChanged(index);
 
-            return item;
         }
 
         @Override

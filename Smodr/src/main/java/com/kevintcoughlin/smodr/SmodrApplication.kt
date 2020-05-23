@@ -10,6 +10,6 @@ import com.kevintcoughlin.smodr.database.AppDatabase
  */
 class SmodrApplication : Application() {
     fun getDatabase(): AppDatabase {
-        return AppDatabase.getInstance(this);
+        return AppDatabase.getInstance(this)
     }
 }
