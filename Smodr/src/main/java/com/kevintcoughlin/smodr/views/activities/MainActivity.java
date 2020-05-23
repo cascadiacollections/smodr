@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -93,7 +94,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mBound = false;
     }
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             final MediaService.MediaServiceBinder binder = (MediaService.MediaServiceBinder) service;
@@ -140,9 +141,17 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     // @todo
                     mItem = null;
 
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
                     if (mInterstitialAd.isLoaded()) {
                         mInterstitialAd.show();
                     }
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdClosed() {
+                            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                        }
+
+                    });
                 }
             });
             mBound = true;
@@ -164,8 +173,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         ButterKnife.bind(this);
 
         initializeAds();
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
         mSeekBar.setOnSeekBarChangeListener(this);
 
         if (savedInstanceState == null) {
