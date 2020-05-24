@@ -74,6 +74,8 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     );
     private final static String PRIVACY_POLICY_URL =
             "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html";
+    private final static String NEW_ISSUE_URL =
+            "https://github.com/cascadiacollections/SModr/issues/new";
     private Runnable mUpdateProgress;
     private Handler mHandler = new Handler();
     private EpisodesFragment mBinderRecyclerFragment;
@@ -201,6 +203,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         final int id = item.getItemId();
 
         switch (id) {
+            case R.id.feedback:
+                final Intent newIssue = new Intent(Intent.ACTION_VIEW);
+                newIssue.setData(Uri.parse(NEW_ISSUE_URL));
+                startActivity(newIssue);
+                return true;
             case R.id.privacy_policy:
                 final Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(PRIVACY_POLICY_URL));
