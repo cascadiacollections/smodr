@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cascadiacollections.smodr"
-    android:versionCode="15"
-    android:versionName="1.4.6"
+    package="com.kevintcoughlin.smodr"
+    android:versionCode="16"
+    android:versionName="1.5.0"
     xmlns:dist="http://schemas.android.com/apk/distribution">
 
     <dist:module dist:instant="true" />
@@ -33,17 +33,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.smodcast.com"
-                    android:pathPattern="/channel/smodcast" />
             </intent-filter>
         </activity>
 

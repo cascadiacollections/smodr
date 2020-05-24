@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:900496988354:android:1644a6d028940a32",
+        "mobilesdk_app_id": "1:900496988354:android:afe90cebd010b76e31035b",
         "android_client_info": {
           "package_name": "com.kevintcoughlin.smodr"
         }
@@ -25,15 +25,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900496988354-7p5douau668okaqbgicmif8ele2ug4r4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

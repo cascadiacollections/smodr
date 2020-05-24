@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cascadiacollections.smodr.R;
+import com.kevintcoughlin.smodr.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

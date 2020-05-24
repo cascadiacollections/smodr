@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
-import com.cascadiacollections.smodr.R;
 import com.cascadiacollections.smodr.models.Item;
 import com.cascadiacollections.smodr.utils.StringResourceUtilities;
+import com.kevintcoughlin.smodr.R;
 
 import java.text.ParseException;
 import java.util.Date;
