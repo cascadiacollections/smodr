@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -71,11 +72,13 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private boolean mBound = false;
     private final static int ONE_SECOND_IN_MS = 1000;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
-    private static final String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
+    private final static String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
     );
+    private final static String PRIVACY_POLICY_URL =
+            "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html";
     private Runnable mUpdateProgress;
     private Handler mHandler = new Handler();
     private EpisodesFragment mBinderRecyclerFragment;
@@ -203,6 +206,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         final int id = item.getItemId();
 
         switch (id) {
+            case R.id.privacy_policy:
+                final Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(PRIVACY_POLICY_URL));
+                startActivity(i);
+                return true;
             case R.id.third_party_notices:
                 startActivity(new Intent(this, OssLicensesMenuActivity.class));
                 return true;
