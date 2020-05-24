@@ -1,15 +1,10 @@
 <resources>
     <string name="app_name">Smodr</string>
-    <string name="action_settings">Settings</string>
-    <string name="notification_action_pause">Pause</string>
-    <string name="cover_art">Cover art</string>
-    <string name="facebook_app_id">889919744389128</string>
-    <string name="test_device_id">C6D397172C2598AF256CF30C6393FBFC</string>
-    <string name="notification_action_play">Play</string>
-    <string name="content_description_cover_art">Cover art</string>
     <string name="metadata">%1$s • %2$s</string>
-    <string name="privacy_policy">Privacy policy</string>
     <string name="replay_30_seconds">Replay 30 seconds</string>
     <string name="play_and_pause_toggle_button">Toggle playback</string>
     <string name="forward_30_seconds">Seek 30 seconds forward</string>
+    <string name="settings">Settings</string>
+    <string name="third_party_notices">Third-party notices</string>
+    <string name="privacy_policy">Privacy policy</string>
 </resources>
