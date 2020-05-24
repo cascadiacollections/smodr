@@ -8,9 +8,38 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:900496988354:android:c3c44be890980fa031035b",
+        "android_client_info": {
+          "package_name": "com.cascadiacollections.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900496988354-7p5douau668okaqbgicmif8ele2ug4r4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcMwZX8aklYGOAqpvs26w-M7gYXgyfr04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900496988354-7p5douau668okaqbgicmif8ele2ug4r4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:900496988354:android:1644a6d028940a32",
         "android_client_info": {
-          "package_name": "com.kevintcoughlin.smodr"
+          "package_name": "com.cascadiacollections.smodr"
         }
       },
       "oauth_client": [
@@ -18,7 +47,7 @@
           "client_id": "900496988354-18h7414j7gncvs4sivngmlrqo9r7il7p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.kevintcoughlin.smodr",
+            "package_name": "com.cascadiacollections.smodr",
             "certificate_hash": "6a153bdc8a927d40b61acec9f317bad6b69ea7fb"
           }
         },
@@ -43,43 +72,6 @@
         }
       },
       "admob_app_id": "ca-app-pub-6967310132431626~6673311196"
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:900496988354:android:21a469ee12b58cea31035b",
-        "android_client_info": {
-          "package_name": "com.kevintcoughlin.smodr.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "900496988354-5fofo7dacbf61o132ju752upjnecu67f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kevintcoughlin.smodr.debug",
-            "certificate_hash": "11a5e69bef0dd699249f4ec83e2cd47be56cb16e"
-          }
-        },
-        {
-          "client_id": "900496988354-7p5douau668okaqbgicmif8ele2ug4r4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAcMwZX8aklYGOAqpvs26w-M7gYXgyfr04"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "900496988354-7p5douau668okaqbgicmif8ele2ug4r4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

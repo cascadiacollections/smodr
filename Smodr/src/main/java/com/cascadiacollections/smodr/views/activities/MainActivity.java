@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.cascadiacollections.smodr.R;
 import com.cascadiacollections.smodr.database.AppDatabase;
 import com.cascadiacollections.smodr.models.Channel;
 import com.cascadiacollections.smodr.models.Item;
@@ -34,7 +35,6 @@ import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kevintcoughlin.smodr.R;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;

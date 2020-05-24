@@ -2,7 +2,7 @@ package com.cascadiacollections.smodr.views.fragments
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
-import com.kevintcoughlin.smodr.R
+import com.cascadiacollections.smodr.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
