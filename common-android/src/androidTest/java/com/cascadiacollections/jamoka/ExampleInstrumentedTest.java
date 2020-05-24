@@ -1,4 +1,4 @@
-package com.kevintcoughlin.common;
+package com.cascadiacollections.jamoka;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

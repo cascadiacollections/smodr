@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
-import com.kevintcoughlin.common.fragment.BinderRecyclerFragment;
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
+import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Feed;

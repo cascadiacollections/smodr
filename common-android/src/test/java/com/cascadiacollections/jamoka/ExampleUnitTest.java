@@ -1,4 +1,4 @@
-package com.kevintcoughlin.common;
+package com.cascadiacollections.jamoka;
 
 import org.junit.Test;
 

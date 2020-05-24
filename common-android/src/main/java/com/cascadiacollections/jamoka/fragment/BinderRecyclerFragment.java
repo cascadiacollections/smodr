@@ -1,4 +1,4 @@
-package com.kevintcoughlin.common.fragment;
+package com.cascadiacollections.jamoka.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.kevintcoughlin.common.R;
-import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
+import com.cascadiacollections.jamoka.R;
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
 
 import java.lang.ref.WeakReference;
 

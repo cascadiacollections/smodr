@@ -1,4 +1,4 @@
-package com.kevintcoughlin.common.adapter;
+package com.cascadiacollections.jamoka.adapter;
 
 import android.view.ViewGroup;
 

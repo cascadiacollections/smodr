@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.kevintcoughlin.common.adapter.BinderRecyclerAdapter;
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.StringResourceUtilities;
