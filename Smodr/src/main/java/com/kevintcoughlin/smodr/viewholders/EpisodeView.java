@@ -18,12 +18,15 @@ import com.kevintcoughlin.smodr.utils.StringResourceUtilities;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
+    // @todo: Date format locale aware
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+    private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
+    // @todo: Date format locale aware
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private static final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM");
+    private static final SimpleDateFormat format2 = new SimpleDateFormat("dd MMM", Locale.US);
     // @todo: theme
     private static final int COLOR_BLACK = Color.rgb(0,0,0);
     private static final int COLOR_GRAY = Color.rgb(222,222,222);
