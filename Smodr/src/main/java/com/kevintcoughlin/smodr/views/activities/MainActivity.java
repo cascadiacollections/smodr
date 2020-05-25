@@ -105,7 +105,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             mService.setPlaybackListener(new MediaService.IPlaybackListener() {
                 @Override
                 public void onStartPlayback() {
-                    mPlay.setImageDrawable(getDrawable(R.drawable.baseline_pause_black_18dp));
+                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_pause_24));
                     mSeekBar.setMax(mService.getDuration());
                     mPlayer.setVisibility(View.VISIBLE);
 
@@ -122,7 +122,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
                 @Override
                 public void onStopPlayback() {
-                    mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
+                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_play_arrow_24));
 
                     FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", mItem.eventBundle());
                 }
@@ -131,7 +131,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                 public void onCompletion() {
                     mSeekBar.setMax(0);
                     mSeekBar.setProgress(0);
-                    mPlay.setImageDrawable(getDrawable(R.drawable.round_play_arrow_black_18dp));
+                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_play_arrow_24));
 
                     // @todo: also long click toggle
                     // @todo: cleanup

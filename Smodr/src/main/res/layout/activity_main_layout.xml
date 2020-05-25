@@ -55,7 +55,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="16dp"
-				android:src="@drawable/round_replay_30_black_18dp"
+				android:src="@drawable/ic_baseline_replay_30_24"
 				android:contentDescription="@string/replay_30_seconds" />
 
 			<ImageView
@@ -63,7 +63,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="16dp"
-				android:src="@drawable/round_play_arrow_black_18dp"
+				android:src="@drawable/ic_round_play_arrow_24"
 				android:contentDescription="@string/play_and_pause_toggle_button" />
 
 			<ImageView
@@ -71,7 +71,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="16dp"
-				android:src="@drawable/round_forward_30_black_18dp"
+				android:src="@drawable/ic_round_forward_30_24"
 				android:contentDescription="@string/forward_30_seconds" />
 		</LinearLayout>
 	</LinearLayout>
