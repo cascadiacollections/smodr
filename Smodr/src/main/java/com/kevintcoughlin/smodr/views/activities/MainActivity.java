@@ -17,6 +17,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -117,14 +118,14 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     };
                     runOnUiThread(mUpdateProgress);
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("start_playback", mItem.eventBundle());
+                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("start_playback", safeGetEventBundle(mItem));
                 }
 
                 @Override
                 public void onStopPlayback() {
                     mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_play_arrow_24));
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", mItem.eventBundle());
+                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", safeGetEventBundle(mItem));
                 }
 
                 @Override
@@ -139,7 +140,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     AppDatabase.updateData(getApplicationContext(), mItem);
                     mBinderRecyclerFragment.markCompleted(mItem);
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", mItem.eventBundle());
+                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", safeGetEventBundle(mItem));
 
                     // @todo
                     mItem = null;
@@ -237,11 +238,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             if (this.mService.isPlaying()) {
                 this.mService.pausePlayback();
 
-                FirebaseAnalytics.getInstance(this).logEvent("pause_playback", mItem.eventBundle());
+                FirebaseAnalytics.getInstance(this).logEvent("pause_playback", safeGetEventBundle(mItem));
             } else {
                 this.mService.resumePlayback();
 
-                FirebaseAnalytics.getInstance(this).logEvent("resume_playback", mItem.eventBundle());
+                FirebaseAnalytics.getInstance(this).logEvent("resume_playback", safeGetEventBundle(mItem));
             }
         }
     }
@@ -253,7 +254,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             this.updateSeekProgress();
         }
 
-        FirebaseAnalytics.getInstance(this).logEvent("forward_playback", mItem.eventBundle());
+        FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem));
     }
 
     @OnClick(R.id.replay)
@@ -263,7 +264,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             this.updateSeekProgress();
         }
 
-        FirebaseAnalytics.getInstance(this).logEvent("rewind_playback", mItem.eventBundle());
+        FirebaseAnalytics.getInstance(this).logEvent("rewind_playback", safeGetEventBundle(mItem));
     }
 
     private void updateSeekProgress() {
@@ -300,13 +301,21 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mService.startPlayback(item.getUri());
 
         // @todo profile
-        FirebaseAnalytics.getInstance(this).logEvent("selected_item", item.eventBundle());
+        FirebaseAnalytics.getInstance(this).logEvent("selected_item", safeGetEventBundle(item));
+    }
+
+    private Bundle safeGetEventBundle(@Nullable Item item) {
+        if (item == null) {
+            return new Bundle();
+        }
+
+        return item.eventBundle();
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         // @todo profile
-        final Bundle bundle = mItem.eventBundle();
+        final Bundle bundle = safeGetEventBundle(mItem);
         bundle.putInt("progress", progress);
         bundle.putBoolean("fromUser", fromUser);
 
