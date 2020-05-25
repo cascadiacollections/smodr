@@ -300,8 +300,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mService.startPlayback(item.getUri());
 
         // @todo profile
-
-
         FirebaseAnalytics.getInstance(this).logEvent("selected_item", item.eventBundle());
     }
 
