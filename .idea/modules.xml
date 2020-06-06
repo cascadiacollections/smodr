@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SModr.iml" filepath="$PROJECT_DIR$/.idea/modules/SModr.iml" group="SModr" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-android/SModr-common-android.iml" filepath="$PROJECT_DIR$/.idea/modules/common-android/SModr-common-android.iml" group="SModr/common-android" />
-      <module fileurl="file://$PROJECT_DIR$/Smodr/Smodr.iml" filepath="$PROJECT_DIR$/Smodr/Smodr.iml" group="Smodr-Android/Smodr" />
+      <module fileurl="file://$PROJECT_DIR$/Smodr/Smodr.iml" filepath="$PROJECT_DIR$/Smodr/Smodr.iml" group="smodr/Smodr" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Smodr-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/Smodr-Android.iml" group="Smodr-Android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/StudioProjects-smodr.iml" filepath="$PROJECT_DIR$/.idea/modules/StudioProjects-smodr.iml" group="smodr" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-android/StudioProjects-smodr-common-android.iml" filepath="$PROJECT_DIR$/.idea/modules/common-android/StudioProjects-smodr-common-android.iml" group="smodr/common-android" />
       <module fileurl="file://$PROJECT_DIR$/common-android/common-android.iml" filepath="$PROJECT_DIR$/common-android/common-android.iml" group="Smodr-Android/common-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/smodr.iml" filepath="$PROJECT_DIR$/.idea/modules/smodr.iml" group="smodr" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-android/smodr-common-android.iml" filepath="$PROJECT_DIR$/.idea/modules/common-android/smodr-common-android.iml" group="smodr/common-android" />
     </modules>
   </component>
 </project>
