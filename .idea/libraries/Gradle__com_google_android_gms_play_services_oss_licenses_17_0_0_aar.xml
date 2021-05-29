@@ -3,9 +3,9 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1965b7cdd29a14ef1c780f7786dba595/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1965b7cdd29a14ef1c780f7786dba595/jetified-play-services-oss-licenses-17.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/42ef639a234cdb5d6128c05ce212e0c9/jetified-play-services-oss-licenses-17.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/42ef639a234cdb5d6128c05ce212e0c9/jetified-play-services-oss-licenses-17.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/42ef639a234cdb5d6128c05ce212e0c9/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/172aa94a77c0b8f248b30709767a9317/transformed/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/172aa94a77c0b8f248b30709767a9317/transformed/jetified-play-services-oss-licenses-17.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/172aa94a77c0b8f248b30709767a9317/transformed/jetified-play-services-oss-licenses-17.0.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-oss-licenses/17.0.0/6480b771443eced309c8ae976ae85197f0d99ed4/play-services-oss-licenses-17.0.0-javadoc.jar!/" />

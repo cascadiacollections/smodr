@@ -1,12 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,16 +24,15 @@ android {
     lintOptions {
         abortOnError false
     }
-    buildToolsVersion = '29.0.3'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     testImplementation 'junit:junit:4.13'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    api 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    api 'androidx.recyclerview:recyclerview:1.2.0'
 }
