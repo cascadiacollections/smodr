@@ -13,7 +13,7 @@ import java.util.List;
 
 @Database(entities = {Item.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "smodr-appdatabase";
+    private static final String DATABASE_NAME = "smodr-db";
     // @todo: reported leak
     private static AppDatabase INSTANCE;
 
@@ -25,7 +25,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static void insertData(final Context context, final List<Item> items) {
         getInstance(context).runInTransaction(() -> {
-            // @todo: allocation?
             getInstance(context).itemDao().insertAll(items);
         });
     }
@@ -39,7 +38,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 context,
                 AppDatabase.class,
                 DATABASE_NAME
-        ).allowMainThreadQueries().build(); // @todo: perf bottleneck
+        ).allowMainThreadQueries().build(); // @todo: render perf
     }
 
     public static synchronized AppDatabase getInstance(Context context) {
