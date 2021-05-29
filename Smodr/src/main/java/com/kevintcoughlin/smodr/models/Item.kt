@@ -19,7 +19,7 @@ class Item : IMediaPlayback {
     @ColumnInfo(name = "guid")
     @field:Element(required = false)
     @NonNull
-    var guid: String? = null
+    var guid: String = ""
 
     @ColumnInfo(name = "title")
     @field:Element(required = false)

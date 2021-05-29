@@ -1,5 +1,8 @@
 package com.kevintcoughlin.smodr.views.activities;
 
+import static com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.TAG;
+
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,25 +22,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kevintcoughlin.smodr.R;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
@@ -48,6 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressLint("NonConstantResourceId")
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item>, SeekBar.OnSeekBarChangeListener {
     @BindView(R.id.player)
     LinearLayout mPlayer;
@@ -68,7 +69,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private boolean mBound = false;
     private final static int ONE_SECOND_IN_MS = 1000;
     private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
-    private final static String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
+//    private final static String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
@@ -78,7 +79,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private final static String NEW_ISSUE_URL =
             "https://github.com/cascadiacollections/SModr/issues/new";
     private Runnable mUpdateProgress;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private EpisodesFragment mBinderRecyclerFragment;
     private Item mItem;
 
@@ -106,12 +107,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             mService.setPlaybackListener(new MediaService.IPlaybackListener() {
                 @Override
                 public void onStartPlayback() {
-                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_pause_24));
+                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_pause_24));
                     mSeekBar.setMax(mService.getDuration());
                     mPlayer.setVisibility(View.VISIBLE);
-
-                    // @todo: dispose of timer
-                    // @todo: worth backgrounding?
                     mUpdateProgress = () -> {
                         updateSeekProgress();
                         mHandler.postDelayed(mUpdateProgress, ONE_SECOND_IN_MS);
@@ -123,7 +121,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
                 @Override
                 public void onStopPlayback() {
-                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_play_arrow_24));
+                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
 
                     FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", safeGetEventBundle(mItem));
                 }
@@ -132,30 +130,13 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                 public void onCompletion() {
                     mSeekBar.setMax(0);
                     mSeekBar.setProgress(0);
-                    mPlay.setImageDrawable(getDrawable(R.drawable.ic_round_play_arrow_24));
-
-                    // @todo: also long click toggle
-                    // @todo: cleanup
+                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
                     mItem.setCompleted(true);
                     AppDatabase.updateData(getApplicationContext(), mItem);
                     mBinderRecyclerFragment.markCompleted(mItem);
-
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", safeGetEventBundle(mItem));
-
-                    // @todo
                     mItem = null;
 
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                    if (mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                    }
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdClosed() {
-                            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                        }
-
-                    });
+                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", safeGetEventBundle(mItem));
                 }
             });
             mBound = true;
@@ -167,7 +148,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     };
 
-    private InterstitialAd mInterstitialAd;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,14 +164,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             final Fragment fragment = EpisodesFragment.create(mChannel);
 
             fm.beginTransaction()
-                    .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
+                    .add(R.id.coordinator_layout, fragment, TAG)
                     .commit();
         }
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
+        MobileAds.initialize(this, initializationStatus -> {});
     }
 
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -222,6 +199,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
         super.onAttachFragment(fragment);
@@ -284,10 +262,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
         MobileAds.setRequestConfiguration(configuration);
         MobileAds.initialize(this);
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(AD_UNIT_ID);
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
@@ -296,11 +270,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             return;
         }
 
-        // @todo: move into service
         mItem = item;
         mService.startPlayback(item.getUri());
 
-        // @todo profile
         FirebaseAnalytics.getInstance(this).logEvent("selected_item", safeGetEventBundle(item));
     }
 
@@ -314,7 +286,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        // @todo profile
         final Bundle bundle = safeGetEventBundle(mItem);
         bundle.putInt("progress", progress);
         bundle.putBoolean("fromUser", fromUser);

@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -45,16 +46,13 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    // @todo: cleanup
+    
     public void markCompleted(Item item) {
         mAdapter.markCompleted(item);
     }
 
     @Override
     public boolean onLongClick(Item item) {
-//        final Item newItem = mAdapter.updateItem(item, !item.getCompleted());
-//        AppDatabase.updateData(getContext(), newItem);
         return true;
     }
 
@@ -64,15 +62,13 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         }
 
         void markCompleted(Item item) {
-            this.updateItem(item, true);
+            this.updateItem(item);
         }
 
-        // @todo: cleanup
-        void updateItem(Item item, boolean completed) {
+        void updateItem(Item item) {
             final int index = items.indexOf(item);
-            final Item newItem = Item.create(item, completed);
+            final Item newItem = Item.create(item, true);
 
-            // @todo: index may not always be in sync if sorted
             items.set(index, newItem);
             notifyItemChanged(index);
 
@@ -114,6 +110,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         fetchEpisodes();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -124,13 +121,13 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
 
-        // @todo
         final Collection<Item> items = Arrays.asList(AppDatabase.getData(getContext()));
         mAdapter.setItems(items);
         mAdapter.notifyDataSetChanged();
         fetchEpisodes();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResponse(@NonNull final Call<Feed> call, @NonNull final Response<Feed> response) {
         final Feed feed = response.body();
@@ -138,7 +135,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         if (feed != null && feed.getChannel() != null) {
             final List<Item> items = feed.getChannel().getItem();
             AppDatabase.insertData(getContext(), items);
-            // @todo
             final Collection<Item> dbItems = Arrays.asList(AppDatabase.getData(getContext()));
             mAdapter.setItems(dbItems);
             mAdapter.notifyDataSetChanged();
