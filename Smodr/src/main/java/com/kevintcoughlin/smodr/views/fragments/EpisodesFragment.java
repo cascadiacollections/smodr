@@ -23,8 +23,6 @@ import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -121,9 +119,8 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         );
         getRecyclerView().addItemDecoration(mDividerItemDecoration);
 
-        final Collection<Item> items = Arrays.asList(AppDatabase.getData(getContext()));
+        final Item[] items = AppDatabase.getData(getContext());
         mAdapter.setItems(items);
-        mAdapter.notifyDataSetChanged();
         fetchEpisodes();
     }
 
@@ -135,9 +132,8 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         if (feed != null && feed.getChannel() != null) {
             final List<Item> items = feed.getChannel().getItem();
             AppDatabase.insertData(getContext(), items);
-            final Collection<Item> dbItems = Arrays.asList(AppDatabase.getData(getContext()));
+            final Item[] dbItems = AppDatabase.getData(getContext());
             mAdapter.setItems(dbItems);
-            mAdapter.notifyDataSetChanged();
             stopRefreshing();
         }
     }

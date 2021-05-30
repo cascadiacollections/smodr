@@ -1,5 +1,6 @@
 package com.cascadiacollections.jamoka.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -7,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
@@ -22,7 +23,7 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         VH createViewHolder(@NonNull final ViewGroup parent);
     }
 
-    protected final List<T> items = new ArrayList<>();
+    protected List<T> items = new ArrayList<>();
     private final Binder<T, VH> binderViewHolder;
     private WeakReference<IListeners<T>> onClickListener;
 
@@ -35,9 +36,10 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         this.onClickListener = new WeakReference<>(onClickListener);
     }
 
-    public void setItems(Collection<T> collection) {
-        items.clear();
-        items.addAll(collection);
+    @SuppressLint("NotifyDataSetChanged")
+    public void setItems(T[] collection) {
+        items = Arrays.asList(collection);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -52,11 +54,9 @@ public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extend
         final IListeners<T> listener = onClickListener.get();
 
         if (listener != null) {
-            // @todo: generalize view
             viewHolder.itemView.setOnClickListener(view -> listener.onClick(item));
             viewHolder.itemView.setOnLongClickListener(view -> listener.onLongClick(item));
         }
-        
 
         binderViewHolder.bind(item, viewHolder);
     }
