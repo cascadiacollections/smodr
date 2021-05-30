@@ -2,8 +2,10 @@
 
 ![Android CI](https://github.com/cascadiacollections/SModr/workflows/Android%20CI/badge.svg?branch=master)
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play"
+      height="70">](https://play.google.com/store/apps/details?id=com.kevintcoughlin.smodr)
+
 SModcast Podcast Player for Android
 
-Get it now on [Google Play](https://play.google.com/store/apps/details?id=com.com.kevintcoughlin.smodr)
-
-![Application screenshot Pixel 2](https://kevintcoughlin.blob.core.windows.net/smodr/device-2020-05-24-130902.png)
+Get it now on [Google Play](https://play.google.com/store/apps/details?id=com.kevintcoughlin.smodr)!
