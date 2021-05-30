@@ -69,7 +69,6 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
             items.set(index, newItem);
             notifyItemChanged(index);
-
         }
 
         @Override

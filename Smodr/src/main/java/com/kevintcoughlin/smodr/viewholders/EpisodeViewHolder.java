@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.viewholders;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.kevintcoughlin.smodr.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressLint("NonConstantResourceId")
 public final class EpisodeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.title)
     TextView mTitle;

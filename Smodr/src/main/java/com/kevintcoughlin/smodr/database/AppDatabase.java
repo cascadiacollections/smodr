@@ -24,9 +24,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ItemDao itemDao();
 
     public static void insertData(final Context context, final List<Item> items) {
-        getInstance(context).runInTransaction(() -> {
-            getInstance(context).itemDao().insertAll(items);
-        });
+        getInstance(context).runInTransaction(() -> getInstance(context).itemDao().insertAll(items));
     }
 
     public static Item[] getData(final Context context) {

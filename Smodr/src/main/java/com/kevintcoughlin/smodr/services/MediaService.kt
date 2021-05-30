@@ -47,7 +47,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
     }
 
     @Contract(pure = true)
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         return mBinder
     }
 
