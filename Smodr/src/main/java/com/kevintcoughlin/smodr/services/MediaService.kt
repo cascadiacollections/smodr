@@ -26,9 +26,7 @@ internal interface IMediaService {
 
 class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener, IMediaService, OnCompletionListener {
     override fun onCompletion(mp: MediaPlayer) {
-        if (mListener != null) {
-            mListener!!.onCompletion()
-        }
+        mListener?.onCompletion()
     }
 
     interface IPlaybackListener {
@@ -74,68 +72,48 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
     override fun onDestroy() {
         super.onDestroy()
         stopPlayback()
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.release()
-        }
+        mMediaPlayer?.release()
         mListener = null
     }
 
     override fun seekTo(milliseconds: Int) {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.seekTo(milliseconds)
-        }
+        mMediaPlayer?.seekTo(milliseconds)
     }
 
     override val isPlaying: Boolean
-        get() = mMediaPlayer != null && mMediaPlayer!!.isPlaying
+        get() = mMediaPlayer?.isPlaying == true
 
     val duration: Int
-        get() = if (mMediaPlayer != null) mMediaPlayer!!.duration else -1
+        get() = mMediaPlayer?.duration ?: -1
 
     val currentTime: Int
-        get() = if (mMediaPlayer != null) mMediaPlayer!!.currentPosition else -1
+        get() = mMediaPlayer?.currentPosition ?: -1
 
     val remainingTime: Int
         get() = duration - currentTime
 
     override fun resumePlayback() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.start()
-            if (mListener != null) {
-                mListener!!.onStartPlayback()
-            }
-        }
+        mMediaPlayer?.start()
+        mListener?.onStartPlayback()
     }
 
     override fun pausePlayback() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.pause()
-            if (mListener != null) {
-                mListener!!.onStopPlayback()
-            }
-        }
+        mMediaPlayer?.pause()
+        mListener?.onStopPlayback()
     }
 
     override fun stopPlayback() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.stop()
-            if (mListener != null) {
-                mListener!!.onStopPlayback()
-            }
-        }
+        mMediaPlayer?.stop()
+        mListener?.onStopPlayback()
     }
 
     override fun forward() {
-        if (mMediaPlayer != null) {
-            val position = mMediaPlayer!!.currentPosition + THIRTY_SECONDS_IN_MILLISECONDS
-            seekTo(min(position, mMediaPlayer!!.duration))
-        }
+        val position = mMediaPlayer?.currentPosition?.plus(THIRTY_SECONDS_IN_MILLISECONDS)
+        position?.let { mMediaPlayer?.duration?.let { it1 -> min(it, it1) } }?.let { seekTo(it) }
     }
 
     override fun rewind() {
-        if (mMediaPlayer != null) {
-            seekTo(mMediaPlayer!!.currentPosition - THIRTY_SECONDS_IN_MILLISECONDS)
-        }
+        mMediaPlayer?.currentPosition?.minus(THIRTY_SECONDS_IN_MILLISECONDS)?.let { seekTo(it) }
     }
 
     override fun setPlaybackListener(listener: IPlaybackListener?) {
@@ -147,16 +125,14 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
     }
 
     fun startPlayback(url: Uri?) {
-        if (mMediaPlayer != null && mMediaPlayer!!.isPlaying) {
+        if (mMediaPlayer?.isPlaying == true) {
             stopPlayback()
         }
         try {
             mMediaPlayer = MediaPlayer.create(this, url)
-            mMediaPlayer!!.setOnCompletionListener(this)
-            mMediaPlayer!!.start()
-            if (mListener != null) {
-                mListener!!.onStartPlayback()
-            }
+            mMediaPlayer?.setOnCompletionListener(this)
+            mMediaPlayer?.start()
+            mListener?.onStartPlayback()
         } catch (exception: NullPointerException) {
             Log.e("MediaService", exception.message, exception)
         }
