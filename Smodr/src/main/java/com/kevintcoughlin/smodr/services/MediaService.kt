@@ -8,7 +8,7 @@ import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.widget.Toast
+import android.util.Log
 import com.kevintcoughlin.smodr.services.MediaService.IPlaybackListener
 import org.jetbrains.annotations.Contract
 import kotlin.math.min
@@ -158,7 +158,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
                 mListener!!.onStartPlayback()
             }
         } catch (exception: NullPointerException) {
-            Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
+            Log.e("MediaService", exception.message, exception)
         }
     }
 
