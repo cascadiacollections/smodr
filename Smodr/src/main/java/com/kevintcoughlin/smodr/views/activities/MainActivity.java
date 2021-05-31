@@ -38,9 +38,6 @@ import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.Crashes;
 
 import java.util.Collections;
 
@@ -68,7 +65,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private MediaService mService;
     private boolean mBound = false;
     private final static int ONE_SECOND_IN_MS = 1000;
-    private final static String APP_CENTER_ID = "4933507b-9621-4fe6-87c6-150a352d7f47";
 //    private final static String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
@@ -151,8 +147,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        AppCenter.start(getApplication(), APP_CENTER_ID, Analytics.class, Crashes.class);
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
