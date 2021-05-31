@@ -6,8 +6,8 @@ apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.0-alpha01'
@@ -80,8 +80,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.3.0"
     testImplementation "androidx.room:room-testing:2.3.0"
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
-    implementation "com.microsoft.appcenter:appcenter-analytics:2.4.1"
-    implementation "com.microsoft.appcenter:appcenter-crashes:2.4.1"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.annotation:annotation:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
