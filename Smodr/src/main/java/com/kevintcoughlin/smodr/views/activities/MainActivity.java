@@ -14,10 +14,7 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +30,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
+import com.kevintcoughlin.smodr.databinding.ActivityMainLayoutBinding;
 import com.kevintcoughlin.smodr.models.Channel;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
@@ -41,31 +39,14 @@ import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
 import java.util.Collections;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @SuppressLint("NonConstantResourceId")
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item>, SeekBar.OnSeekBarChangeListener {
-    @BindView(R.id.player)
-    LinearLayout mPlayer;
-    @BindView(R.id.play)
-    ImageView mPlay;
-    @BindView(R.id.replay)
-    ImageView mReplay;
-    @BindView(R.id.forward)
-    ImageView mForward;
-    @BindView(R.id.seekbar)
-    SeekBar mSeekBar;
-    @BindView(R.id.current_time)
-    TextView mCurrentTime;
-    @BindView(R.id.remaining_time)
-    TextView mRemainingTime;
-
+    private ActivityMainLayoutBinding mBinding;
     private MediaService mService;
     private boolean mBound = false;
     private final static int ONE_SECOND_IN_MS = 1000;
-//    private final static String AD_UNIT_ID = "ca-app-pub-6967310132431626/8145526941";
     private final static Channel mChannel = new Channel(
             "Tell 'Em Steve-Dave",
             "https://feeds.feedburner.com/TellEmSteveDave"
@@ -103,9 +84,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             mService.setPlaybackListener(new MediaService.IPlaybackListener() {
                 @Override
                 public void onStartPlayback() {
-                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_pause_24));
-                    mSeekBar.setMax(mService.getDuration());
-                    mPlayer.setVisibility(View.VISIBLE);
+                    mBinding.play.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_pause_24));
+                    mBinding.seekbar.setMax(mService.getDuration());
+                    mBinding.player.setVisibility(View.VISIBLE);
                     mUpdateProgress = () -> {
                         updateSeekProgress();
                         mHandler.postDelayed(mUpdateProgress, ONE_SECOND_IN_MS);
@@ -117,16 +98,16 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
 
                 @Override
                 public void onStopPlayback() {
-                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
+                    mBinding.play.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
 
                     FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", safeGetEventBundle(mItem));
                 }
 
                 @Override
                 public void onCompletion() {
-                    mSeekBar.setMax(0);
-                    mSeekBar.setProgress(0);
-                    mPlay.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
+                    mBinding.seekbar.setMax(0);
+                    mBinding.seekbar.setProgress(0);
+                    mBinding.play.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
                     mItem.setCompleted(true);
                     AppDatabase.updateData(getApplicationContext(), mItem);
                     mBinderRecyclerFragment.markCompleted(mItem);
@@ -147,11 +128,12 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_layout);
-        ButterKnife.bind(this);
+        mBinding = ActivityMainLayoutBinding.inflate(getLayoutInflater());
+        final View view = mBinding.getRoot();
+        setContentView(view);
 
         initializeAds();
-        mSeekBar.setOnSeekBarChangeListener(this);
+        mBinding.seekbar.setOnSeekBarChangeListener(this);
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
@@ -244,9 +226,9 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             return;
         }
 
-        mSeekBar.setProgress(this.mService.getCurrentTime());
-        TextViewKt.setElapsedTime(mCurrentTime, this.mService.getCurrentTime());
-        TextViewKt.setElapsedTime(mRemainingTime, this.mService.getRemainingTime());
+        mBinding.seekbar.setProgress(this.mService.getCurrentTime());
+        TextViewKt.setElapsedTime(mBinding.currentTime, this.mService.getCurrentTime());
+        TextViewKt.setElapsedTime(mBinding.remainingTime, this.mService.getRemainingTime());
     }
 
     private void initializeAds() {
