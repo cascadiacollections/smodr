@@ -1,27 +1,21 @@
 package com.kevintcoughlin.smodr.viewholders;
 
-import android.annotation.SuppressLint;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.databinding.ItemListEpisodeLayoutBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-@SuppressLint("NonConstantResourceId")
 public final class EpisodeViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.metadata)
-    TextView mMetadata;
-    @BindView(R.id.description)
-    TextView mDescription;
+    protected TextView mTitle;
+    protected TextView mMetadata;
+    protected TextView mDescription;
 
-    EpisodeViewHolder(final View view) {
-        super(view);
-        ButterKnife.bind(this, view);
+    EpisodeViewHolder(final ItemListEpisodeLayoutBinding binding) {
+        super(binding.getRoot());
+
+        mTitle = binding.title;
+        mMetadata = binding.metadata;
+        mDescription = binding.description;
     }
 }

@@ -39,8 +39,6 @@ import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
 
 import java.util.Collections;
 
-import butterknife.OnClick;
-
 @SuppressLint("NonConstantResourceId")
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item>, SeekBar.OnSeekBarChangeListener {
     private ActivityMainLayoutBinding mBinding;
@@ -132,8 +130,12 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         final View view = mBinding.getRoot();
         setContentView(view);
 
-        initializeAds();
+        mBinding.replay.setOnClickListener(this::onRewindClick);
+        mBinding.play.setOnClickListener(this::onTogglePlaybackClick);
+        mBinding.forward.setOnClickListener(this::onForwardClick);
         mBinding.seekbar.setOnSeekBarChangeListener(this);
+
+        initializeAds();
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
@@ -186,7 +188,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     }
 
-    @OnClick(R.id.play)
     public final void onTogglePlaybackClick(@NonNull View view) {
         if (mBound) {
             if (this.mService.isPlaying()) {
@@ -201,7 +202,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     }
 
-    @OnClick(R.id.forward)
     public final void onForwardClick(@NonNull View view) {
         if (mBound) {
             this.mService.forward();
@@ -211,7 +211,6 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem));
     }
 
-    @OnClick(R.id.replay)
     public final void onRewindClick(@NonNull View view) {
         if (mBound) {
             this.mService.rewind();

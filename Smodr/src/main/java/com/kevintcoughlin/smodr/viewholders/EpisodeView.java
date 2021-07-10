@@ -5,7 +5,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +12,7 @@ import androidx.annotation.RequiresApi;
 
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
 import com.kevintcoughlin.smodr.R;
+import com.kevintcoughlin.smodr.databinding.ItemListEpisodeLayoutBinding;
 import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.utils.StringResourceUtilities;
 
@@ -76,7 +76,7 @@ public class EpisodeView implements BinderRecyclerAdapter.Binder<Item, EpisodeVi
 
     @Override
     public EpisodeViewHolder createViewHolder(@NonNull final ViewGroup parent) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_episode_layout, parent, false);
-        return new EpisodeViewHolder(view);
+        return new EpisodeViewHolder(ItemListEpisodeLayoutBinding.inflate(LayoutInflater.from(parent.getContext()),
+                parent, false));
     }
 }
