@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.squareup.leakcanary:plumber-android:2.4@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ac923df08a2a287d77e036ea65e04150/transformed/jetified-plumber-android-2.4/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ac923df08a2a287d77e036ea65e04150/transformed/jetified-plumber-android-2.4/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ac923df08a2a287d77e036ea65e04150/transformed/jetified-plumber-android-2.4/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2f3e1e53141bf99bbf616e16df6de392/transformed/jetified-plumber-android-2.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2f3e1e53141bf99bbf616e16df6de392/transformed/jetified-plumber-android-2.4/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2f3e1e53141bf99bbf616e16df6de392/transformed/jetified-plumber-android-2.4/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/plumber-android/2.4/7f3487c44d831259e662dc654e44f6abe0785083/plumber-android-2.4-javadoc.jar!/" />
