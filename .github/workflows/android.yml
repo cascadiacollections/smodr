@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: macos-latest
-
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 1.11
@@ -18,5 +16,6 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
+        check-latest: false
     - name: Build with Gradle
       run: ./gradlew build
