@@ -64,7 +64,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.4"
     annotationProcessor "androidx.room:room-compiler:2.3.0"
     testImplementation "androidx.room:room-testing:2.3.0"
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.annotation:annotation:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
