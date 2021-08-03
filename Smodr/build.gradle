@@ -88,6 +88,6 @@ dependencies {
     api 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-ads:20.2.0'
     implementation 'com.google.firebase:firebase-perf:20.0.2'
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.10"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21"
     api project(path: ':common-android')
 }
