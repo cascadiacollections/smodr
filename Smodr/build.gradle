@@ -61,7 +61,7 @@ configurations {
 dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     implementation "androidx.room:room-runtime:2.3.0"
-    implementation "io.reactivex.rxjava3:rxjava:3.0.13"
+    implementation "io.reactivex.rxjava3:rxjava:3.1.0"
     annotationProcessor "androidx.room:room-compiler:2.3.0"
     testImplementation "androidx.room:room-testing:2.3.0"
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
