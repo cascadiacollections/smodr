@@ -6,8 +6,12 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/498d56dc5181cc48a919e6755ce9d813/transformed/jetified-user-messaging-platform-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cd0216d312fa6a59a020fa90ed0ba1a5/transformed/jetified-user-messaging-platform-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d9b024f70c1f42f31e2fa76a5d5c4de6/transformed/jetified-user-messaging-platform-1.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d9b024f70c1f42f31e2fa76a5d5c4de6/transformed/jetified-user-messaging-platform-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d9b024f70c1f42f31e2fa76a5d5c4de6/transformed/jetified-user-messaging-platform-1.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f05bae74e64ca60389847c3f646a4384/transformed/jetified-user-messaging-platform-1.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f05bae74e64ca60389847c3f646a4384/transformed/jetified-user-messaging-platform-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f05bae74e64ca60389847c3f646a4384/transformed/jetified-user-messaging-platform-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2bbf808f09f320e188d00aae4b094851/transformed/jetified-user-messaging-platform-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2bbf808f09f320e188d00aae4b094851/transformed/jetified-user-messaging-platform-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2bbf808f09f320e188d00aae4b094851/transformed/jetified-user-messaging-platform-1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.ump/user-messaging-platform/1.0.0/d735fbf1a7e252ffda813ef2622c3a1ccdd2bb3c/user-messaging-platform-1.0.0-javadoc.jar!/" />

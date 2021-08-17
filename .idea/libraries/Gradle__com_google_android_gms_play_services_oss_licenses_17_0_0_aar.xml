@@ -3,9 +3,12 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1965b7cdd29a14ef1c780f7786dba595/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1965b7cdd29a14ef1c780f7786dba595/jetified-play-services-oss-licenses-17.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/554ea2e7d3ba129d9ed8369f3cbcd973/transformed/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/554ea2e7d3ba129d9ed8369f3cbcd973/transformed/jetified-play-services-oss-licenses-17.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/554ea2e7d3ba129d9ed8369f3cbcd973/transformed/jetified-play-services-oss-licenses-17.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d48b169958ab1205f36031925791853c/transformed/jetified-play-services-oss-licenses-17.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d48b169958ab1205f36031925791853c/transformed/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d48b169958ab1205f36031925791853c/transformed/jetified-play-services-oss-licenses-17.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/96b05751f8fbb8142893c8489776d5b1/transformed/jetified-play-services-oss-licenses-17.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/96b05751f8fbb8142893c8489776d5b1/transformed/jetified-play-services-oss-licenses-17.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/96b05751f8fbb8142893c8489776d5b1/transformed/jetified-play-services-oss-licenses-17.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-oss-licenses/17.0.0/6480b771443eced309c8ae976ae85197f0d99ed4/play-services-oss-licenses-17.0.0-javadoc.jar!/" />
