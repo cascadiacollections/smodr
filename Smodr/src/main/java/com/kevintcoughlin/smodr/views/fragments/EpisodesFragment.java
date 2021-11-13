@@ -20,6 +20,7 @@ import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.FeedService;
 import com.kevintcoughlin.smodr.viewholders.EpisodeView;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
+import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory;
 
 import org.jetbrains.annotations.Contract;
 
@@ -29,7 +30,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
     private static final String EPISODE_FEED_URL = "com.com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
@@ -158,11 +158,10 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void initializeFeedService() {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addConverterFactory(TikXmlConverterFactory.create())
                 .build();
 
         mFeedService = retrofit.create(FeedService.class);

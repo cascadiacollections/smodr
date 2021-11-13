@@ -7,50 +7,46 @@ import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.simpleframework.xml.Element
-import org.simpleframework.xml.Namespace
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Xml
 import java.util.*
 
 @Entity
-@Root(name = "item", strict = false)
+@Xml(name = "item")
 class Item : IMediaPlayback {
     @PrimaryKey
     @ColumnInfo(name = "guid")
-    @field:Element(required = false)
+    @field:Element
     @NonNull
     var guid: String = ""
 
     @ColumnInfo(name = "title")
-    @field:Element(required = false)
+    @field:Element
     @NonNull
     var title: String? = null
 
     @ColumnInfo(name ="pubDate")
-    @field:Element(required = false)
+    @field:Element
     @NonNull
     var pubDate: String? = null
 
     @ColumnInfo(name ="description")
-    @field:Element(required = false)
+    @field:Element
     @NonNull
     var description: String? = null
 
     @ColumnInfo(name ="duration")
     @field:Element
-    @field:Namespace(prefix = "itunes")
     @NonNull
     var duration: String? = null
 
     @ColumnInfo(name ="summary")
     @field:Element
-    @field:Namespace(prefix = "itunes")
     @NonNull
     var summary: String? = null
 
     @ColumnInfo(name ="origEnclosureLink")
     @field:Element
-    @field:Namespace(prefix = "feedburner")
     @NonNull
     var origEnclosureLink: String? = null
 

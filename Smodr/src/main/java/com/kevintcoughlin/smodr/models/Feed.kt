@@ -1,9 +1,9 @@
 package com.kevintcoughlin.smodr.models
 
-import org.simpleframework.xml.Element
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Xml
 
-@Root(name = "rss", strict = false)
+@Xml(name = "rss")
 class Feed {
     @field:Element
     var channel: Channel? = null

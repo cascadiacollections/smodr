@@ -1,10 +1,10 @@
 package com.kevintcoughlin.smodr.models
 
-import org.simpleframework.xml.Element
-import org.simpleframework.xml.ElementList
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.PropertyElement
+import com.tickaroo.tikxml.annotation.Xml
 
-@Root(name = "channel", strict = false)
+@Xml(name = "channel")
 class Channel {
     internal constructor() {}
     constructor(title: String?, link: String?) {
@@ -12,12 +12,12 @@ class Channel {
         this.link = link
     }
 
-    @field:Element
+    @field:PropertyElement
     var title: String? = null
 
-    @field:Element(required = false)
+    @field:PropertyElement
     var link: String? = null
 
-    @field:ElementList(inline = true, entry = "item")
+    @field:Element
     var item: List<Item>? = null
 }

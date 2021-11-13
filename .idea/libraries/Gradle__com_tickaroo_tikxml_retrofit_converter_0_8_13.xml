@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tickaroo.tikxml:retrofit-converter:0.8.13">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tickaroo.tikxml/retrofit-converter/0.8.13/354b34dea8a0fdaff6d670082ab0d3bae892b95d/retrofit-converter-0.8.13.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tickaroo.tikxml/retrofit-converter/0.8.13/16124da5925a5b9342a5776835b4baf8712b91ac/retrofit-converter-0.8.13-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tickaroo.tikxml/retrofit-converter/0.8.13/e3ef38694a1bf37c887af9bf22516fa95dcf942d/retrofit-converter-0.8.13-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
