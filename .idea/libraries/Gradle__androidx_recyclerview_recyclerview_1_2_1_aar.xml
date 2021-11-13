@@ -3,6 +3,7 @@
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/17d51b82e717c124dd01cebd462434ee/transformed/recyclerview-1.2.1/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/069bd1d34e160b5d5b5668934bba6136/transformed/recyclerview-1.2.1/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b2effc08efab1b3559a0b2bd36e13835/transformed/recyclerview-1.2.1/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/17d51b82e717c124dd01cebd462434ee/transformed/recyclerview-1.2.1/AndroidManifest.xml" />
@@ -11,6 +12,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/069bd1d34e160b5d5b5668934bba6136/transformed/recyclerview-1.2.1/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/069bd1d34e160b5d5b5668934bba6136/transformed/recyclerview-1.2.1/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/069bd1d34e160b5d5b5668934bba6136/transformed/recyclerview-1.2.1/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b2effc08efab1b3559a0b2bd36e13835/transformed/recyclerview-1.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b2effc08efab1b3559a0b2bd36e13835/transformed/recyclerview-1.2.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b2effc08efab1b3559a0b2bd36e13835/transformed/recyclerview-1.2.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
