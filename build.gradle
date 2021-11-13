@@ -19,4 +19,8 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    }
 }

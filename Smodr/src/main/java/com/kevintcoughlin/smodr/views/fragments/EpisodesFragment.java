@@ -157,7 +157,8 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
             }
         }
     }
-    
+
+    @SuppressWarnings("deprecation")
     private void initializeFeedService() {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
