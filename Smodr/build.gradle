@@ -80,7 +80,7 @@ dependencies {
     api 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
     api 'com.squareup.retrofit:retrofit:1.9.0'
     implementation 'com.tickaroo.tikxml:annotation:0.8.13'
-    implementation 'com.tickaroo.tikxml:core:0.8.13'
+    implementation 'com.tickaroo.tikxml:core:0.8.15'
     annotationProcessor 'com.tickaroo.tikxml:processor:0.8.13'
     implementation 'com.tickaroo.tikxml:retrofit-converter:0.8.13'
     implementation 'com.google.firebase:firebase-core:20.0.0'
