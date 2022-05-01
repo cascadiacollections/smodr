@@ -20,10 +20,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    lintOptions {
+    buildToolsVersion '31.0.0'
+    lint {
         abortOnError false
     }
-    buildToolsVersion '31.0.0'
 }
 
 dependencies {

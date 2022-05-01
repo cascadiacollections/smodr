@@ -15,8 +15,8 @@ import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.models.Channel;
-import com.kevintcoughlin.smodr.models.Feed;
 import com.kevintcoughlin.smodr.models.Item;
+import com.kevintcoughlin.smodr.models.Rss;
 import com.kevintcoughlin.smodr.services.FeedService;
 import com.kevintcoughlin.smodr.viewholders.EpisodeView;
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder;
@@ -31,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Feed> {
+public final class EpisodesFragment extends BinderRecyclerFragment<Item, EpisodeViewHolder> implements Callback<Rss> {
     private static final String EPISODE_FEED_URL = "com.com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl";
     private static final String BASE_URL = "https://www.smodcast.com/";
     private FeedService mFeedService;
@@ -125,11 +125,11 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onResponse(@NonNull final Call<Feed> call, @NonNull final Response<Feed> response) {
-        final Feed feed = response.body();
+    public void onResponse(@NonNull final Call<Rss> call, @NonNull final Response<Rss> response) {
+        final Rss rss = response.body();
 
-        if (feed != null && feed.getChannel() != null) {
-            final List<Item> items = feed.getChannel().getItem();
+        if (rss != null && rss.getChannel() != null) {
+            final List<Item> items = rss.getChannel().getItem();
             AppDatabase.insertData(getContext(), items);
             final Item[] dbItems = AppDatabase.getData(getContext());
             mAdapter.setItems(dbItems);
@@ -138,7 +138,7 @@ public final class EpisodesFragment extends BinderRecyclerFragment<Item, Episode
     }
 
     @Override
-    public void onFailure(@NonNull final Call<Feed> call, @NonNull final Throwable t) {
+    public void onFailure(@NonNull final Call<Rss> call, @NonNull final Throwable t) {
         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 

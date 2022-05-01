@@ -23,11 +23,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
 import com.kevintcoughlin.smodr.databinding.ActivityMainLayoutBinding;
@@ -36,8 +32,6 @@ import com.kevintcoughlin.smodr.models.Item;
 import com.kevintcoughlin.smodr.services.MediaService;
 import com.kevintcoughlin.smodr.views.TextViewKt;
 import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment;
-
-import java.util.Collections;
 
 @SuppressLint("NonConstantResourceId")
 public final class MainActivity extends AppCompatActivity implements EpisodesFragment.OnItemSelected<Item>, SeekBar.OnSeekBarChangeListener {
@@ -91,14 +85,14 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     };
                     runOnUiThread(mUpdateProgress);
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("start_playback", safeGetEventBundle(mItem));
+//                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("start_playback", safeGetEventBundle(mItem));
                 }
 
                 @Override
                 public void onStopPlayback() {
                     mBinding.play.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_round_play_arrow_24));
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", safeGetEventBundle(mItem));
+//                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("stop_playback", safeGetEventBundle(mItem));
                 }
 
                 @Override
@@ -111,7 +105,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     mBinderRecyclerFragment.markCompleted(mItem);
                     mItem = null;
 
-                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", safeGetEventBundle(mItem));
+//                    FirebaseAnalytics.getInstance(getApplicationContext()).logEvent("complete_playback", safeGetEventBundle(mItem));
                 }
             });
             mBound = true;
@@ -135,7 +129,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mBinding.forward.setOnClickListener(this::onForwardClick);
         mBinding.seekbar.setOnSeekBarChangeListener(this);
 
-        initializeAds();
+//        initializeAds();
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
@@ -146,7 +140,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
                     .commit();
         }
 
-        MobileAds.initialize(this, initializationStatus -> {});
+//        MobileAds.initialize(this, initializationStatus -> {});
     }
 
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -193,11 +187,11 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             if (this.mService.isPlaying()) {
                 this.mService.pausePlayback();
 
-                FirebaseAnalytics.getInstance(this).logEvent("pause_playback", safeGetEventBundle(mItem));
+//                FirebaseAnalytics.getInstance(this).logEvent("pause_playback", safeGetEventBundle(mItem));
             } else {
                 this.mService.resumePlayback();
 
-                FirebaseAnalytics.getInstance(this).logEvent("resume_playback", safeGetEventBundle(mItem));
+//                FirebaseAnalytics.getInstance(this).logEvent("resume_playback", safeGetEventBundle(mItem));
             }
         }
     }
@@ -208,7 +202,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             this.updateSeekProgress();
         }
 
-        FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem));
+//        FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem));
     }
 
     public final void onRewindClick(@NonNull View view) {
@@ -217,7 +211,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
             this.updateSeekProgress();
         }
 
-        FirebaseAnalytics.getInstance(this).logEvent("rewind_playback", safeGetEventBundle(mItem));
+//        FirebaseAnalytics.getInstance(this).logEvent("rewind_playback", safeGetEventBundle(mItem));
     }
 
     private void updateSeekProgress() {
@@ -230,14 +224,14 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         TextViewKt.setElapsedTime(mBinding.remainingTime, this.mService.getRemainingTime());
     }
 
-    private void initializeAds() {
-        final RequestConfiguration configuration = new RequestConfiguration.Builder()
-                .setTestDeviceIds(Collections.singletonList(AdRequest.DEVICE_ID_EMULATOR))
-                .build();
-
-        MobileAds.setRequestConfiguration(configuration);
-        MobileAds.initialize(this);
-    }
+//    private void initializeAds() {
+////        final RequestConfiguration configuration = new RequestConfiguration.Builder()
+////                .setTestDeviceIds(Collections.singletonList(AdRequest.DEVICE_ID_EMULATOR))
+////                .build();
+////
+////        MobileAds.setRequestConfiguration(configuration);
+////        MobileAds.initialize(this);
+//    }
 
     @Override
     public final void onItemSelected(@NonNull Item item) {
@@ -248,7 +242,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         mItem = item;
         mService.startPlayback(item.getUri());
 
-        FirebaseAnalytics.getInstance(this).logEvent("selected_item", safeGetEventBundle(item));
+//        FirebaseAnalytics.getInstance(this).logEvent("selected_item", safeGetEventBundle(item));
     }
 
     private Bundle safeGetEventBundle(@Nullable Item item) {
@@ -265,7 +259,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         bundle.putInt("progress", progress);
         bundle.putBoolean("fromUser", fromUser);
 
-        FirebaseAnalytics.getInstance(this).logEvent("seek_playback", bundle);
+//        FirebaseAnalytics.getInstance(this).logEvent("seek_playback", bundle);
 
         if (fromUser && mService != null) {
             mService.seekTo(progress);

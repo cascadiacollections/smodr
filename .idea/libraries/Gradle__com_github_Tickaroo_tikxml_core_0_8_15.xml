@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Tickaroo.tikxml:core:0.8.15">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tickaroo.tikxml/core/0.8.15/ae11655329275adfb7fe9312a6533dc88b9323a4/core-0.8.15.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tickaroo.tikxml/core/0.8.15/7da0bac98ac4062991aa6d40ca5c59776bc487ec/core-0.8.15-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tickaroo.tikxml/core/0.8.15/bce098c1b056ff4a6d7c45662f8b9e9efc68b503/core-0.8.15-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
