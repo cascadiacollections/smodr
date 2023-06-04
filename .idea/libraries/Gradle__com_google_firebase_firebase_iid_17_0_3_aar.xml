@@ -1,28 +1,8 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.firebase:firebase-iid:17.0.3@aar">
+  <library name="Gradle: com.google.firebase:firebase-iid:17.0.3@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/082861d47cdd87734bf7120bc961cd85/jetified-firebase-iid-17.0.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/082861d47cdd87734bf7120bc961cd85/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/082861d47cdd87734bf7120bc961cd85/jetified-firebase-iid-17.0.3/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/96ae4426be86eb6a7a481aac542b3c48/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bbfd5bb04bd0cb22da36abf6257b7bbb/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/48e14a582e6e8e706c63ffed7e79c739/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/97e906ba9adf165b540a5935862423f5/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6af27abac83c563d6477c73a2ebf8ca5/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/576866718be2b3fb27bca07483396ff0/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ff902aa70a2974eae6b2ff82a112d4b8/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/47e6af9d0e7a747630310d4911b25861/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b47b894f1c39a76aa35beebd592e12f4/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3551aa583b0400e9c8757545c62c21f1/transformed/jetified-firebase-iid-17.0.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3551aa583b0400e9c8757545c62c21f1/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3551aa583b0400e9c8757545c62c21f1/transformed/jetified-firebase-iid-17.0.3/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a46cb42683cbbde74993a90be814c26e/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44b48d188a5739b2dc23fc884601f638/transformed/jetified-firebase-iid-17.0.3/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44b48d188a5739b2dc23fc884601f638/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/44b48d188a5739b2dc23fc884601f638/transformed/jetified-firebase-iid-17.0.3/jars/classes.jar!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2a8d377ffd509add499f977a99b884fc/transformed/jetified-firebase-iid-17.0.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2a8d377ffd509add499f977a99b884fc/transformed/jetified-firebase-iid-17.0.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2a8d377ffd509add499f977a99b884fc/transformed/jetified-firebase-iid-17.0.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/af6148e8eee283d834a370a9fe169743/transformed/jetified-firebase-iid-17.0.3/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/af6148e8eee283d834a370a9fe169743/transformed/jetified-firebase-iid-17.0.3/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-iid/17.0.3/f75ec044e44b868f2a037e753b0287889e224837/firebase-iid-17.0.3-javadoc.jar!/" />

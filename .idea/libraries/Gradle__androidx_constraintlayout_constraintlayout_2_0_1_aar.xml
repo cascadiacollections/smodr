@@ -1,15 +1,9 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.constraintlayout:constraintlayout:2.0.1@aar">
+  <library name="Gradle: androidx.constraintlayout:constraintlayout:2.0.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/de840fedeaec0e7f977028827192870a/transformed/constraintlayout-2.0.1/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/de840fedeaec0e7f977028827192870a/transformed/constraintlayout-2.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/de840fedeaec0e7f977028827192870a/transformed/constraintlayout-2.0.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8f8f0b868c287a9c6df87fc5f696ec36/transformed/constraintlayout-2.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8f8f0b868c287a9c6df87fc5f696ec36/transformed/constraintlayout-2.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8f8f0b868c287a9c6df87fc5f696ec36/transformed/constraintlayout-2.0.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c723cdd205a9fac6f8bea0515d2a6a45/transformed/constraintlayout-2.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c723cdd205a9fac6f8bea0515d2a6a45/transformed/constraintlayout-2.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c723cdd205a9fac6f8bea0515d2a6a45/transformed/constraintlayout-2.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/43f6dccd437b9e5f8b8d3830fa35d39d/transformed/constraintlayout-2.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/43f6dccd437b9e5f8b8d3830fa35d39d/transformed/constraintlayout-2.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/43f6dccd437b9e5f8b8d3830fa35d39d/transformed/constraintlayout-2.0.1/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

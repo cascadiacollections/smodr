@@ -1,28 +1,8 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.firebase:firebase-iid-interop:16.0.1@aar">
+  <library name="Gradle: com.google.firebase:firebase-iid-interop:16.0.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/35aba6dfb3910b9d4b2bf72ae638c664/jetified-firebase-iid-interop-16.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/35aba6dfb3910b9d4b2bf72ae638c664/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/35aba6dfb3910b9d4b2bf72ae638c664/jetified-firebase-iid-interop-16.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/395eaa5575364c3c1384020a19ad0fbd/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f1c84b85001fbd15877f1675199c8c1/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/22ca2c739ae69b229998dcbe604c464b/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d8b50ac96ad0ed89ee5a43bb2d1d31ac/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5548d6318a5a5a8b62259c0d3bf35d23/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/eccab917acd701fe2aa879b1c957fd4a/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/350be0425b87946c88f9421e02b581ed/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8677f9fd94ce01473b15095404eada5f/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8776c1e51214ecddd1a16bbf59ec1d0f/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c1b086067f5b9fe9f9ef9f5a62add7ea/transformed/jetified-firebase-iid-interop-16.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c1b086067f5b9fe9f9ef9f5a62add7ea/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c1b086067f5b9fe9f9ef9f5a62add7ea/transformed/jetified-firebase-iid-interop-16.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/46fe700d7dfd7814d1996deed1996f2c/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/853042c1b3ac8f2d9643f9b44a295f7d/transformed/jetified-firebase-iid-interop-16.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/853042c1b3ac8f2d9643f9b44a295f7d/transformed/jetified-firebase-iid-interop-16.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/853042c1b3ac8f2d9643f9b44a295f7d/transformed/jetified-firebase-iid-interop-16.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/947cc37d039611d63528bb00d7c73221/transformed/jetified-firebase-iid-interop-16.0.1/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/947cc37d039611d63528bb00d7c73221/transformed/jetified-firebase-iid-interop-16.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/947cc37d039611d63528bb00d7c73221/transformed/jetified-firebase-iid-interop-16.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4a8043f9fccdb92481f64b8241f9c85d/transformed/jetified-firebase-iid-interop-16.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4a8043f9fccdb92481f64b8241f9c85d/transformed/jetified-firebase-iid-interop-16.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
