@@ -240,7 +240,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     }
 
     @Override
-    public final void onItemSelected(@NonNull Item item) {
+    public void onItemSelected(@NonNull Item item) {
         if (!mBound) {
             return;
         }
