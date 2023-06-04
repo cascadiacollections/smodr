@@ -22,7 +22,7 @@ buildscript {
 
 android {
     compileOptions {
-        compileSdkVersion 33
+        compileSdk 33
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -91,6 +91,6 @@ dependencies {
     api 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-ads:22.1.0'
     implementation 'com.google.firebase:firebase-perf:20.3.2'
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"
     api project(path: ':common-android')
 }

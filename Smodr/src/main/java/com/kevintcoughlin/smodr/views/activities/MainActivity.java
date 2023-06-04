@@ -188,7 +188,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     }
 
-    public final void onTogglePlaybackClick(@NonNull View view) {
+    public void onTogglePlaybackClick(@NonNull View view) {
         if (mBound) {
             if (this.mService.isPlaying()) {
                 this.mService.pausePlayback();
@@ -202,7 +202,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         }
     }
 
-    public final void onForwardClick(@NonNull View view) {
+    public void onForwardClick(@NonNull View view) {
         if (mBound) {
             this.mService.forward();
             this.updateSeekProgress();
@@ -211,7 +211,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem));
     }
 
-    public final void onRewindClick(@NonNull View view) {
+    public void onRewindClick(@NonNull View view) {
         if (mBound) {
             this.mService.rewind();
             this.updateSeekProgress();
