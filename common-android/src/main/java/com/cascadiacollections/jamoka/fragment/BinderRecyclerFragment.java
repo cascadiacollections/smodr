@@ -1,6 +1,8 @@
 package com.cascadiacollections.jamoka.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +90,11 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         super.onViewStateRestored(savedInstanceState);
 
         if (savedInstanceState != null) {
-            getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE, Parcelable.class));
+            } else {
+                getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE));
+            }
         }
     }
 
