@@ -58,3 +58,19 @@
 -keepclassmembers class ** {
     @androidx.annotation.Keep *;
 }
+
+# Keep BinderRecyclerAdapter and all its inner classes
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter { *; }
+-keepclassmembers class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter$Binder { *; }
+
+# Keep BinderRecyclerFragment and all its inner classes
+-keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
+-keepclassmembers class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$OnItemSelected { *; }
+
+# Keep BinderRecyclerAdapter and its inner classes
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter { *; }
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter$Binder { *; }
+
+# Keep BinderRecyclerFragment and its inner classes
+-keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
+-keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$OnItemSelected { *; }
