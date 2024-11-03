@@ -7,10 +7,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +26,6 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kevintcoughlin.smodr.R;
 import com.kevintcoughlin.smodr.database.AppDatabase;
@@ -54,7 +53,7 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
     private final static String NEW_ISSUE_URL =
             "https://github.com/cascadiacollections/SModr/issues/new";
     private Runnable mUpdateProgress;
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper()); // Run on main thread.
     private EpisodesFragment mBinderRecyclerFragment;
     private Item mItem;
 
@@ -154,27 +153,29 @@ public final class MainActivity extends AppCompatActivity implements EpisodesFra
         return super.onCreateOptionsMenu(menu);
     }
 
+    // @todo - fix compile time error with R import
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        final int id = item.getItemId();
-
-        switch (id) {
-            case R.id.feedback:
-                final Intent newIssue = new Intent(Intent.ACTION_VIEW);
-                newIssue.setData(Uri.parse(NEW_ISSUE_URL));
-                startActivity(newIssue);
-                return true;
-            case R.id.privacy_policy:
-                final Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(PRIVACY_POLICY_URL));
-                startActivity(i);
-                return true;
-            case R.id.third_party_notices:
-                startActivity(new Intent(this, OssLicensesMenuActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
+//        final int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.feedback:
+//                final Intent newIssue = new Intent(Intent.ACTION_VIEW);
+//                newIssue.setData(Uri.parse(NEW_ISSUE_URL));
+//                startActivity(newIssue);
+//                return true;
+//            case R.id.privacy_policy:
+//                final Intent i = new Intent(Intent.ACTION_VIEW);
+//                i.setData(Uri.parse(PRIVACY_POLICY_URL));
+//                startActivity(i);
+//                return true;
+//            case R.id.third_party_notices:
+//                startActivity(new Intent(this, OssLicensesMenuActivity.class));
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
     }
 
     @SuppressWarnings("deprecation")

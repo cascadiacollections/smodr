@@ -24,6 +24,7 @@ buildscript {
 }
 
 android {
+    namespace 'com.kevintcoughlin.smodr'
     compileSdk 35
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -50,7 +51,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.kevintcoughlin.smodr'
     lint {
         abortOnError false
     }
