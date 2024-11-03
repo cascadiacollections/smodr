@@ -30,7 +30,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 33
         targetSdk 35
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {

@@ -10,7 +10,6 @@
 
 # --- TikXML ProGuard Rules ---
 -keep class com.tickaroo.tikxml.** { *; }
--keep @com.tickaroo.tikxml.annotation.Xml public class *
 -keep class **$$TypeAdapter { *; }
 
 -keepclasseswithmembernames class * {

@@ -90,14 +90,12 @@ public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHold
         super.onViewStateRestored(savedInstanceState);
 
         if (savedInstanceState != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE, Parcelable.class));
-            } else {
-                getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(VIEW_STATE));
-            }
+        // Use the new type-safe method for API 33+
+        getLayoutManager().onRestoreInstanceState(
+                savedInstanceState.getParcelable(VIEW_STATE, Parcelable.class)
+        );
         }
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
