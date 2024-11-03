@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-analytics:22.1.2@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../caches/8.10.2/transforms/361e81f141663c9ea83c87f332323861/transformed/firebase-analytics-22.1.2/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../caches/8.10.2/transforms/361e81f141663c9ea83c87f332323861/transformed/firebase-analytics-22.1.2/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.google.firebase/firebase-analytics/22.1.2/9ff33e9db05d6129087b5fc3c1572a983a204c76/firebase-analytics-22.1.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

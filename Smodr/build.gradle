@@ -14,7 +14,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.8.0-alpha09'
+        classpath 'com.android.tools.build:gradle:8.7.2'
         classpath 'com.google.gms:google-services:4.4.2'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath 'com.google.firebase:perf-plugin:1.4.2'
@@ -24,14 +24,14 @@ buildscript {
 }
 
 android {
+    compileSdk 35
     compileOptions {
-        compileSdk 34
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdk 35
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -59,6 +59,22 @@ android {
 configurations {
     compile.exclude group: 'stax'
     compile.exclude group: 'xpp3'
+}
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == "androidx.annotation" && details.requested.name == "annotation") {
+            details.useVersion("1.9.1")
+            details.because("Resolve version conflicts for androidx.annotation")
+        }
+    }
+}
+
+// Set kotlinOptions for all Kotlin compilation tasks
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -96,4 +112,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:21.0.2'
     api 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
     api project(path: ':common-android')
+
+    // Add experimental annotation version to resolve conflicts
+    implementation 'androidx.annotation:annotation-experimental:1.4.1'
 }
