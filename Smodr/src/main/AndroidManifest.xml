@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.kevintcoughlin.smodr"
     android:versionCode="17"
-    android:versionName="1.5.1"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+    android:versionName="1.5.1">
 
     <dist:module dist:instant="true" />
 
@@ -15,9 +17,11 @@
         android:label="@string/app_name"
         android:icon="@drawable/icon"
         android:theme="@style/Theme.Smodr">
+
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6967310132431626~6673311196" />
@@ -25,6 +29,11 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
 
         <activity
             android:name="com.kevintcoughlin.smodr.views.activities.MainActivity"
