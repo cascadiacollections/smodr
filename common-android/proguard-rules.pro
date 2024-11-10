@@ -8,6 +8,9 @@
 #   public *;
 #}
 
+-keep class androidx.core.** { *; }
+-keep interface androidx.core.** { *; }
+
 # --- TikXML ProGuard Rules ---
 -keep class com.tickaroo.tikxml.** { *; }
 -keep class **$$TypeAdapter { *; }

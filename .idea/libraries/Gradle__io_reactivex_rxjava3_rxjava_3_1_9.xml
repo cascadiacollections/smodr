@@ -2,13 +2,13 @@
   <library name="Gradle: io.reactivex.rxjava3:rxjava:3.1.9" type="java-imported" external-system-id="GRADLE">
     <properties groupId="io.reactivex.rxjava3" artifactId="rxjava" version="3.1.9" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/48e7bf08885ac9b539cd0632a4cb0cdbc119d7cd/rxjava-3.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/48e7bf08885ac9b539cd0632a4cb0cdbc119d7cd/rxjava-3.1.9.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/5063ad163edb3be881d9f9738f0b4d41ee3f6468/rxjava-3.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/5063ad163edb3be881d9f9738f0b4d41ee3f6468/rxjava-3.1.9-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/830cbdce483f1954c0a23d8bdc6345013f1be51a/rxjava-3.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.9/830cbdce483f1954c0a23d8bdc6345013f1be51a/rxjava-3.1.9-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

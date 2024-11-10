@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.activity:activity:1.8.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../caches/8.10.2/transforms/9ab7e2883ecc03582dacf958cce0b938/transformed/activity-1.8.0/AndroidManifest.xml" />
-      <root url="file://$PROJECT_DIR$/../caches/8.10.2/transforms/9ab7e2883ecc03582dacf958cce0b938/transformed/activity-1.8.0/res" />
-      <root url="jar://$PROJECT_DIR$/../caches/8.10.2/transforms/9ab7e2883ecc03582dacf958cce0b938/transformed/activity-1.8.0/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/e1858790b73aac806bced0f0eb83c20a/transformed/jetified-activity-1.8.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/e1858790b73aac806bced0f0eb83c20a/transformed/jetified-activity-1.8.0/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/e1858790b73aac806bced0f0eb83c20a/transformed/jetified-activity-1.8.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/androidx.activity/activity/1.8.0/d56176e5b2b55654d898039f3c3685cc9c221af7/activity-1.8.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/androidx.activity/activity/1.8.0/d56176e5b2b55654d898039f3c3685cc9c221af7/activity-1.8.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

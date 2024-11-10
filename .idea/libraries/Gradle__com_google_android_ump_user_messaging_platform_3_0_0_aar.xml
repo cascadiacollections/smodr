@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.ump:user-messaging-platform:3.0.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../caches/8.10.2/transforms/a4db30e05c536babfa435b6d4ef05921/transformed/user-messaging-platform-3.0.0/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../caches/8.10.2/transforms/a4db30e05c536babfa435b6d4ef05921/transformed/user-messaging-platform-3.0.0/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/c5b0b56bc140e0e77f7a3b4149ac51a5/transformed/jetified-user-messaging-platform-3.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/c5b0b56bc140e0e77f7a3b4149ac51a5/transformed/jetified-user-messaging-platform-3.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.google.android.ump/user-messaging-platform/3.0.0/7cdf9ee0e90e9e77389e434f65d0e7d4365fa55d/user-messaging-platform-3.0.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.android.ump/user-messaging-platform/3.0.0/7cdf9ee0e90e9e77389e434f65d0e7d4365fa55d/user-messaging-platform-3.0.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

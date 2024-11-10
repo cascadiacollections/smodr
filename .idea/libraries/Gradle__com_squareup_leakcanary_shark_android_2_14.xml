@@ -2,13 +2,13 @@
   <library name="Gradle: com.squareup.leakcanary:shark-android:2.14" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.squareup.leakcanary" artifactId="shark-android" version="2.14" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/6fb0b4ab27c085678a3d26ce2b9350fb77c32407/shark-android-2.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/6fb0b4ab27c085678a3d26ce2b9350fb77c32407/shark-android-2.14.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/1264326925aaf3178071b0c3701deae965a8534e/shark-android-2.14-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/1264326925aaf3178071b0c3701deae965a8534e/shark-android-2.14-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/5ea6f55e529cf3c59638c2cdb0c9eb877b4ab98e/shark-android-2.14-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/shark-android/2.14/5ea6f55e529cf3c59638c2cdb0c9eb877b4ab98e/shark-android-2.14-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

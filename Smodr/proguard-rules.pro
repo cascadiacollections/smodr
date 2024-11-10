@@ -8,6 +8,16 @@
 #   public *;
 #}
 
+-keep class androidx.core.** { *; }
+-keep interface androidx.core.** { *; }
+
+# Keep Firebase classes if needed
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Keep AndroidX collection classes (like ArrayMap) if necessary
+-keep class androidx.collection.ArrayMap { *; }
+
 # --- TikXML ProGuard Rules ---
 -keep class com.tickaroo.tikxml.** { *; }
 -keep @com.tickaroo.tikxml.annotation.Xml public class *

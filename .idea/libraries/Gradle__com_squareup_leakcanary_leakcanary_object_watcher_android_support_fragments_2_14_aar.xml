@@ -1,14 +1,14 @@
 <component name="libraryTable">
   <library name="Gradle: com.squareup.leakcanary:leakcanary-object-watcher-android-support-fragments:2.14@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../caches/8.10.2/transforms/2f30e3b586d428419e3230fc3513437f/transformed/leakcanary-object-watcher-android-support-fragments-2.14/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../caches/8.10.2/transforms/2f30e3b586d428419e3230fc3513437f/transformed/leakcanary-object-watcher-android-support-fragments-2.14/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/4d03815c7c21e35e50a6e49ecbb03a65/transformed/jetified-leakcanary-object-watcher-android-support-fragments-2.14/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/4d03815c7c21e35e50a6e49ecbb03a65/transformed/jetified-leakcanary-object-watcher-android-support-fragments-2.14/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android-support-fragments/2.14/8b0604e66d76b6ed3ce9630046ef0b8fd6c8a0ae/leakcanary-object-watcher-android-support-fragments-2.14-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android-support-fragments/2.14/8b0604e66d76b6ed3ce9630046ef0b8fd6c8a0ae/leakcanary-object-watcher-android-support-fragments-2.14-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android-support-fragments/2.14/9c5d2b9a84e53176056c2ab76d9f067afc194898/leakcanary-object-watcher-android-support-fragments-2.14-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android-support-fragments/2.14/9c5d2b9a84e53176056c2ab76d9f067afc194898/leakcanary-object-watcher-android-support-fragments-2.14-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
