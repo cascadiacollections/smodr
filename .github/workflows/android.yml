@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [mac-mini, macos-latest]
+    runs-on: [self-hosted, macos-latest]
     steps:
       - uses: actions/checkout@v4.2.2
 
