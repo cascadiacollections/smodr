@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: [mac-mini, macos-latest]
     steps:
       - uses: actions/checkout@v4.2.2
 
