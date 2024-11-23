@@ -11,58 +11,83 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Generic RecyclerView Adapter with a binder for custom view holders and item interaction listeners.
+ */
 public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+
+    /**
+     * Interface for item click and long-click listeners.
+     */
     public interface IListeners<T> {
         void onClick(T item);
+
         boolean onLongClick(T item);
     }
 
+    /**
+     * Interface for binding items to ViewHolders and creating ViewHolders.
+     */
     public interface Binder<T, VH extends RecyclerView.ViewHolder> {
         void bind(@NonNull final T model, @NonNull final VH viewHolder);
 
         VH createViewHolder(@NonNull final ViewGroup parent);
     }
 
-    protected List<T> items = new ArrayList<>();
-    private final Binder<T, VH> binderViewHolder;
-    private WeakReference<IListeners<T>> onClickListener;
+    public List<T> mItems = new ArrayList<>();
+    private final Binder<T, VH> mBinderViewHolder;
+    private WeakReference<IListeners<T>> mOnClickListener;
 
+    /**
+     * Constructor for BinderRecyclerAdapter.
+     *
+     * @param binder The binder for ViewHolder creation and binding.
+     */
     public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binder) {
-        super();
-        binderViewHolder = binder;
+        this.mBinderViewHolder = binder;
     }
 
+    /**
+     * Set a listener for item interactions.
+     *
+     * @param onClickListener The listener for click and long-click events.
+     */
     public void setOnClickListener(@NonNull final IListeners<T> onClickListener) {
-        this.onClickListener = new WeakReference<>(onClickListener);
+        this.mOnClickListener = new WeakReference<>(onClickListener);
     }
 
+    /**
+     * Update the items in the adapter and refresh the UI.
+     *
+     * @param collection Array of new items to display.
+     */
     @SuppressLint("NotifyDataSetChanged")
-    public void setItems(T[] collection) {
-        items = Arrays.asList(collection);
+    public void setItems(@NonNull T[] collection) {
+        mItems = new ArrayList<>(Arrays.asList(collection));
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
-        return binderViewHolder.createViewHolder(viewGroup);
+    public VH onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+        return mBinderViewHolder.createViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final VH viewHolder, int i) {
-        final T item = items.get(i);
-        final IListeners<T> listener = onClickListener.get();
+    public void onBindViewHolder(@NonNull final VH viewHolder, int position) {
+        final T item = mItems.get(position);
+        final IListeners<T> listener = mOnClickListener != null ? mOnClickListener.get() : null;
 
         if (listener != null) {
             viewHolder.itemView.setOnClickListener(view -> listener.onClick(item));
             viewHolder.itemView.setOnLongClickListener(view -> listener.onLongClick(item));
         }
 
-        binderViewHolder.bind(item, viewHolder);
+        mBinderViewHolder.bind(item, viewHolder);
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return mItems.size();
     }
 }

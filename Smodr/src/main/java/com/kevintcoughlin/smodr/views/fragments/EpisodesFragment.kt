@@ -38,11 +38,11 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
         }
 
         fun updateItem(item: Item?) {
-            val index = items.indexOf(item)
+            val index = mItems.indexOf(item)
             val newItem = create(
                 item!!, true
             )
-            items[index] = newItem
+            mItems[index] = newItem
             notifyItemChanged(index)
         }
     }
