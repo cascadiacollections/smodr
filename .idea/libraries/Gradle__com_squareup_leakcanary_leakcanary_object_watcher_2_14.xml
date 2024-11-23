@@ -2,13 +2,13 @@
   <library name="Gradle: com.squareup.leakcanary:leakcanary-object-watcher:2.14" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.squareup.leakcanary" artifactId="leakcanary-object-watcher" version="2.14" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/4e9e9ea14da4e86321b1369c7aea6528f0ef2/leakcanary-object-watcher-2.14.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/4e9e9ea14da4e86321b1369c7aea6528f0ef2/leakcanary-object-watcher-2.14.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/71aac6f3fae7630fc753a0ec3dfeb77c76334b38/leakcanary-object-watcher-2.14-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/71aac6f3fae7630fc753a0ec3dfeb77c76334b38/leakcanary-object-watcher-2.14-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/f5f72ab5d85bb142fa33095902e5d44ad6efa09e/leakcanary-object-watcher-2.14-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher/2.14/f5f72ab5d85bb142fa33095902e5d44ad6efa09e/leakcanary-object-watcher-2.14-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

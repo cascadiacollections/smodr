@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-appindexing:20.0.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/d3c339533d5999f5668e3b0ca3f2a4c8/transformed/jetified-firebase-appindexing-20.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/d3c339533d5999f5668e3b0ca3f2a4c8/transformed/jetified-firebase-appindexing-20.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/d3c339533d5999f5668e3b0ca3f2a4c8/transformed/jetified-firebase-appindexing-20.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/6cc7ec7e341c0c2051b55728ab165e1c/transformed/jetified-firebase-appindexing-20.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/6cc7ec7e341c0c2051b55728ab165e1c/transformed/jetified-firebase-appindexing-20.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/6cc7ec7e341c0c2051b55728ab165e1c/transformed/jetified-firebase-appindexing-20.0.0/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appindexing/20.0.0/a11d9c72b8c2e294dab6e0dd48ce453bd0e469f1/firebase-appindexing-20.0.0-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appindexing/20.0.0/a11d9c72b8c2e294dab6e0dd48ce453bd0e469f1/firebase-appindexing-20.0.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

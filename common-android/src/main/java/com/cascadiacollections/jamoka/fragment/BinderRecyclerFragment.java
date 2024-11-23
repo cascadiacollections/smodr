@@ -1,6 +1,5 @@
 package com.cascadiacollections.jamoka.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -18,95 +17,129 @@ import com.com.cascadiacollections.jamoka.R;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * Generic fragment with RecyclerView and SwipeRefreshLayout integration.
+ * Supports binding adapters, layout managers, and item selection callbacks.
+ */
 public abstract class BinderRecyclerFragment<T, VH extends RecyclerView.ViewHolder> extends Fragment
         implements BinderRecyclerAdapter.IListeners<T>, SwipeRefreshLayout.OnRefreshListener {
-    private static final String VIEW_STATE = "BinderRecyclerFragment.ViewState";
+
+    private static final String VIEW_STATE_KEY = "BinderRecyclerFragment.ViewState";
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout.OnRefreshListener mRefreshListener;
     private WeakReference<OnItemSelected<T>> mOnItemSelectedCallback;
+
+    /**
+     * Provide the adapter for the RecyclerView.
+     */
     protected abstract BinderRecyclerAdapter<T, VH> getAdapter();
+
+    /**
+     * Provide the layout manager for the RecyclerView.
+     */
     protected abstract RecyclerView.LayoutManager getLayoutManager();
+
+    /**
+     * Retrieve the RecyclerView instance.
+     */
     protected RecyclerView getRecyclerView() {
         return mRecyclerView;
     }
 
-    @Override
-    public void onRefresh() {
-        if (mRefreshListener != null) {
-            mRefreshListener.onRefresh();
-        }
-    }
-
-    protected void stopRefreshing() {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
+    /**
+     * Interface for item selection callback.
+     */
     public interface OnItemSelected<T> {
         void onItemSelected(T item);
     }
 
+    /**
+     * Set the callback listener for item selection.
+     */
     public void setOnItemSelectedListener(OnItemSelected<T> listener) {
         mOnItemSelectedCallback = new WeakReference<>(listener);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        mRefreshListener = null;
-        mOnItemSelectedCallback = null;
-    }
-
-    @Override
     public void onClick(@NonNull final T item) {
-        final OnItemSelected<T> listener = mOnItemSelectedCallback.get();
-
+        OnItemSelected<T> listener = mOnItemSelectedCallback != null ? mOnItemSelectedCallback.get() : null;
         if (listener != null) {
             listener.onItemSelected(item);
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Cleanup references
+        mOnItemSelectedCallback = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+        return inflater.inflate(R.layout.fragment_recycler_layout, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mSwipeRefreshLayout = view.findViewById(R.id.swipeContainer);
         mRecyclerView = view.findViewById(R.id.list);
 
-        return view;
+        setupRecyclerView();
+        setupSwipeRefresh();
     }
 
+    /**
+     * Save the RecyclerView's layout state.
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putParcelable(VIEW_STATE, getLayoutManager().onSaveInstanceState());
+        if (getLayoutManager() != null) {
+            Parcelable layoutState = getLayoutManager().onSaveInstanceState();
+            outState.putParcelable(VIEW_STATE_KEY, layoutState);
+        }
     }
 
+    /**
+     * Restore the RecyclerView's layout state.
+     */
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
         if (savedInstanceState != null) {
-        // Use the new type-safe method for API 33+
-        getLayoutManager().onRestoreInstanceState(
-                savedInstanceState.getParcelable(VIEW_STATE, Parcelable.class)
-        );
+            Parcelable layoutState = savedInstanceState.getParcelable(VIEW_STATE_KEY, Parcelable.class);
+
+            if (layoutState != null && getLayoutManager() != null) {
+                getLayoutManager().onRestoreInstanceState(layoutState);
+            }
         }
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        final BinderRecyclerAdapter<T, VH> adapter = getAdapter();
-        adapter.setOnClickListener(this);
-        adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+    /**
+     * Configures the RecyclerView with the provided adapter and layout manager.
+     */
+    private void setupRecyclerView() {
+        BinderRecyclerAdapter<T, VH> adapter = getAdapter();
+        if (adapter != null) {
+            adapter.setOnClickListener(this);
+            adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+        }
 
-        mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManager());
         mRecyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Configures the SwipeRefreshLayout and its listener.
+     */
+    private void setupSwipeRefresh() {
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 }

@@ -31,7 +31,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
         mAdapter.markCompleted(item)
     }
 
-    private class ItemAdapter() :
+    private class ItemAdapter :
         BinderRecyclerAdapter<Item?, EpisodeViewHolder?>(EpisodeView()) {
         fun markCompleted(item: Item?) {
             updateItem(item)
@@ -61,7 +61,6 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     }
 
     override fun onRefresh() {
-        super.onRefresh()
         fetchEpisodes()
     }
 
@@ -90,7 +89,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
             AppDatabase.insertData(context, items)
             val dbItems = AppDatabase.getData(context)
             mAdapter.setItems(dbItems)
-            stopRefreshing()
+
         }
     }
 

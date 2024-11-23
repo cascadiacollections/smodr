@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.test:monitor:1.7.2@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/d3d8163d4ad74f58450c0e7f73af656a/transformed/monitor-1.7.2/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/8.10.2/transforms/d3d8163d4ad74f58450c0e7f73af656a/transformed/monitor-1.7.2/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/b40001b846ac46fd0d8627d2f25fed11/transformed/monitor-1.7.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/b40001b846ac46fd0d8627d2f25fed11/transformed/monitor-1.7.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/androidx.test/monitor/1.7.2/da19656b15073e15727e8a4e6f0e42082b0529f0/monitor-1.7.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/monitor/1.7.2/da19656b15073e15727e8a4e6f0e42082b0529f0/monitor-1.7.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
