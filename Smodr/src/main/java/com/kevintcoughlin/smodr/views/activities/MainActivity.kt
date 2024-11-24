@@ -21,7 +21,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kevintcoughlin.smodr.R
-import com.kevintcoughlin.smodr.database.AppDatabase
 import com.kevintcoughlin.smodr.databinding.ActivityMainLayoutBinding
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Item
@@ -100,7 +99,6 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
                         )
                     )
                     mItem!!.completed = true
-                    AppDatabase.updateData(applicationContext, mItem)
                     mBinderRecyclerFragment!!.markCompleted(mItem)
                     mItem = null
 
@@ -124,20 +122,14 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
         val view: View = mBinding!!.root
         setContentView(view)
 
-        mBinding!!.replay.setOnClickListener { view: View ->
-            this.onRewindClick(
-                view
-            )
+        mBinding!!.replay.setOnClickListener {
+            this.onRewindClick()
         }
-        mBinding!!.play.setOnClickListener { view: View ->
-            this.onTogglePlaybackClick(
-                view
-            )
+        mBinding!!.play.setOnClickListener {
+            this.onTogglePlaybackClick()
         }
-        mBinding!!.forward.setOnClickListener { view: View ->
-            this.onForwardClick(
-                view
-            )
+        mBinding!!.forward.setOnClickListener {
+            this.onForwardClick()
         }
         mBinding!!.seekbar.setOnSeekBarChangeListener(this)
 
@@ -197,23 +189,21 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
         }
     }
 
-    private fun onTogglePlaybackClick(view: View) {
+    private fun onTogglePlaybackClick() {
         if (mBound) {
             if (mService!!.isPlaying) {
                 mService!!.pausePlayback()
-
                 FirebaseAnalytics.getInstance(this)
                     .logEvent("pause_playback", safeGetEventBundle(mItem))
             } else {
                 mService!!.resumePlayback()
-
                 FirebaseAnalytics.getInstance(this)
                     .logEvent("resume_playback", safeGetEventBundle(mItem))
             }
         }
     }
 
-    private fun onForwardClick(view: View) {
+    private fun onForwardClick() {
         if (mBound) {
             mService!!.forward()
             this.updateSeekProgress()
@@ -222,7 +212,7 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
         FirebaseAnalytics.getInstance(this).logEvent("forward_playback", safeGetEventBundle(mItem))
     }
 
-    fun onRewindClick(view: View) {
+    private fun onRewindClick() {
         if (mBound) {
             mService!!.rewind()
             this.updateSeekProgress()
@@ -280,7 +270,7 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
         private const val ONE_SECOND_IN_MS = 1000
         private val mChannel = Channel(
             "Tell 'Em Steve-Dave",
-            "https://feeds.feedburner.com/TellEmSteveDave"
+            "http://feeds.feedburner.com/TellEmSteveDave/"
         )
         private const val PRIVACY_POLICY_URL =
             "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html"

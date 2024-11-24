@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
-import com.kevintcoughlin.smodr.database.AppDatabase
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Feed
 import com.kevintcoughlin.smodr.models.Item
@@ -18,6 +17,7 @@ import com.kevintcoughlin.smodr.services.FeedService
 import com.kevintcoughlin.smodr.viewholders.EpisodeView
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import okhttp3.OkHttpClient
 import org.jetbrains.annotations.Contract
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,6 +44,10 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
             )
             mItems[index] = newItem
             notifyItemChanged(index)
+        }
+
+        fun setItems(items: List<Item>?) {
+            mItems = items!!
         }
     }
 
@@ -72,10 +76,6 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
             layoutManager.orientation
         )
         recyclerView.addItemDecoration(mDividerItemDecoration)
-        val items = context?.let { AppDatabase.getData(it) }
-        if (items != null) {
-            mAdapter.setItems(items)
-        }
         fetchEpisodes()
     }
 
@@ -88,12 +88,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
         val feed = response.body()
         if (feed?.channel != null) {
             val items = feed.channel!!.item
-            context?.let { AppDatabase.insertData(it, items) }
-            val dbItems = context?.let { AppDatabase.getData(it) }
-            if (dbItems != null) {
-                mAdapter.setItems(dbItems)
-            }
-
+            mAdapter.setItems(items)
         }
     }
 
@@ -115,8 +110,17 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     }
 
     private fun initializeFeedService() {
+//        val logging = HttpLoggingInterceptor().apply {//
+//            level = HttpLoggingInterceptor.Level.BODY
+//        }
+//        val client = OkHttpClient.Builder()
+//            .addInterceptor(logging)
+//            .build()
+        val client = OkHttpClient.Builder()
+            .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(TikXmlConverterFactory.create())
             .build()
         mFeedService = retrofit.create(FeedService::class.java)
@@ -125,7 +129,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     companion object {
         private const val EPISODE_FEED_URL =
             "com.com.kevintcoughlin.smodr.views.fragments.EpisodesFragment.feedUrl"
-        private const val BASE_URL = "https://www.smodcast.com/"
+        private const val BASE_URL = "http://feeds.feedburner.com/TellEmSteveDave/"
         @JvmStatic
         fun create(channel: Channel): Fragment {
             val fragment: Fragment = EpisodesFragment()
