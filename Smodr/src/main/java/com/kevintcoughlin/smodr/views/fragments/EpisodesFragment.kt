@@ -12,7 +12,6 @@ import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Feed
 import com.kevintcoughlin.smodr.models.Item
-import com.kevintcoughlin.smodr.models.Item.Companion.create
 import com.kevintcoughlin.smodr.services.FeedService
 import com.kevintcoughlin.smodr.viewholders.EpisodeView
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
@@ -28,36 +27,36 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     private var mFeedService: FeedService? = null
 
     fun markCompleted(item: Item?) {
-        mAdapter.markCompleted(item)
+        if (item != null) {
+            mAdapter.markCompleted(item)
+        }
     }
 
-    private class ItemAdapter :
-        BinderRecyclerAdapter<Item?, EpisodeViewHolder?>(EpisodeView()) {
+    private class ItemAdapter : BinderRecyclerAdapter<Item?, EpisodeViewHolder?>(EpisodeView()) {
         fun markCompleted(item: Item?) {
-            updateItem(item)
+            item?.let {
+                updateItem(it)
+            }
         }
 
-        fun updateItem(item: Item?) {
+        private fun updateItem(item: Item) {
             val index = mItems.indexOf(item)
-            val newItem = create(
-                item!!, true
-            )
-            mItems[index] = newItem
-            notifyItemChanged(index)
+            if (index != -1) {
+                val updatedItem = item.copy(completed = true)
+                mItems[index] = updatedItem
+                notifyItemChanged(index)
+            }
         }
 
-        fun setItems(items: List<Item>?) {
-            mItems = items!!
+        @SuppressLint("NotifyDataSetChanged")
+        fun setItems(newItems: List<Item?>) {
+            mItems = newItems.toMutableList()
+            notifyDataSetChanged()
         }
     }
 
     private val mAdapter = ItemAdapter()
     private val mLinearLayoutManager = LinearLayoutManager(context)
-    
-    @Contract(pure = true)
-    override fun getAdapter(): BinderRecyclerAdapter<Item?, EpisodeViewHolder?> {
-        return mAdapter
-    }
 
     @Contract(pure = true)
     override fun getLayoutManager(): LinearLayoutManager {
@@ -68,7 +67,10 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
         fetchEpisodes()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    override fun getAdapter(): BinderRecyclerAdapter<Item?, EpisodeViewHolder?> {
+        return mAdapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mDividerItemDecoration = DividerItemDecoration(
@@ -82,13 +84,14 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     override fun onLongClick(item: Item?): Boolean {
         return true
     }
-
-    @SuppressLint("NotifyDataSetChanged")
+    
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
         val feed = response.body()
         if (feed?.channel != null) {
             val items = feed.channel!!.item
-            mAdapter.setItems(items)
+            if (items != null) {
+                mAdapter.setItems(items)
+            }
         }
     }
 
@@ -110,12 +113,6 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
     }
 
     private fun initializeFeedService() {
-//        val logging = HttpLoggingInterceptor().apply {//
-//            level = HttpLoggingInterceptor.Level.BODY
-//        }
-//        val client = OkHttpClient.Builder()
-//            .addInterceptor(logging)
-//            .build()
         val client = OkHttpClient.Builder()
             .build()
         val retrofit = Retrofit.Builder()

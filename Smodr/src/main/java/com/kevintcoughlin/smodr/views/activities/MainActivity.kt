@@ -245,7 +245,7 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
             return Bundle()
         }
 
-        return item.eventBundle()
+        return item.toEventBundle()
     }
 
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
