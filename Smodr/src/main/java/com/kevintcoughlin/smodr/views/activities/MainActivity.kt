@@ -99,7 +99,6 @@ class MainActivity : AppCompatActivity(), OnItemSelected<Item?>,
                         )
                     )
                     mItem!!.completed = true
-                    mBinderRecyclerFragment!!.markCompleted(mItem)
                     mItem = null
 
                     FirebaseAnalytics.getInstance(applicationContext)
