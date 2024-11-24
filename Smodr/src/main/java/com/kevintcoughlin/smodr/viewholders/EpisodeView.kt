@@ -1,81 +1,63 @@
 package com.kevintcoughlin.smodr.viewholders
 
+import android.annotation.SuppressLint
 import android.graphics.Color
-import android.icu.text.SimpleDateFormat
-import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.kevintcoughlin.smodr.R
 import com.kevintcoughlin.smodr.databinding.ItemListEpisodeLayoutBinding
 import com.kevintcoughlin.smodr.models.Item
-import com.kevintcoughlin.smodr.utils.StringResourceUtilities.getString
-import java.text.ParseException
-import java.util.Date
+import java.text.SimpleDateFormat
 import java.util.Locale
 
-class EpisodeView :
-    BinderRecyclerAdapter.Binder<Item?, EpisodeViewHolder?> {
-    override fun bind(model: Item, viewHolder: EpisodeViewHolder) {
-        viewHolder.mTitle.text = model.title
-        viewHolder.mDescription.text =
-            Html.fromHtml(model.summary, Html.FROM_HTML_MODE_LEGACY)
-        viewHolder.mMetadata.text = getString(
-            viewHolder.mMetadata.context,
-            R.string.metadata,
-            formatDate(model.pubDate),
-            model.duration
-        )
+class EpisodeView : BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
 
-        if (model.completed) {
-            // @todo extension method?
-            viewHolder.mTitle.setTextColor(COLOR_GRAY)
-            viewHolder.mDescription.setTextColor(COLOR_GRAY)
-            viewHolder.mMetadata.setTextColor(COLOR_GRAY)
-        } else {
-            viewHolder.mTitle.setTextColor(COLOR_BLACK)
-            viewHolder.mDescription.setTextColor(COLOR_BLACK)
-            viewHolder.mMetadata.setTextColor(COLOR_BLACK)
+    override fun bind(model: Item, viewHolder: EpisodeViewHolder) {
+        with(viewHolder) {
+            mTitle.text = model.title
+            mDescription.text = Html.fromHtml(model.summary, Html.FROM_HTML_MODE_LEGACY)
+            mMetadata.text = mMetadata.context.getString(
+                R.string.metadata,
+                formatDate(model.pubDate),
+                model.duration
+            )
+
+            val textColor = if (model.completed) COLOR_GRAY else COLOR_BLACK
+            mTitle.setTextColor(textColor)
+            mDescription.setTextColor(textColor)
+            mMetadata.setTextColor(textColor)
         }
     }
 
     override fun createViewHolder(parent: ViewGroup): EpisodeViewHolder {
-        return EpisodeViewHolder(
-            ItemListEpisodeLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent, false
-            )
+        val binding = ItemListEpisodeLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false
         )
+        return EpisodeViewHolder(binding)
     }
 
     companion object {
-        // @todo: Date format locale aware
-        private val format = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)
+        private val DATE_FORMAT_INPUT = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)
+        @SuppressLint("ConstantLocale")
+        private val DATE_FORMAT_OUTPUT = SimpleDateFormat("dd MMM", Locale.getDefault())
 
-        // @todo: Date format locale aware
-        private val format2 = SimpleDateFormat("dd MMM", Locale.US)
+        private const val COLOR_BLACK = Color.BLACK
+        private val COLOR_GRAY = Color.rgb(150, 150, 150)
 
-        // @todo: theme
-        private val COLOR_BLACK = Color.rgb(0, 0, 0)
-        private val COLOR_GRAY = Color.rgb(222, 222, 222)
-
-        private fun formatDate(dateTimeString: String?): String {
-            // @todo: optimize
-            var date: Date? = null
-            var dateString = ""
-            try {
-                date = format.parse(dateTimeString)
-            } catch (e: ParseException) {
-                e.printStackTrace()
+        /**
+         * Formats a date string to a localized display format.
+         * Returns an empty string if parsing fails.
+         */
+        fun formatDate(dateTimeString: String?): String {
+            return try {
+                val date = dateTimeString?.let { DATE_FORMAT_INPUT.parse(it) }
+                date?.let { DATE_FORMAT_OUTPUT.format(it) } ?: ""
+            } catch (e: Exception) {
+                ""
             }
-
-            if (date != null) {
-                dateString = format2.format(date)
-            }
-
-            return dateString
         }
     }
 }
