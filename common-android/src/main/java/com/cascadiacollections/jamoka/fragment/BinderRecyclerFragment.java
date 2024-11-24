@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter;
-import com.com.cascadiacollections.jamoka.R;
+import com.cascadiacollections.jamoka.R;
 
 import java.lang.ref.WeakReference;
 
