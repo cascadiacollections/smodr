@@ -72,8 +72,10 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
             layoutManager.orientation
         )
         recyclerView.addItemDecoration(mDividerItemDecoration)
-        val items = AppDatabase.getData(context)
-        mAdapter.setItems(items)
+        val items = context?.let { AppDatabase.getData(it) }
+        if (items != null) {
+            mAdapter.setItems(items)
+        }
         fetchEpisodes()
     }
 
@@ -86,9 +88,11 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
         val feed = response.body()
         if (feed?.channel != null) {
             val items = feed.channel!!.item
-            AppDatabase.insertData(context, items)
-            val dbItems = AppDatabase.getData(context)
-            mAdapter.setItems(dbItems)
+            context?.let { AppDatabase.insertData(it, items) }
+            val dbItems = context?.let { AppDatabase.getData(it) }
+            if (dbItems != null) {
+                mAdapter.setItems(dbItems)
+            }
 
         }
     }

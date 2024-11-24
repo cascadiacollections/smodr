@@ -1,48 +1,52 @@
-package com.kevintcoughlin.smodr.database;
+package com.kevintcoughlin.smodr.database
 
-import android.content.Context;
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room.databaseBuilder
+import androidx.room.RoomDatabase
+import com.kevintcoughlin.smodr.models.Item
+import com.kevintcoughlin.smodr.models.ItemDao
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+@Database(entities = [Item::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun itemDao(): ItemDao
 
-import com.kevintcoughlin.smodr.models.Item;
-import com.kevintcoughlin.smodr.models.ItemDao;
+    companion object {
+        private const val DATABASE_NAME = "smodr-db"
 
-import java.util.List;
+        // @todo: reported leak
+        private var INSTANCE: AppDatabase? = null
 
-@Database(entities = {Item.class}, version = 1)
-public abstract class AppDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "smodr-db";
-    // @todo: reported leak
-    private static AppDatabase INSTANCE;
-
-    public static void updateData(Context context, Item ...items) {
-        getInstance(context).itemDao().update(items);
-    }
-
-    public abstract ItemDao itemDao();
-
-    public static void insertData(final Context context, final List<Item> items) {
-        getInstance(context).runInTransaction(() -> getInstance(context).itemDao().insertAll(items));
-    }
-
-    public static Item[] getData(final Context context) {
-        return getInstance(context).itemDao().getAll();
-    }
-
-    private static AppDatabase create(final Context context) {
-        return Room.databaseBuilder(
-                context,
-                AppDatabase.class,
-                DATABASE_NAME
-        ).allowMainThreadQueries().build(); // @todo: render perf
-    }
-
-    public static synchronized AppDatabase getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = create(context);
+        fun updateData(context: Context, vararg items: Item?) {
+            getInstance(context).itemDao().update(*items)
         }
-        return INSTANCE;
+
+        fun insertData(context: Context, items: List<Item?>?) {
+            getInstance(context).runInTransaction {
+                getInstance(
+                    context
+                ).itemDao().insertAll(items)
+            }
+        }
+
+        fun getData(context: Context): Array<Item> {
+            return getInstance(context).itemDao().all
+        }
+
+        private fun create(context: Context): AppDatabase {
+            return databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                DATABASE_NAME
+            ).allowMainThreadQueries().build() // @todo: render perf
+        }
+
+        @Synchronized
+        fun getInstance(context: Context): AppDatabase {
+            if (INSTANCE == null) {
+                INSTANCE = create(context)
+            }
+            return INSTANCE!!
+        }
     }
 }
