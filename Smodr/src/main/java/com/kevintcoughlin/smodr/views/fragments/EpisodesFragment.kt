@@ -47,7 +47,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
     }
 
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
-        response.body()?.channel?.item?.let {
+        response.body()?.channel?.items?.let {
             adapter.items = it
         }
     }

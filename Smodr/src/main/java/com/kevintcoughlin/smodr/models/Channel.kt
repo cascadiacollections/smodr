@@ -5,19 +5,8 @@ import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "channel")
-class Channel {
-    internal constructor() {}
-    constructor(title: String?, link: String?) {
-        this.title = title
-        this.link = link
-    }
-
-    @field:PropertyElement
-    var title: String? = null
-
-    @field:PropertyElement
-    var link: String? = null
-
-    @field:Element
-    var item: List<Item>? = null
-}
+data class Channel(
+    @field:PropertyElement var title: String? = null,
+    @field:PropertyElement var link: String? = null,
+    @field:Element var items: List<Item> = emptyList() // Default to an empty list for safety
+)
