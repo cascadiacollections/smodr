@@ -1,93 +1,46 @@
-package com.cascadiacollections.jamoka.adapter;
+package com.cascadiacollections.jamoka.adapter
 
-import android.annotation.SuppressLint;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
+    private val binder: Binder<T, VH>
+) : RecyclerView.Adapter<VH>() {
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * Generic RecyclerView Adapter with a binder for custom view holders and item interaction listeners.
- */
-public class BinderRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-
-    /**
-     * Interface for item click and long-click listeners.
-     */
-    public interface IListeners<T> {
-        void onClick(T item);
-
-        boolean onLongClick(T item);
+    interface Binder<T, VH : RecyclerView.ViewHolder> {
+        fun bind(model: T, viewHolder: VH)
+        fun createViewHolder(parent: ViewGroup): VH
     }
 
-    /**
-     * Interface for binding items to ViewHolders and creating ViewHolders.
-     */
-    public interface Binder<T, VH extends RecyclerView.ViewHolder> {
-        void bind(@NonNull final T model, @NonNull final VH viewHolder);
-
-        VH createViewHolder(@NonNull final ViewGroup parent);
-    }
-
-    public List<T> mItems = new ArrayList<>();
-    private final Binder<T, VH> mBinderViewHolder;
-    private WeakReference<IListeners<T>> mOnClickListener;
-
-    /**
-     * Constructor for BinderRecyclerAdapter.
-     *
-     * @param binder The binder for ViewHolder creation and binding.
-     */
-    public BinderRecyclerAdapter(@NonNull final Binder<T, VH> binder) {
-        this.mBinderViewHolder = binder;
-    }
-
-    /**
-     * Set a listener for item interactions.
-     *
-     * @param onClickListener The listener for click and long-click events.
-     */
-    public void setOnClickListener(@NonNull final IListeners<T> onClickListener) {
-        this.mOnClickListener = new WeakReference<>(onClickListener);
-    }
-
-    /**
-     * Update the items in the adapter and refresh the UI.
-     *
-     * @param collection Array of new items to display.
-     */
-    @SuppressLint("NotifyDataSetChanged")
-    public void setItems(@NonNull T[] collection) {
-        mItems = new ArrayList<>(Arrays.asList(collection));
-        notifyDataSetChanged();
-    }
-
-    @NonNull
-    @Override
-    public VH onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-        return mBinderViewHolder.createViewHolder(parent);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final VH viewHolder, int position) {
-        final T item = mItems.get(position);
-        final IListeners<T> listener = mOnClickListener != null ? mOnClickListener.get() : null;
-
-        if (listener != null) {
-            viewHolder.itemView.setOnClickListener(view -> listener.onClick(item));
-            viewHolder.itemView.setOnLongClickListener(view -> listener.onLongClick(item));
+    var items: List<T> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
 
-        mBinderViewHolder.bind(item, viewHolder);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        return binder.createViewHolder(parent)
     }
 
-    @Override
-    public int getItemCount() {
-        return mItems.size();
+    override fun onBindViewHolder(viewHolder: VH, position: Int) {
+        binder.bind(items[position], viewHolder)
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    /**
+     * Adds items to the current list and refreshes the adapter.
+     */
+    fun addItems(newItems: List<T>) {
+        items = items + newItems
+    }
+
+    /**
+     * Clears all items from the adapter.
+     */
+    fun clearItems() {
+        items = emptyList()
     }
 }

@@ -12,7 +12,7 @@ import com.kevintcoughlin.smodr.models.Item
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class EpisodeView : BinderRecyclerAdapter.Binder<Item?, EpisodeViewHolder?> {
+class EpisodeView : BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
 
     override fun bind(model: Item, viewHolder: EpisodeViewHolder) {
         with(viewHolder) {

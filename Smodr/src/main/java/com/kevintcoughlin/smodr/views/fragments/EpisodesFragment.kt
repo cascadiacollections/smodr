@@ -1,12 +1,12 @@
 package com.kevintcoughlin.smodr.views.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Channel
@@ -22,31 +22,34 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Callback<Feed?> {
+class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Callback<Feed?> {
 
     private val feedService: FeedService by lazy { createFeedService() }
-    private val adapter: ItemAdapter by lazy { ItemAdapter() }
+    private val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
+    private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
+        BinderRecyclerAdapter(
+            binder = EpisodeView()
+        )
+    }
 
-    // @todo - Refactor to
-    // private val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
-    override fun getLayoutManager(): LinearLayoutManager = layoutManager
+    override fun getLayoutManager(): RecyclerView.LayoutManager = layoutManager
 
-    override fun getAdapter(): BinderRecyclerAdapter<Item?, EpisodeViewHolder?> = adapter
-
-    override fun onRefresh() = fetchEpisodes()
+    override fun onRefresh() {
+        fetchEpisodes()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.addItemDecoration(
+        recyclerView?.addItemDecoration(
             DividerItemDecoration(requireContext(), layoutManager.orientation)
         )
         fetchEpisodes()
     }
 
-    override fun onLongClick(item: Item?): Boolean = true
-
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
-        response.body()?.channel?.item?.let { adapter.setItems(it) }
+        response.body()?.channel?.item?.let {
+            adapter.items = it
+        }
     }
 
     override fun onFailure(call: Call<Feed?>, t: Throwable) {
@@ -67,14 +70,6 @@ class EpisodesFragment : BinderRecyclerFragment<Item?, EpisodeViewHolder?>(), Ca
             .addConverterFactory(TikXmlConverterFactory.create())
             .build()
         return retrofit.create(FeedService::class.java)
-    }
-
-    private class ItemAdapter : BinderRecyclerAdapter<Item?, EpisodeViewHolder?>(EpisodeView()) {
-        @SuppressLint("NotifyDataSetChanged")
-        fun setItems(newItems: List<Item?>) {
-            mItems = newItems.toMutableList()
-            notifyDataSetChanged()
-        }
     }
 
     companion object {
