@@ -60,7 +60,7 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder> : Fragmen
      */
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.getParcelable<Parcelable>(VIEW_STATE_KEY)?.let { layoutState ->
+        savedInstanceState?.getParcelable(VIEW_STATE_KEY, Parcelable::class.java)?.let { layoutState ->
             getLayoutManager()?.onRestoreInstanceState(layoutState)
         }
     }
