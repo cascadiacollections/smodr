@@ -1,36 +1,127 @@
-#built application files
-*.apk
-*.ap_
+# Gradle files
+.gradle/
+build/
+*/build/
 
-.idea
+# Local configuration file (sdk path, etc)
+local.properties
 
-# files for the dex VM
+# Log files
+*.log
+
+# Android Studio
+.idea/
+*.iml
+
+# Keystore files
+*.jks
+
+# Files for the dex VM
 *.dex
 
 # Java class files
 *.class
 
-# generated files
+# Generated files
 bin/
 gen/
 
-# Local configuration file (sdk path, etc)
-local.properties
+# Temporary files
+*.tmp
+*.temp
 
-# Windows thumbnail db
-Thumbs.db
+# Compiled code
+*.o
+*.so
+
+# IDE-specific files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # OSX files
 .DS_Store
 
-# Eclipse project files
-.classpath
-.project
+# Windows files
+Thumbs.db
+ehthumbs.db
 
-# Android Studio
-.idea
-.gradle
-build/
-*.iml
+# Lint
+lint/reports/
+lint/vital/
 
-!.idea
+# Translations
+*.mo
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Cache files
+*.cache
+*.caches
+
+# Node.js files
+node_modules/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Test result files
+test-results/
+test-output/
+
+# Gradle Wrapper
+.gradle/
+.gradle-wrapper/
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+# Kotlin build artifacts
+*.kotlin_module
+
+# IntelliJ IDEA/Android Studio specific
+*.ipr
+*.iws
+out/
+
+# JetBrains
+.idea/
+
+# Ignore crashlytics/Google services files
+crashlytics.properties
+fabric.properties
+firebase-debug.log
+google-services.json
+GoogleService-Info.plist
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear during debugging
+*.un~
+*.orig
+*.rej
+
+# Keystore files
+*.jks
+*.keystore
+
+# Miscellaneous
+*.log
+*.temp
+*.tmp
+
+# Ignore sensitive environment files
+.env
