@@ -3,31 +3,28 @@ package com.kevintcoughlin.smodr.services
 import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.kevintcoughlin.smodr.services.MediaService.IPlaybackListener
-import org.jetbrains.annotations.Contract
 import kotlin.math.min
 
-internal interface IMediaService {
+interface IMediaService {
     fun seekTo(milliseconds: Int)
     val isPlaying: Boolean
+    val duration: Int
+    val currentTime: Int
+    val remainingTime: Int
     fun resumePlayback()
     fun pausePlayback()
     fun stopPlayback()
     fun forward()
     fun rewind()
-    fun setPlaybackListener(listener: IPlaybackListener?)
+    fun setPlaybackListener(listener: MediaService.IPlaybackListener?)
 }
 
-class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener, IMediaService, OnCompletionListener {
-    override fun onCompletion(mp: MediaPlayer) {
-        mListener?.onCompletion()
-    }
+class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener,
+    MediaPlayer.OnCompletionListener, IMediaService {
 
     interface IPlaybackListener {
         fun onStartPlayback()
@@ -35,33 +32,100 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
         fun onCompletion()
     }
 
-    private var mMediaPlayer: MediaPlayer? = null
-    private val mBinder: IBinder = MediaServiceBinder()
-    private var mListener: IPlaybackListener? = null
+    private val mediaPlayer: MediaPlayer by lazy {
+        MediaPlayer().apply {
+            setOnCompletionListener(this@MediaService)
+            setOnErrorListener(this@MediaService)
+            setOnPreparedListener(this@MediaService)
+        }
+    }
+    private val binder = MediaServiceBinder()
+    private var playbackListener: IPlaybackListener? = null
 
     inner class MediaServiceBinder : Binder() {
         val service: MediaService
             get() = this@MediaService
     }
 
-    @Contract(pure = true)
-    override fun onBind(intent: Intent): IBinder {
-        return mBinder
-    }
+    override val currentTime: Int
+        get() = mediaPlayer.currentPosition
+
+    override val remainingTime: Int
+        get() = (duration - currentTime).coerceAtLeast(0)
+
+    override fun onBind(intent: Intent): IBinder = binder
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-        val url = Uri.parse(intent.getStringExtra(INTENT_EPISODE_URL))
-        val action = intent.action
-        if (action != null) when (action) {
+        val url = intent.getStringExtra(INTENT_EPISODE_URL)?.let { Uri.parse(it) }
+        handleAction(intent.action, url)
+        return START_REDELIVER_INTENT
+    }
+
+    private fun handleAction(action: String?, url: Uri?) {
+        when (action) {
             ACTION_PAUSE -> pausePlayback()
             ACTION_PLAY -> startPlayback(url)
             ACTION_RESUME -> resumePlayback()
             ACTION_STOP -> stopPlayback()
-            ACTION_FORWARD -> rewind()
-            ACTION_REWIND -> forward()
+            ACTION_FORWARD -> forward()
+            ACTION_REWIND -> rewind()
         }
-        return START_REDELIVER_INTENT
+    }
+
+    override fun onDestroy() {
+        stopPlayback()
+        mediaPlayer.release()
+        playbackListener = null
+        super.onDestroy()
+    }
+
+    // IMediaService Implementation
+
+    override val isPlaying: Boolean
+        get() = mediaPlayer.isPlaying
+
+    override val duration: Int
+        get() = mediaPlayer.duration // Exposing the duration property
+
+    override fun seekTo(milliseconds: Int) {
+        mediaPlayer.seekTo(milliseconds)
+    }
+
+    override fun resumePlayback() {
+        mediaPlayer.start()
+        notifyListener { onStartPlayback() }
+    }
+
+    override fun pausePlayback() {
+        mediaPlayer.pause()
+        notifyListener { onStopPlayback() }
+    }
+
+    override fun stopPlayback() {
+        mediaPlayer.stop()
+        notifyListener { onStopPlayback() }
+    }
+
+    override fun forward() {
+        mediaPlayer.let {
+            val newPosition = min(it.currentPosition + SEEK_INTERVAL, it.duration)
+            it.seekTo(newPosition)
+        }
+    }
+
+    override fun rewind() {
+        mediaPlayer.let {
+            val newPosition = (it.currentPosition - SEEK_INTERVAL).coerceAtLeast(0)
+            it.seekTo(newPosition)
+        }
+    }
+
+    override fun setPlaybackListener(listener: IPlaybackListener?) {
+        playbackListener = listener
+    }
+
+    override fun onCompletion(mp: MediaPlayer) {
+        notifyListener { onCompletion() }
     }
 
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -69,83 +133,34 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, OnPreparedListener,
         return true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        stopPlayback()
-        mMediaPlayer?.release()
-        mListener = null
-    }
-
-    override fun seekTo(milliseconds: Int) {
-        mMediaPlayer?.seekTo(milliseconds)
-    }
-
-    override val isPlaying: Boolean
-        get() = mMediaPlayer?.isPlaying == true
-
-    val duration: Int
-        get() = mMediaPlayer?.duration ?: -1
-
-    val currentTime: Int
-        get() = mMediaPlayer?.currentPosition ?: -1
-
-    val remainingTime: Int
-        get() = duration - currentTime
-
-    override fun resumePlayback() {
-        mMediaPlayer?.start()
-        mListener?.onStartPlayback()
-    }
-
-    override fun pausePlayback() {
-        mMediaPlayer?.pause()
-        mListener?.onStopPlayback()
-    }
-
-    override fun stopPlayback() {
-        mMediaPlayer?.stop()
-        mListener?.onStopPlayback()
-    }
-
-    override fun forward() {
-        val position = mMediaPlayer?.currentPosition?.plus(THIRTY_SECONDS_IN_MILLISECONDS)
-        position?.let { mMediaPlayer?.duration?.let { it1 -> min(it, it1) } }?.let { seekTo(it) }
-    }
-
-    override fun rewind() {
-        mMediaPlayer?.currentPosition?.minus(THIRTY_SECONDS_IN_MILLISECONDS)?.let { seekTo(it) }
-    }
-
-    override fun setPlaybackListener(listener: IPlaybackListener?) {
-        mListener = listener
-    }
-
-    override fun onPrepared(mediaPlayer: MediaPlayer) {
+    override fun onPrepared(mp: MediaPlayer) {
         resumePlayback()
     }
 
     fun startPlayback(url: Uri?) {
-        if (mMediaPlayer?.isPlaying == true) {
-            stopPlayback()
-        }
         try {
-            mMediaPlayer = MediaPlayer.create(this, url)
-            mMediaPlayer?.setOnCompletionListener(this)
-            mMediaPlayer?.start()
-            mListener?.onStartPlayback()
-        } catch (exception: NullPointerException) {
-            Log.e("MediaService", exception.message, exception)
+            if (mediaPlayer.isPlaying) stopPlayback()
+            mediaPlayer.reset()
+            mediaPlayer.setDataSource(this, url ?: return)
+            mediaPlayer.prepareAsync()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error starting playback: ${e.message}", e)
         }
     }
 
+    private inline fun notifyListener(action: IPlaybackListener.() -> Unit) {
+        playbackListener?.action()
+    }
+
     companion object {
-        const val THIRTY_SECONDS_IN_MILLISECONDS = 30000
+        const val SEEK_INTERVAL = 30_000 // 30 seconds in milliseconds
         const val INTENT_EPISODE_URL = "intent_episode_url"
-        const val ACTION_PLAY = "com.com.kevintcoughlin.smodr.app.PLAY"
-        const val ACTION_PAUSE = "com.com.kevintcoughlin.smodr.app.PAUSE"
-        const val ACTION_RESUME = "com.com.kevintcoughlin.smodr.app.RESUME"
-        const val ACTION_STOP = "com.com.kevintcoughlin.smodr.app.STOP"
-        const val ACTION_FORWARD = "com.com.kevintcoughlin.smodr.app.FORWARD"
-        const val ACTION_REWIND = "com.com.kevintcoughlin.smodr.app.REWIND"
+        const val ACTION_PLAY = "com.kevintcoughlin.smodr.app.PLAY"
+        const val ACTION_PAUSE = "com.kevintcoughlin.smodr.app.PAUSE"
+        const val ACTION_RESUME = "com.kevintcoughlin.smodr.app.RESUME"
+        const val ACTION_STOP = "com.kevintcoughlin.smodr.app.STOP"
+        const val ACTION_FORWARD = "com.kevintcoughlin.smodr.app.FORWARD"
+        const val ACTION_REWIND = "com.kevintcoughlin.smodr.app.REWIND"
+        private const val TAG = "MediaService"
     }
 }
