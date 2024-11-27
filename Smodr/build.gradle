@@ -82,7 +82,7 @@ tasks.withType(KotlinCompile).configureEach {
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.1.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.9'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.10'
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     testImplementation 'androidx.room:room-testing:2.6.1'
