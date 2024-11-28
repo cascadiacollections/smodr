@@ -4,14 +4,16 @@ import android.annotation.SuppressLint
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.kevintcoughlin.smodr.R
 import com.kevintcoughlin.smodr.databinding.ItemListEpisodeLayoutBinding
 import com.kevintcoughlin.smodr.models.Item
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class EpisodeView : BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
+/**
+ * Implementation of ItemBinder for binding Episode data to EpisodeViewHolder.
+ */
+class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
 
     override fun bind(model: Item, viewHolder: EpisodeViewHolder) {
         with(viewHolder) {
@@ -25,12 +27,15 @@ class EpisodeView : BinderRecyclerAdapter.Binder<Item, EpisodeViewHolder> {
         }
     }
 
-    override fun createViewHolder(parent: ViewGroup): EpisodeViewHolder =
-        ItemListEpisodeLayoutBinding.inflate(
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
+        // Inflate layout and create the ViewHolder
+        val binding = ItemListEpisodeLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
-        ).let { EpisodeViewHolder(it) }
+        )
+        return EpisodeViewHolder(binding)
+    }
 
     companion object {
         private val DATE_FORMAT_INPUT = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)

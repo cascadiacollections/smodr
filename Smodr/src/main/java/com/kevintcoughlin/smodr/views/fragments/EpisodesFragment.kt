@@ -1,5 +1,7 @@
 package com.kevintcoughlin.smodr.views.fragments
 
+import BinderRecyclerAdapter
+import BinderRecyclerAdapterConfig
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Feed
@@ -28,7 +29,16 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
     private val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
     private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
-            binder = EpisodeView()
+            binder = EpisodeView(),
+            config = BinderRecyclerAdapterConfig(
+                enableDiffUtil = true,
+                adapterCallback = object :
+                    BinderRecyclerAdapter.AdapterCallback<Item, RecyclerView.ViewHolder> {
+                    override fun onItemBound(model: Item, viewHolder: RecyclerView.ViewHolder) {
+                        println("Bound episode: ${model.title}")
+                    }
+                }
+            )
         )
     }
 
@@ -40,15 +50,22 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView?.addItemDecoration(
-            DividerItemDecoration(requireContext(), layoutManager.orientation)
-        )
+        recyclerView?.apply {
+            // @todo: fix in base
+            val linearLayoutManager = layoutManager as? LinearLayoutManager
+            linearLayoutManager?.let {
+                recyclerView?.addItemDecoration(
+                    DividerItemDecoration(requireContext(), it.orientation)
+                )
+            }
+            adapter = this@EpisodesFragment.adapter
+        }
         fetchEpisodes()
     }
 
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
         response.body()?.channel?.items?.let {
-            adapter.items = it
+            adapter.updateItems(it) // Use the new `updateItems` method for efficient updates
         }
     }
 
