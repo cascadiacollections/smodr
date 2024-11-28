@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
@@ -24,25 +23,18 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Callback<Feed?> {
-
     private val feedService: FeedService by lazy { createFeedService() }
-    private val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
     private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
             binder = EpisodeView(),
             config = BinderRecyclerAdapterConfig(
-                enableDiffUtil = true,
-                adapterCallback = object :
-                    BinderRecyclerAdapter.AdapterCallback<Item, RecyclerView.ViewHolder> {
-                    override fun onItemBound(model: Item, viewHolder: RecyclerView.ViewHolder) {
-                        println("Bound episode: ${model.title}")
-                    }
-                }
+                enableDiffUtil = false
             )
         )
     }
+    override fun getAdapter(): RecyclerView.Adapter<*> = adapter
 
-    override fun getLayoutManager(): RecyclerView.LayoutManager = layoutManager
+    override fun getLayoutManager(): RecyclerView.LayoutManager = LinearLayoutManager(context)
 
     override fun onRefresh() {
         fetchEpisodes()
@@ -50,22 +42,52 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         recyclerView?.apply {
-            // @todo: fix in base
-            val linearLayoutManager = layoutManager as? LinearLayoutManager
-            linearLayoutManager?.let {
-                recyclerView?.addItemDecoration(
-                    DividerItemDecoration(requireContext(), it.orientation)
-                )
-            }
-            adapter = this@EpisodesFragment.adapter
+            setHasFixedSize(true)
+            layoutManager = this@EpisodesFragment.getLayoutManager()
+            adapter = this@EpisodesFragment.getAdapter()
         }
-        fetchEpisodes()
+
+        val dummyData = listOf(
+            Item(
+                guid = "1",
+                title = "Episode 1",
+                pubDate = "2024-11-01",
+                description = "This is a description for Episode 1",
+                duration = "25:00",
+                summary = "Summary of Episode 1",
+                origEnclosureLink = "https://example.com/episode1.mp3",
+                completed = false
+            ),
+            Item(
+                guid = "2",
+                title = "Episode 2",
+                pubDate = "2024-11-02",
+                description = "This is a description for Episode 2",
+                duration = "30:00",
+                summary = "Summary of Episode 2",
+                origEnclosureLink = "https://example.com/episode2.mp3",
+                completed = false
+            ),
+            Item(
+                guid = "3",
+                title = "Episode 3",
+                pubDate = "2024-11-03",
+                description = "This is a description for Episode 3",
+                duration = "40:00",
+                summary = "Summary of Episode 3",
+                origEnclosureLink = "https://example.com/episode3.mp3",
+                completed = false
+            )
+        )
+        adapter.updateItems(dummyData)
+//        fetchEpisodes()
     }
 
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
         response.body()?.channel?.items?.let {
-            adapter.updateItems(it) // Use the new `updateItems` method for efficient updates
+            adapter.updateItems(it)
         }
     }
 

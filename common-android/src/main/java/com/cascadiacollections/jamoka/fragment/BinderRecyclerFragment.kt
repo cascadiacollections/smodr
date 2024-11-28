@@ -1,7 +1,6 @@
 package com.cascadiacollections.jamoka.fragment
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +15,12 @@ import com.cascadiacollections.jamoka.R
  * Supports binding adapters, layout managers, and item selection callbacks.
  */
 abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder> : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var recyclerView: RecyclerView
 
-    private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    var recyclerView: RecyclerView? = null
+    abstract fun getLayoutManager(): RecyclerView.LayoutManager
 
-    /**
-     * Provide the layout manager for the RecyclerView.
-     */
-    protected abstract fun getLayoutManager(): RecyclerView.LayoutManager?
+    abstract fun getAdapter(): RecyclerView.Adapter<*>
 
     @LayoutRes
     protected open fun getLayoutResId(): Int = R.layout.fragment_recycler_layout
@@ -38,52 +35,9 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder> : Fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         swipeRefreshLayout = view.findViewById(R.id.swipeContainer)
         recyclerView = view.findViewById(R.id.list)
-
-        setupRecyclerView()
-        setupSwipeRefresh()
-    }
-
-    /**
-     * Save the RecyclerView's layout state.
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        getLayoutManager()?.onSaveInstanceState()?.let {
-            outState.putParcelable(VIEW_STATE_KEY, it)
-        }
-    }
-
-    /**
-     * Restore the RecyclerView's layout state.
-     */
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.getParcelable(VIEW_STATE_KEY, Parcelable::class.java)?.let { layoutState ->
-            getLayoutManager()?.onRestoreInstanceState(layoutState)
-        }
-    }
-
-    /**
-     * Configures the RecyclerView with the provided adapter and layout manager.
-     */
-    private fun setupRecyclerView() {
-        recyclerView?.apply {
-            setHasFixedSize(true)
-            layoutManager = layoutManager
-            this.adapter = adapter
-        }
-    }
-
-    /**
-     * Configures the SwipeRefreshLayout and its listener.
-     */
-    private fun setupSwipeRefresh() {
-        swipeRefreshLayout?.setOnRefreshListener(this)
-    }
-
-    companion object {
-        private const val VIEW_STATE_KEY = "BinderRecyclerFragment.ViewState"
+        swipeRefreshLayout.setOnRefreshListener(this)
     }
 }
