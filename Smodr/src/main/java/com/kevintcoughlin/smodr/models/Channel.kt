@@ -8,5 +8,5 @@ import com.tickaroo.tikxml.annotation.Xml
 data class Channel(
     @field:PropertyElement var title: String? = null,
     @field:PropertyElement var link: String? = null,
-    @field:Element var items: List<Item> = emptyList() // Default to an empty list for safety
+    @field:Element var items: List<Item> = emptyList()
 )
