@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-crashlytics:19.2.1@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/36a708d2da41db16b6327ac6d157cb44/transformed/jetified-firebase-crashlytics-19.2.1/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/45678f26624454d9ae1cd3597df4cf3a/transformed/jetified-firebase-crashlytics-19.2.1/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/36a708d2da41db16b6327ac6d157cb44/transformed/jetified-firebase-crashlytics-19.2.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/36a708d2da41db16b6327ac6d157cb44/transformed/jetified-firebase-crashlytics-19.2.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/36a708d2da41db16b6327ac6d157cb44/transformed/jetified-firebase-crashlytics-19.2.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/45678f26624454d9ae1cd3597df4cf3a/transformed/jetified-firebase-crashlytics-19.2.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/45678f26624454d9ae1cd3597df4cf3a/transformed/jetified-firebase-crashlytics-19.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/45678f26624454d9ae1cd3597df4cf3a/transformed/jetified-firebase-crashlytics-19.2.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -28,7 +28,6 @@ class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
     }
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
-        // Inflate layout and create the ViewHolder
         val binding = ItemListEpisodeLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -38,19 +37,30 @@ class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
     }
 
     companion object {
-        private val DATE_FORMAT_INPUT = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)
-        @SuppressLint("ConstantLocale")
-        private val DATE_FORMAT_OUTPUT = SimpleDateFormat("dd MMM", Locale.getDefault())
+        private val dateFormatInput: ThreadLocal<SimpleDateFormat> = ThreadLocal.withInitial {
+            SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)
+        }
+
+        private val dateFormatOutput: ThreadLocal<SimpleDateFormat> = ThreadLocal.withInitial {
+            SimpleDateFormat("dd MMM", Locale.getDefault())
+        }
 
         /**
          * Formats a date string to a localized display format.
          * Returns an empty string if parsing fails.
          */
-        fun formatDate(dateTimeString: String?): String =
-            dateTimeString?.let {
-                runCatching { DATE_FORMAT_INPUT.parse(it) }
-                    .mapCatching { DATE_FORMAT_OUTPUT.format(it!!) }
-                    .getOrDefault("")
+        fun formatDate(dateTimeString: String?): String {
+            if (dateTimeString.isNullOrEmpty()) return ""
+
+            return dateFormatInput.get()?.let { inputFormatter ->
+                dateFormatOutput.get()?.let { outputFormatter ->
+                    runCatching {
+                        inputFormatter.parse(dateTimeString)?.let { date ->
+                            outputFormatter.format(date)
+                        }
+                    }.getOrDefault("")
+                }
             } ?: ""
+        }
     }
 }
