@@ -11,9 +11,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.7.2'
@@ -115,7 +112,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:21.0.2'
     api 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
     api project(path: ':common-android')
-
-    // Add experimental annotation version to resolve conflicts
     implementation 'androidx.annotation:annotation-experimental:1.4.1'
 }
