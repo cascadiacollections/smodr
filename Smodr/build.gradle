@@ -110,7 +110,7 @@ dependencies {
     api 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-ads:23.5.0'
     implementation 'com.google.firebase:firebase-perf:21.0.2'
-    api 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
+    api 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0'
     api project(path: ':common-android')
     implementation 'androidx.annotation:annotation-experimental:1.4.1'
 }
