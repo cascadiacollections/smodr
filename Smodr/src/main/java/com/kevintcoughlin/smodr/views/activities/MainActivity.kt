@@ -14,7 +14,6 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.Fragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
@@ -115,7 +114,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             updatePlayButtonState(R.drawable.ic_round_play_arrow_24)
             currentItem?.completed = true
             currentItem = null
-            logEvent("complete_playback", safeGetEventBundle(currentItem))
         }
     }
 
@@ -135,9 +133,15 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     private fun updateSeekProgress() {
         mediaService?.let { service ->
-            binding.seekbar.progress = service.currentTime
-            binding.currentTime.setElapsedTime(service.currentTime)
-            binding.remainingTime.setElapsedTime(service.remainingTime)
+            with(binding) {
+                seekbar.progress = service.currentTime
+                listOf(
+                    currentTime to service.currentTime,
+                    remainingTime to service.remainingTime
+                ).forEach { (textView, time) ->
+                    textView.setElapsedTime(time.toLong())
+                }
+            }
         }
     }
 
@@ -205,11 +209,5 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         private const val PRIVACY_POLICY_URL = "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html"
         private const val FEEDBACK_URL = "https://github.com/cascadiacollections/SModr/issues/new"
         private val DEFAULT_CHANNEL = Channel("Tell 'Em Steve-Dave", "http://feeds.feedburner.com/TellEmSteveDave/")
-    }
-
-    fun onItemSelected(item: Item?) {
-        currentItem = item
-        mediaService?.startPlayback(item?.uri)
-        logEvent("selected_item", safeGetEventBundle(item))
     }
 }
