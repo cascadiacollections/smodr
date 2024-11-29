@@ -1,9 +1,8 @@
 package com.kevintcoughlin.smodr.viewholders
 
-import android.annotation.SuppressLint
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import com.kevintcoughlin.smodr.R
 import com.kevintcoughlin.smodr.databinding.ItemListEpisodeLayoutBinding
 import com.kevintcoughlin.smodr.models.Item
@@ -15,26 +14,18 @@ import java.util.Locale
  */
 class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
 
-    override fun bind(model: Item, viewHolder: EpisodeViewHolder) {
-        with(viewHolder) {
-            mTitle.text = model.title
-            mDescription.text = Html.fromHtml(model.summary, Html.FROM_HTML_MODE_LEGACY)
-            mMetadata.text = mMetadata.context.getString(
-                R.string.metadata,
-                formatDate(model.pubDate),
-                model.duration
-            )
-        }
+    override fun bind(model: Item, viewHolder: EpisodeViewHolder) = with(viewHolder) {
+        mTitle.text = model.title
+        mDescription.text = HtmlCompat.fromHtml(model.summary.orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        mMetadata.text = mMetadata.context.getString(
+            R.string.metadata,
+            formatDate(model.pubDate),
+            model.duration
+        )
     }
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
-        val binding = ItemListEpisodeLayoutBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return EpisodeViewHolder(binding)
-    }
+    override fun createViewHolder(parent: ViewGroup, viewType: Int) =
+        EpisodeViewHolder(ItemListEpisodeLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     companion object {
         private val dateFormatInput: ThreadLocal<SimpleDateFormat> = ThreadLocal.withInitial {
