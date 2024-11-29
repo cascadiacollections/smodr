@@ -14,10 +14,10 @@ import java.util.Locale
  */
 class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
 
-    override fun bind(model: Item, viewHolder: EpisodeViewHolder) = with(viewHolder) {
-        mTitle.text = model.title
-        mDescription.text = HtmlCompat.fromHtml(model.summary.orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-        mMetadata.text = mMetadata.context.getString(
+    override fun bind(model: Item, viewHolder: EpisodeViewHolder) = with(viewHolder.binding) {
+        title.text = model.title
+        description.text = HtmlCompat.fromHtml(model.summary.orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        metadata.text = metadata.context.getString(
             R.string.metadata,
             formatDate(model.pubDate),
             model.duration
