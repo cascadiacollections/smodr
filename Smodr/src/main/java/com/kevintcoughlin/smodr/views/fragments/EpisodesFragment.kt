@@ -43,7 +43,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView?.apply {
+        recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = this@EpisodesFragment.getLayoutManager()
             adapter = this@EpisodesFragment.getAdapter()
