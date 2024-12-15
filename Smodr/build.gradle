@@ -17,7 +17,6 @@ buildscript {
         classpath 'com.google.gms:google-services:4.4.2'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath 'com.google.firebase:perf-plugin:1.4.2'
-        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.6'
     }
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
