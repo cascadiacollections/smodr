@@ -2,8 +2,6 @@ package com.kevintcoughlin.smodr.models
 
 import android.net.Uri
 import android.os.Bundle
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
 
 sealed interface MediaPlayback {
     val uri: Uri?
@@ -13,15 +11,14 @@ inline fun <reified T> T.toBundle(mapper: Bundle.(T) -> Unit): Bundle {
     return Bundle().apply { mapper(this@toBundle) }
 }
 
-@Xml(name = "item")
 data class Item(
-    @field:Element var guid: String = "",
-    @field:Element var title: String? = null,
-    @field:Element var pubDate: String? = null,
-    @field:Element var description: String? = null,
-    @field:Element var duration: String? = null,
-    @field:Element var summary: String? = null,
-    @field:Element var origEnclosureLink: String? = null,
+    var guid: String = "",
+    var title: String? = null,
+    var pubDate: String? = null,
+    var description: String? = null,
+    var duration: String? = null,
+    var summary: String? = null,
+    var origEnclosureLink: String? = null,
     var completed: Boolean = false
 ) : MediaPlayback {
     override val uri: Uri?

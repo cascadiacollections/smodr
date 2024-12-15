@@ -11,18 +11,6 @@
 -keep class androidx.core.** { *; }
 -keep interface androidx.core.** { *; }
 
-# --- TikXML ProGuard Rules ---
--keep class com.tickaroo.tikxml.** { *; }
--keep class **$$TypeAdapter { *; }
-
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <methods>;
-}
-
 # --- Firebase Crashlytics ---
 # Keep necessary Firebase Crashlytics classes for crash reporting
 -keepattributes *Annotation*

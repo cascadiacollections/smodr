@@ -18,19 +18,6 @@
 # Keep AndroidX collection classes (like ArrayMap) if necessary
 -keep class androidx.collection.ArrayMap { *; }
 
-# --- TikXML ProGuard Rules ---
--keep class com.tickaroo.tikxml.** { *; }
--keep @com.tickaroo.tikxml.annotation.Xml public class *
--keep class **$$TypeAdapter { *; }
-
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @com.tickaroo.tikxml.* <methods>;
-}
-
 # --- Firebase Crashlytics ---
 # Keep necessary Firebase Crashlytics classes for crash reporting
 -keepattributes *Annotation*

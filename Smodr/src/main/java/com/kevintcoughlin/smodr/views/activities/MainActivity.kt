@@ -14,22 +14,16 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kevintcoughlin.smodr.R
 import com.kevintcoughlin.smodr.databinding.ActivityMainLayoutBinding
-import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Item
 import com.kevintcoughlin.smodr.services.MediaService
 import com.kevintcoughlin.smodr.services.MediaService.IPlaybackListener
-import com.kevintcoughlin.smodr.views.fragments.EpisodesFragment
 import com.kevintcoughlin.smodr.views.setElapsedTime
 
 class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
-
     private lateinit var binding: ActivityMainLayoutBinding
     private var mediaService: MediaService? = null
     private var isServiceBound = false
@@ -55,14 +49,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         setContentView(binding.root)
 
         setupUI()
-        initializeAds()
-
-        if (savedInstanceState == null) {
-            val fragment = EpisodesFragment.create(DEFAULT_CHANNEL)
-            supportFragmentManager.beginTransaction()
-                .add(R.id.coordinator_layout, fragment, EpisodesFragment.TAG)
-                .commit()
-        }
     }
 
     override fun onStart() {
@@ -85,14 +71,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             forward.setOnClickListener { onForwardClick() }
             seekbar.setOnSeekBarChangeListener(this@MainActivity)
         }
-    }
-
-    private fun initializeAds() {
-        val configuration = RequestConfiguration.Builder()
-            .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
-            .build()
-        MobileAds.setRequestConfiguration(configuration)
-        MobileAds.initialize(this)
     }
 
     private fun createPlaybackListener() = object : IPlaybackListener {
@@ -208,6 +186,5 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         private const val ONE_SECOND_MS = 1000
         private const val PRIVACY_POLICY_URL = "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html"
         private const val FEEDBACK_URL = "https://github.com/cascadiacollections/SModr/issues/new"
-        private val DEFAULT_CHANNEL = Channel("Tell 'Em Steve-Dave", "http://feeds.feedburner.com/TellEmSteveDave/")
     }
 }
