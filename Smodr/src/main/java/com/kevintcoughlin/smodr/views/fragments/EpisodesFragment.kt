@@ -1,12 +1,10 @@
 package com.kevintcoughlin.smodr.views.fragments
 
-import BinderRecyclerAdapter
-import BinderRecyclerAdapterConfig
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Feed
@@ -20,16 +18,26 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import BinderRecyclerAdapter
+import BinderRecyclerAdapterConfig
 
 class EpisodesFragment : BinderRecyclerFragment(), Callback<Feed?> {
     private val feedService: FeedService by lazy { createFeedService() }
     private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
-            binder = EpisodeView(),
-            config = BinderRecyclerAdapterConfig(
-                enableDiffUtil = false
-            )
+            viewHolderBinder = EpisodeView(),
+            config = BinderRecyclerAdapterConfig.Builder<Item>()
+                .enableDiffUtil(false)
+                .build()
         )
+    }
+
+    override fun configureRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@EpisodesFragment.adapter
+        }
     }
 
     override fun onRefresh() {
@@ -38,60 +46,23 @@ class EpisodesFragment : BinderRecyclerFragment(), Callback<Feed?> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            adapter = adapter
-        }
-
-        val dummyData = listOf(
-            Item(
-                guid = "1",
-                title = "Episode 1",
-                pubDate = "2024-11-01",
-                description = "This is a description for Episode 1",
-                duration = "25:00",
-                summary = "Summary of Episode 1",
-                origEnclosureLink = "https://example.com/episode1.mp3",
-                completed = false
-            ),
-            Item(
-                guid = "2",
-                title = "Episode 2",
-                pubDate = "2024-11-02",
-                description = "This is a description for Episode 2",
-                duration = "30:00",
-                summary = "Summary of Episode 2",
-                origEnclosureLink = "https://example.com/episode2.mp3",
-                completed = false
-            ),
-            Item(
-                guid = "3",
-                title = "Episode 3",
-                pubDate = "2024-11-03",
-                description = "This is a description for Episode 3",
-                duration = "40:00",
-                summary = "Summary of Episode 3",
-                origEnclosureLink = "https://example.com/episode3.mp3",
-                completed = false
-            )
-        )
-        adapter.updateItems(dummyData)
-//        fetchEpisodes()
+        fetchEpisodes()
     }
 
     override fun onResponse(call: Call<Feed?>, response: Response<Feed?>) {
+        swipeRefreshLayout.isRefreshing = false
         response.body()?.channel?.items?.let {
             adapter.updateItems(it)
         }
     }
 
     override fun onFailure(call: Call<Feed?>, t: Throwable) {
+        swipeRefreshLayout.isRefreshing = false
         Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
     }
 
     private fun fetchEpisodes() {
+        swipeRefreshLayout.isRefreshing = true
         arguments?.getString(EPISODE_FEED_URL)?.let { feedUrl ->
             feedService.feed(feedUrl).enqueue(this)
         }
@@ -114,7 +85,7 @@ class EpisodesFragment : BinderRecyclerFragment(), Callback<Feed?> {
         val TAG: String = EpisodesFragment::class.java.simpleName
 
         @JvmStatic
-        fun create(channel: Channel): Fragment {
+        fun create(channel: Channel): EpisodesFragment {
             return EpisodesFragment().apply {
                 arguments = Bundle().apply {
                     putString(EPISODE_FEED_URL, channel.link)

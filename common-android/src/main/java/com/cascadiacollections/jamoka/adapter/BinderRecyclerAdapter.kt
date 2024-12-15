@@ -11,19 +11,33 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @param T The type of the data model.
  * @param VH The ViewHolder type.
- * @param binder The ItemBinder responsible for binding data and creating view holders.
+ * @param viewHolderBinder The ViewHolderBinder responsible for binding data and creating view holders.
  * @param config Optional configuration object to customize adapter behavior.
  */
 class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
-    private val binder: ItemBinder<T, VH>,
-    private val config: BinderRecyclerAdapterConfig<T> = BinderRecyclerAdapterConfig()
+    private val viewHolderBinder: ViewHolderBinder<T, VH>,
+    private val config: BinderRecyclerAdapterConfig<T> = BinderRecyclerAdapterConfig.Builder<T>().build()
 ) : RecyclerView.Adapter<VH>() {
 
     /**
      * Interface for binding items and creating ViewHolders.
      */
-    interface ItemBinder<T, VH : RecyclerView.ViewHolder> {
+    interface ViewHolderBinder<T, VH : RecyclerView.ViewHolder> {
+        /**
+         * Binds the data model to the ViewHolder.
+         *
+         * @param model The data model item.
+         * @param viewHolder The ViewHolder to bind the data to.
+         */
         fun bind(model: T, viewHolder: VH)
+
+        /**
+         * Creates a new ViewHolder instance.
+         *
+         * @param parent The parent ViewGroup.
+         * @param viewType The view type of the new View.
+         * @return A new ViewHolder instance.
+         */
         fun createViewHolder(parent: ViewGroup, viewType: Int): VH
     }
 
@@ -31,14 +45,28 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      * Optional callbacks for lifecycle events.
      */
     interface AdapterCallback<T, VH : RecyclerView.ViewHolder> {
+        /**
+         * Called when an item has been bound to a ViewHolder.
+         *
+         * @param model The data model item.
+         * @param viewHolder The ViewHolder that was bound.
+         */
         fun onItemBound(model: T, viewHolder: VH) {}
+
+        /**
+         * Called when a new ViewHolder has been created.
+         *
+         * @param viewHolder The newly created ViewHolder.
+         */
         fun onViewHolderCreated(viewHolder: VH) {}
     }
 
-    private var items: List<T> = EMPTY_LIST as List<T>
+    private var items: List<T> = emptyList()
 
     /**
-     * Updates items using DiffUtil for efficient rendering if enabled in the config.
+     * Updates the adapter's data set and uses DiffUtil for efficient rendering if enabled.
+     *
+     * @param newItems The new list of items.
      */
     fun updateItems(newItems: List<T>) {
         if (config.enableDiffUtil) {
@@ -54,47 +82,53 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
 
     /**
      * Adds a single item to the list and notifies the adapter.
+     *
+     * @param item The item to add.
      */
     fun addItem(item: T) {
-        items = items + item
-        notifyItemInserted(items.size - 1)
+        val updatedItems = items + item
+        updateItems(updatedItems)
     }
 
     /**
      * Adds multiple items to the list and notifies the adapter.
+     *
+     * @param newItems The new items to add.
      */
     fun addItems(newItems: List<T>) {
-        items = items + newItems
-        notifyItemRangeInserted(items.size - newItems.size, newItems.size)
+        val updatedItems = items + newItems
+        updateItems(updatedItems)
     }
 
     /**
      * Clears all items from the adapter.
      */
     fun clearItems() {
-        items = EMPTY_LIST as List<T>
-        notifyDataSetChanged()
+        updateItems(emptyList())
     }
 
     /**
      * Removes an item at the specified position.
+     *
+     * @param position The position of the item to remove.
+     * @throws IndexOutOfBoundsException if the position is out of range.
      */
     fun removeItemAt(position: Int) {
         if (position in items.indices) {
-            items = items.toMutableList().apply { removeAt(position) }
-            notifyItemRemoved(position)
+            val updatedItems = items.toMutableList().also { it.removeAt(position) }
+            updateItems(updatedItems)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val viewHolder = binder.createViewHolder(parent, viewType)
+        val viewHolder = viewHolderBinder.createViewHolder(parent, viewType)
         config.adapterCallback?.onViewHolderCreated(viewHolder)
         return viewHolder
     }
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
         val item = items[position]
-        binder.bind(item, viewHolder)
+        viewHolderBinder.bind(item, viewHolder)
         config.adapterCallback?.onItemBound(item, viewHolder)
     }
 
@@ -115,52 +149,108 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         override fun getNewListSize(): Int = newList.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
+            val oldItem = oldList.getOrNull(oldItemPosition)
+            val newItem = newList.getOrNull(newItemPosition)
+            return if (oldItem != null && newItem != null) {
+                oldItem == newItem
+            } else {
+                oldItem == null && newItem == null
+            }
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
+            val oldItem = oldList.getOrNull(oldItemPosition)
+            val newItem = newList.getOrNull(newItemPosition)
+            return if (oldItem != null && newItem != null) {
+                oldItem == newItem // Rely on equals() for content comparison
+            } else {
+                oldItem == null && newItem == null
+            }
         }
-    }
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        private val EMPTY_LIST = listOf<Any>()
     }
 }
 
 /**
  * Configuration class for BinderRecyclerAdapter to customize behavior.
+ * Uses the Builder pattern for better readability with multiple options.
  *
- * @param enableDiffUtil Enables or disables the use of DiffUtil.
- * @param diffUtilCallback Custom implementation of DiffUtil.Callback.
- * @param adapterCallback Optional callback for lifecycle events.
- * @param viewTypeResolver Lambda for resolving item view types.
+ * @param T The type of the data model.
  */
-class BinderRecyclerAdapterConfig<T>(
-    var enableDiffUtil: Boolean = true,
-    var diffUtilCallback: DiffUtil.Callback? = null,
-    var adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>? = null,
-    var viewTypeResolver: ((T) -> Int)? = null
-)
+class BinderRecyclerAdapterConfig<T> private constructor(
+    val enableDiffUtil: Boolean,
+    val diffUtilCallback: DiffUtil.Callback?,
+    val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>?,
+    val viewTypeResolver: ((T) -> Int)?
+) {
+    /**
+     * Builder class for creating BinderRecyclerAdapterConfig instances.
+     */
+    class Builder<T>(
+        private var enableDiffUtil: Boolean = true,
+        private var diffUtilCallback: DiffUtil.Callback? = null,
+        private var adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>? = null,
+        private var viewTypeResolver: ((T) -> Int)? = null
+    ) {
+        /**
+         * Enables or disables the use of DiffUtil for item updates.
+         *
+         * @param enable True to enable DiffUtil, false otherwise.
+         */
+        fun enableDiffUtil(enable: Boolean) = apply { this.enableDiffUtil = enable }
+
+        /**
+         * Sets a custom DiffUtil.Callback implementation.
+         *
+         * @param callback The custom DiffUtil.Callback.
+         */
+        fun diffUtilCallback(callback: DiffUtil.Callback?) = apply { this.diffUtilCallback = callback }
+
+        /**
+         * Sets an optional AdapterCallback for lifecycle events.
+         *
+         * @param callback The AdapterCallback.
+         */
+        fun adapterCallback(callback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>?) =
+            apply { this.adapterCallback = callback }
+
+        /**
+         * Sets a lambda function to resolve item view types based on the data model.
+         *
+         * @param resolver The view type resolver lambda.
+         */
+        fun viewTypeResolver(resolver: ((T) -> Int)?) = apply { this.viewTypeResolver = resolver }
+
+        /**
+         * Builds the BinderRecyclerAdapterConfig instance.
+         *
+         * @return The created BinderRecyclerAdapterConfig.
+         */
+        fun build(): BinderRecyclerAdapterConfig<T> =
+            BinderRecyclerAdapterConfig(enableDiffUtil, diffUtilCallback, adapterCallback, viewTypeResolver)
+    }
+}
 
 /**
- * Default implementation of ItemBinder for simple data-binding use cases.
+ * Default implementation of ViewHolderBinder for simple data-binding use cases.
  *
- * @param layoutResId Resource ID of the layout to inflate for each item.
- * @param bindFunction Function to bind data to the ViewHolder's views.
+ * @param T The type of the data model.
+ * @param VH The type of the ViewHolder.
+ * @param layoutResId The resource ID of the layout to inflate for each item.
+ * @param onBindViewHolder Function to bind data to the ViewHolder's views.
+ * @param viewHolderCreator Lambda function to create a ViewHolder instance from a View.
  */
-class DefaultBinder<T>(
+class DefaultBinder<T, VH : RecyclerView.ViewHolder>(
     @LayoutRes private val layoutResId: Int,
-    private val bindFunction: (T, View) -> Unit
-) : BinderRecyclerAdapter.ItemBinder<T, RecyclerView.ViewHolder> {
+    private val onBindViewHolder: (T, VH) -> Unit,
+    private val viewHolderCreator: (View) -> VH
+) : BinderRecyclerAdapter.ViewHolderBinder<T, VH> {
 
-    override fun bind(model: T, viewHolder: RecyclerView.ViewHolder) {
-        bindFunction(model, viewHolder.itemView)
+    override fun bind(model: T, viewHolder: VH) {
+        onBindViewHolder(model, viewHolder)
     }
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): VH {
         val view = LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
-        return object : RecyclerView.ViewHolder(view) {}
+        return viewHolderCreator(view)
     }
 }

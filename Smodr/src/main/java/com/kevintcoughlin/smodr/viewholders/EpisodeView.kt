@@ -1,5 +1,6 @@
 package com.kevintcoughlin.smodr.viewholders
 
+import BinderRecyclerAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
@@ -10,9 +11,9 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 /**
- * Implementation of ItemBinder for binding Episode data to EpisodeViewHolder.
+ * Implementation of ViewHolderBinder for binding Episode data to EpisodeViewHolder.
  */
-class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
+class EpisodeView : BinderRecyclerAdapter.ViewHolderBinder<Item, EpisodeViewHolder> {
 
     override fun bind(model: Item, viewHolder: EpisodeViewHolder) = with(viewHolder.binding) {
         title.text = model.title
@@ -24,7 +25,7 @@ class EpisodeView : BinderRecyclerAdapter.ItemBinder<Item, EpisodeViewHolder> {
         )
     }
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int) =
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
         EpisodeViewHolder(ItemListEpisodeLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     companion object {

@@ -18,11 +18,8 @@ abstract class BinderRecyclerFragment(
     @LayoutRes private val layoutResId: Int = R.layout.fragment_recycler_layout
 ) : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    protected val swipeRefreshLayout: SwipeRefreshLayout
-        get() = requireView().findViewById(R.id.swipeContainer)
-
-    protected val recyclerView: RecyclerView
-        get() = requireView().findViewById(R.id.list)
+    protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    protected lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,10 +30,11 @@ abstract class BinderRecyclerFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeContainer)
+        recyclerView = view.findViewById(R.id.list)
+
         recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = layoutManager
-            adapter = adapter
             configureRecyclerView(this)
         }
 
@@ -46,11 +44,28 @@ abstract class BinderRecyclerFragment(
         }
     }
 
+    /**
+     * Provides a hook for subclasses to configure the RecyclerView.
+     * This is where the LayoutManager and Adapter should be set.
+     *
+     * @param recyclerView The RecyclerView instance.
+     */
     protected open fun configureRecyclerView(recyclerView: RecyclerView) {
-        // Optional for subclasses
+        // Subclasses should set the LayoutManager and Adapter here
     }
 
+    /**
+     * Provides a hook for subclasses to customize the SwipeRefreshLayout.
+     *
+     * @param swipeRefreshLayout The SwipeRefreshLayout instance.
+     */
     protected open fun configureSwipeRefresh(swipeRefreshLayout: SwipeRefreshLayout) {
-        // Optional for subclasses
+        // Optional for subclasses to customize further
     }
+
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     * Subclasses should implement their refresh logic here.
+     */
+    abstract override fun onRefresh()
 }
