@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Channel
 import com.kevintcoughlin.smodr.models.Feed
@@ -22,7 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Callback<Feed?> {
+class EpisodesFragment : BinderRecyclerFragment(), Callback<Feed?> {
     private val feedService: FeedService by lazy { createFeedService() }
     private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
@@ -32,9 +31,6 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
             )
         )
     }
-    override fun getAdapter(): RecyclerView.Adapter<*> = adapter
-
-    override fun getLayoutManager(): RecyclerView.LayoutManager = LinearLayoutManager(context)
 
     override fun onRefresh() {
         fetchEpisodes()
@@ -45,8 +41,8 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>(), Call
 
         recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = this@EpisodesFragment.getLayoutManager()
-            adapter = this@EpisodesFragment.getAdapter()
+            layoutManager = LinearLayoutManager(context)
+            adapter = adapter
         }
 
         val dummyData = listOf(

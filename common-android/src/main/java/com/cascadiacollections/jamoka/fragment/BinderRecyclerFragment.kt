@@ -14,7 +14,7 @@ import com.cascadiacollections.jamoka.R
  * Generic fragment with RecyclerView and SwipeRefreshLayout integration.
  * Supports binding adapters, layout managers, and item selection callbacks.
  */
-abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
+abstract class BinderRecyclerFragment(
     @LayoutRes private val layoutResId: Int = R.layout.fragment_recycler_layout
 ) : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -23,10 +23,6 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
 
     protected val recyclerView: RecyclerView
         get() = requireView().findViewById(R.id.list)
-
-    abstract fun getLayoutManager(): RecyclerView.LayoutManager
-
-    abstract fun getAdapter(): RecyclerView.Adapter<*>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +35,8 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
 
         recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = getLayoutManager()
-            adapter = getAdapter()
+            layoutManager = layoutManager
+            adapter = adapter
             configureRecyclerView(this)
         }
 
