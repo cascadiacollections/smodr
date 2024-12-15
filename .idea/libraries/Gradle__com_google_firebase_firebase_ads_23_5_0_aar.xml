@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-ads:23.5.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/8.10.2/transforms/00a927861ae087885b2df15c7b43da97/transformed/jetified-firebase-ads-23.5.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/8.10.2/transforms/00a927861ae087885b2df15c7b43da97/transformed/jetified-firebase-ads-23.5.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/68a3e161ffaa5b240cb62a21645ae085/transformed/jetified-firebase-ads-23.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/68a3e161ffaa5b240cb62a21645ae085/transformed/jetified-firebase-ads-23.5.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-ads/23.5.0/9ff33e9db05d6129087b5fc3c1572a983a204c76/firebase-ads-23.5.0-javadoc.jar!/" />
