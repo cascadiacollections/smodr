@@ -6,27 +6,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Item
-import com.kevintcoughlin.smodr.viewholders.EpisodeView
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
 import BinderRecyclerAdapter
 import BinderRecyclerAdapterConfig
+import com.kevintcoughlin.smodr.viewholders.EpisodeView
 
-class EpisodesFragment : BinderRecyclerFragment() {
-    private val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
+class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>() {
+    override val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
-            viewHolderBinder = EpisodeView(),
+            binder = EpisodeView(), // Use the new binder
             config = BinderRecyclerAdapterConfig.Builder<Item>()
-                .enableDiffUtil(false)
+                .enableDiffUtil(true) // Re-enable DiffUtil
                 .build()
         )
     }
 
     override fun configureRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            adapter = this@EpisodesFragment.adapter
-        }
+        super.configureRecyclerView(recyclerView) // Sets the adapter
+        recyclerView.layoutManager = LinearLayoutManager(context) // Set LayoutManager
     }
 
     override fun onRefresh() {
@@ -39,6 +36,21 @@ class EpisodesFragment : BinderRecyclerFragment() {
     }
 
     private fun fetchEpisodes() {
-        swipeRefreshLayout.isRefreshing = true
+        val episodes = listOf(
+            Item(
+                title = "Fetched Episode 1",
+                summary = "<p>This is the first fetched episode.</p>",
+                pubDate = "Mon, 15 Aug 2023 10:00:00 -0400",
+                duration = "30 min"
+            ),
+            Item(
+                title = "Fetched Episode 2",
+                summary = "<p>This is the <b>second</b> fetched episode.</p>",
+                pubDate = "Tue, 16 Aug 2023 12:00:00 -0400",
+                duration = "45 min"
+            )
+        )
+        adapter.updateItems(episodes)
+        swipeRefreshLayout.isRefreshing = false
     }
 }

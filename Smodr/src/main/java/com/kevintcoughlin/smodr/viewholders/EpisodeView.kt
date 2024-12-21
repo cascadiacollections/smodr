@@ -11,29 +11,31 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 /**
- * Implementation of ViewHolderBinder for binding Episode data to EpisodeViewHolder.
+ * Implementation of ViewHolderBinder for binding Episode (Item) data to EpisodeViewHolder.
  */
 class EpisodeView : BinderRecyclerAdapter.ViewHolderBinder<Item, EpisodeViewHolder> {
 
-    override fun bind(model: Item, viewHolder: EpisodeViewHolder) = with(viewHolder.binding) {
-        title.text = model.title
-        description.text = HtmlCompat.fromHtml(model.summary.orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-        metadata.text = metadata.context.getString(
+    override fun bind(model: Item, viewHolder: EpisodeViewHolder, position: Int) {
+        viewHolder.binding.title.text = model.title
+        viewHolder.binding.description.text = HtmlCompat.fromHtml(model.summary.orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        viewHolder.binding.metadata.text = viewHolder.itemView.context.getString(
             R.string.metadata,
             formatDate(model.pubDate),
             model.duration
         )
     }
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
-        EpisodeViewHolder(ItemListEpisodeLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
+        val binding = ItemListEpisodeLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return EpisodeViewHolder(binding)
+    }
 
     companion object {
-        private val dateFormatInput: ThreadLocal<SimpleDateFormat> = ThreadLocal.withInitial {
+        private val dateFormatInput = ThreadLocal.withInitial {
             SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US)
         }
 
-        private val dateFormatOutput: ThreadLocal<SimpleDateFormat> = ThreadLocal.withInitial {
+        private val dateFormatOutput = ThreadLocal.withInitial {
             SimpleDateFormat("dd MMM", Locale.getDefault())
         }
 
@@ -44,15 +46,13 @@ class EpisodeView : BinderRecyclerAdapter.ViewHolderBinder<Item, EpisodeViewHold
         fun formatDate(dateTimeString: String?): String {
             if (dateTimeString.isNullOrEmpty()) return ""
 
-            return dateFormatInput.get()?.let { inputFormatter ->
-                dateFormatOutput.get()?.let { outputFormatter ->
-                    runCatching {
-                        inputFormatter.parse(dateTimeString)?.let { date ->
-                            outputFormatter.format(date)
-                        }
-                    }.getOrDefault("")
-                }
-            } ?: ""
+            return try {
+                dateFormatInput.get()?.parse(dateTimeString)?.let { date ->
+                    dateFormatOutput.get()?.format(date)
+                } ?: ""
+            } catch (e: Exception) {
+                "" // Handle parsing errors gracefully
+            }
         }
     }
 }

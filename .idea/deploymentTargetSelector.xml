@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Smodr">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-15T01:03:45.563712Z">
+        <DropdownSelection timestamp="2024-12-21T21:12:36.833685Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/a123/.android/avd/Pixel_9.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kevintcoughlin/.android/avd/Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>

@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
  * and flexibility for binding data to views.
  *
  * @param T The type of the data model.
- * @param VH The ViewHolder type.
- * @param viewHolderBinder The ViewHolderBinder responsible for binding data and creating view holders.
+ * @param VH The ViewHolder type, must extend RecyclerView.ViewHolder.
+ * @param binder The ViewHolderBinder responsible for binding data and creating view holders.
  * @param config Optional configuration object to customize adapter behavior.
  */
 class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
-    private val viewHolderBinder: ViewHolderBinder<T, VH>,
+    private val binder: ViewHolderBinder<T, VH>,
     private val config: BinderRecyclerAdapterConfig<T> = BinderRecyclerAdapterConfig.Builder<T>().build()
 ) : RecyclerView.Adapter<VH>() {
 
@@ -28,8 +28,9 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
          *
          * @param model The data model item.
          * @param viewHolder The ViewHolder to bind the data to.
+         * @param position The position of the item in the list.
          */
-        fun bind(model: T, viewHolder: VH)
+        fun bind(model: T, viewHolder: VH, position: Int)
 
         /**
          * Creates a new ViewHolder instance.
@@ -50,8 +51,9 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
          *
          * @param model The data model item.
          * @param viewHolder The ViewHolder that was bound.
+         * @param position The position of the item in the adapter.
          */
-        fun onItemBound(model: T, viewHolder: VH) {}
+        fun onItemBound(model: T, viewHolder: VH, position: Int) {}
 
         /**
          * Called when a new ViewHolder has been created.
@@ -80,9 +82,9 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         }
     }
 
+
     /**
-     * Adds a single item to the list and notifies the adapter.
-     *
+     * Adds a single item to the end of the list and notifies the adapter.
      * @param item The item to add.
      */
     fun addItem(item: T) {
@@ -91,12 +93,40 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
     }
 
     /**
-     * Adds multiple items to the list and notifies the adapter.
-     *
+     * Inserts a single item to a specific index of the list and notifies the adapter.
+     * @param item The item to add.
+     * @param index The index to add the item
+     * @throws IndexOutOfBoundsException if the index is out of range.
+     */
+    fun addItem(item: T, index: Int) {
+        if (index < 0 || index > items.size) {
+            throw IndexOutOfBoundsException("Invalid index: $index, size: ${items.size}")
+        }
+        val updatedItems = items.toMutableList().apply { add(index, item) }
+        updateItems(updatedItems)
+    }
+
+
+    /**
+     * Adds multiple items to the end of the list and notifies the adapter.
      * @param newItems The new items to add.
      */
     fun addItems(newItems: List<T>) {
         val updatedItems = items + newItems
+        updateItems(updatedItems)
+    }
+
+    /**
+     * Inserts multiple items at a specific index in the list and notifies the adapter.
+     * @param newItems The new items to add.
+     * @param index The index to add the item
+     * @throws IndexOutOfBoundsException if the index is out of range.
+     */
+    fun addItems(newItems: List<T>, index: Int) {
+        if (index < 0 || index > items.size) {
+            throw IndexOutOfBoundsException("Invalid index: $index, size: ${items.size}")
+        }
+        val updatedItems = items.toMutableList().apply { addAll(index, newItems) }
         updateItems(updatedItems)
     }
 
@@ -114,22 +144,44 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      * @throws IndexOutOfBoundsException if the position is out of range.
      */
     fun removeItemAt(position: Int) {
-        if (position in items.indices) {
-            val updatedItems = items.toMutableList().also { it.removeAt(position) }
-            updateItems(updatedItems)
+        if (position !in items.indices) {
+            throw IndexOutOfBoundsException("Invalid position: $position, size: ${items.size}")
         }
+        val updatedItems = items.toMutableList().apply { removeAt(position) }
+        updateItems(updatedItems)
+    }
+
+
+    /**
+     * Removes a given item from the adapter.
+     *
+     * @param item The item to remove
+     */
+    fun removeItem(item: T){
+        val updatedItems = items.toMutableList().apply { remove(item) }
+        updateItems(updatedItems)
+    }
+
+    /**
+     * Gets the item at the specified position.
+     *
+     * @param position The position of the item.
+     * @return The item at the specified position, or null if the position is out of bounds.
+     */
+    fun getItem(position: Int): T? {
+        return items.getOrNull(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val viewHolder = viewHolderBinder.createViewHolder(parent, viewType)
+        val viewHolder = binder.createViewHolder(parent, viewType)
         config.adapterCallback?.onViewHolderCreated(viewHolder)
         return viewHolder
     }
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
         val item = items[position]
-        viewHolderBinder.bind(item, viewHolder)
-        config.adapterCallback?.onItemBound(item, viewHolder)
+        binder.bind(item, viewHolder, position)
+        config.adapterCallback?.onItemBound(item, viewHolder, position)
     }
 
     override fun getItemCount(): Int = items.size
@@ -138,6 +190,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         return config.viewTypeResolver?.invoke(items[position]) ?: 0
     }
 
+
     /**
      * Default implementation of DiffUtil.Callback for basic comparisons.
      */
@@ -145,6 +198,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         private val oldList: List<T>,
         private val newList: List<T>
     ) : DiffUtil.Callback() {
+
         override fun getOldListSize(): Int = oldList.size
         override fun getNewListSize(): Int = newList.size
 
@@ -170,6 +224,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
     }
 }
 
+
 /**
  * Configuration class for BinderRecyclerAdapter to customize behavior.
  * Uses the Builder pattern for better readability with multiple options.
@@ -182,6 +237,7 @@ class BinderRecyclerAdapterConfig<T> private constructor(
     val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>?,
     val viewTypeResolver: ((T) -> Int)?
 ) {
+
     /**
      * Builder class for creating BinderRecyclerAdapterConfig instances.
      */
@@ -230,6 +286,7 @@ class BinderRecyclerAdapterConfig<T> private constructor(
     }
 }
 
+
 /**
  * Default implementation of ViewHolderBinder for simple data-binding use cases.
  *
@@ -241,12 +298,12 @@ class BinderRecyclerAdapterConfig<T> private constructor(
  */
 class DefaultBinder<T, VH : RecyclerView.ViewHolder>(
     @LayoutRes private val layoutResId: Int,
-    private val onBindViewHolder: (T, VH) -> Unit,
+    private val onBindViewHolder: (T, VH, Int) -> Unit,
     private val viewHolderCreator: (View) -> VH
 ) : BinderRecyclerAdapter.ViewHolderBinder<T, VH> {
 
-    override fun bind(model: T, viewHolder: VH) {
-        onBindViewHolder(model, viewHolder)
+    override fun bind(model: T, viewHolder: VH, position: Int) {
+        onBindViewHolder(model, viewHolder, position)
     }
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): VH {

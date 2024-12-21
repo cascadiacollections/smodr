@@ -8,18 +8,21 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.R
 
 /**
  * Generic fragment with RecyclerView and SwipeRefreshLayout integration.
  * Supports binding adapters, layout managers, and item selection callbacks.
  */
-abstract class BinderRecyclerFragment(
+abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
     @LayoutRes private val layoutResId: Int = R.layout.fragment_recycler_layout
 ) : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
     protected lateinit var recyclerView: RecyclerView
+
+    protected abstract val adapter: BinderRecyclerAdapter<T, VH>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +43,7 @@ abstract class BinderRecyclerFragment(
 
         swipeRefreshLayout.apply {
             setOnRefreshListener(this@BinderRecyclerFragment)
-            configureSwipeRefresh(this)
+            configureSwipeRefreshLayout(this)
         }
     }
 
@@ -51,7 +54,7 @@ abstract class BinderRecyclerFragment(
      * @param recyclerView The RecyclerView instance.
      */
     protected open fun configureRecyclerView(recyclerView: RecyclerView) {
-        // Subclasses should set the LayoutManager and Adapter here
+        recyclerView.adapter = this@BinderRecyclerFragment.adapter
     }
 
     /**
@@ -59,7 +62,7 @@ abstract class BinderRecyclerFragment(
      *
      * @param swipeRefreshLayout The SwipeRefreshLayout instance.
      */
-    protected open fun configureSwipeRefresh(swipeRefreshLayout: SwipeRefreshLayout) {
+    protected open fun configureSwipeRefreshLayout(swipeRefreshLayout: SwipeRefreshLayout) {
         // Optional for subclasses to customize further
     }
 
