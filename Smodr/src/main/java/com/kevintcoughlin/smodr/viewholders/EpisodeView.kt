@@ -1,6 +1,6 @@
 package com.kevintcoughlin.smodr.viewholders
 
-import BinderRecyclerAdapter
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat

@@ -1,3 +1,6 @@
+package com.cascadiacollections.jamoka.adapter
+
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,10 +81,10 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
             diffResult.dispatchUpdatesTo(this)
         } else {
             items = newItems
+            @SuppressLint("NotifyDataSetChanged")
             notifyDataSetChanged()
         }
     }
-
 
     /**
      * Adds a single item to the end of the list and notifies the adapter.
@@ -105,7 +108,6 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         val updatedItems = items.toMutableList().apply { add(index, item) }
         updateItems(updatedItems)
     }
-
 
     /**
      * Adds multiple items to the end of the list and notifies the adapter.
@@ -151,7 +153,6 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         updateItems(updatedItems)
     }
 
-
     /**
      * Removes a given item from the adapter.
      *
@@ -190,7 +191,6 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         return config.viewTypeResolver?.invoke(items[position]) ?: 0
     }
 
-
     /**
      * Default implementation of DiffUtil.Callback for basic comparisons.
      */
@@ -223,7 +223,6 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         }
     }
 }
-
 
 /**
  * Configuration class for BinderRecyclerAdapter to customize behavior.
@@ -285,7 +284,6 @@ class BinderRecyclerAdapterConfig<T> private constructor(
             BinderRecyclerAdapterConfig(enableDiffUtil, diffUtilCallback, adapterCallback, viewTypeResolver)
     }
 }
-
 
 /**
  * Default implementation of ViewHolderBinder for simple data-binding use cases.

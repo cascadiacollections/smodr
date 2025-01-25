@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
 import com.kevintcoughlin.smodr.models.Item
 import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
-import BinderRecyclerAdapter
-import BinderRecyclerAdapterConfig
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapterConfig
 import com.kevintcoughlin.smodr.viewholders.EpisodeView
 
 class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>() {

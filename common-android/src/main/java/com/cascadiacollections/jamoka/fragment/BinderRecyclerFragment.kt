@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import BinderRecyclerAdapter
+import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.R
 
 /**
