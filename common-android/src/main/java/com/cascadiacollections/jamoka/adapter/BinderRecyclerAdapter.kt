@@ -73,6 +73,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      *
      * @param newItems The new list of items.
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun updateItems(newItems: List<T>) {
         if (config.enableDiffUtil) {
             val diffCallback = config.diffUtilCallback ?: DefaultDiffUtilCallback(items, newItems)
@@ -81,7 +82,6 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
             diffResult.dispatchUpdatesTo(this)
         } else {
             items = newItems
-            @SuppressLint("NotifyDataSetChanged")
             notifyDataSetChanged()
         }
     }
