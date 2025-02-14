@@ -76,7 +76,7 @@ tasks.withType(KotlinCompile).configureEach {
 }
 
 dependencies {
-    implementation 'androidx.fragment:fragment-ktx:1.8.5'
+    implementation 'androidx.fragment:fragment-ktx:1.8.6'
     implementation("androidx.core:core-ktx:1.15.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.1.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.10'
