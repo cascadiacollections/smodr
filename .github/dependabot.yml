@@ -9,8 +9,39 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    reviewers:
+      - "KevinTCoughlin"
+    labels:
+      - "dependencies"
+      - "github-actions"
 
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
+    reviewers:
+      - "KevinTCoughlin"
+    labels:
+      - "dependencies"
+      - "gradle"
+
+  # Example for npm (if applicable)
+  - package-ecosystem: "npm"
+    directory: "/path/to/npm/project"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "KevinTCoughlin"
+    labels:
+      - "dependencies"
+      - "npm"
+
+  # Grouping minor and patch updates
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      minor:
+        pattern: "^.*$"
+        update-types: ["minor", "patch"]
