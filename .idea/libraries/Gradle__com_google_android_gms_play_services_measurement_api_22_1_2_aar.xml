@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-measurement-api:22.1.2@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/ed10749752da32e6cd0e59f17f5413e2/transformed/play-services-measurement-api-22.1.2/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/ed10749752da32e6cd0e59f17f5413e2/transformed/play-services-measurement-api-22.1.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/ed10749752da32e6cd0e59f17f5413e2/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/2a3adbe2ae95622e8289962aac52b594/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/2a3adbe2ae95622e8289962aac52b594/transformed/play-services-measurement-api-22.1.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/2a3adbe2ae95622e8289962aac52b594/transformed/play-services-measurement-api-22.1.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-api/22.1.2/ab1efb8817d84cfac1cd0ee22da878c1e34edfb2/play-services-measurement-api-22.1.2-javadoc.jar!/" />

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.squareup.leakcanary:leakcanary-object-watcher-android-support-fragments:2.14@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/a0a7d0a5714fcab3f63c55c6778fe36a/transformed/leakcanary-object-watcher-android-support-fragments-2.14/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/a0a7d0a5714fcab3f63c55c6778fe36a/transformed/leakcanary-object-watcher-android-support-fragments-2.14/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/c51829bb891026bba2460214221cef76/transformed/leakcanary-object-watcher-android-support-fragments-2.14/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/c51829bb891026bba2460214221cef76/transformed/leakcanary-object-watcher-android-support-fragments-2.14/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.leakcanary/leakcanary-object-watcher-android-support-fragments/2.14/8b0604e66d76b6ed3ce9630046ef0b8fd6c8a0ae/leakcanary-object-watcher-android-support-fragments-2.14-javadoc.jar!/" />
