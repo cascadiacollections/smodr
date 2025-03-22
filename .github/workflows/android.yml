@@ -33,7 +33,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Validate Gradle wrapper
-        run: ./gradlew wrapper --gradle-version 7.5 --distribution-type all
+        run: ./gradlew wrapper --gradle-version 8.11.1 --distribution-type all
 
       - name: Build with Gradle
         run: ./gradlew build --scan --continue
