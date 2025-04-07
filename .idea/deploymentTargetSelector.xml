@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Smodr">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-21T21:12:36.833685Z">
+        <DropdownSelection timestamp="2025-04-07T00:11:41.439605900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kevintcoughlin/.android/avd/Medium_Phone.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\excel\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>

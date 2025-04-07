@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.startup:startup-runtime:1.1.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/88b53a0331f96af1b1564f9a5ec34aed/transformed/startup-runtime-1.1.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/88b53a0331f96af1b1564f9a5ec34aed/transformed/startup-runtime-1.1.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/88b53a0331f96af1b1564f9a5ec34aed/transformed/startup-runtime-1.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/c64fdb2b5bf0ffd0012bb98df92ed4ea/transformed/startup-runtime-1.1.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/8.11.1/transforms/c64fdb2b5bf0ffd0012bb98df92ed4ea/transformed/startup-runtime-1.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/8.11.1/transforms/c64fdb2b5bf0ffd0012bb98df92ed4ea/transformed/startup-runtime-1.1.1/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
