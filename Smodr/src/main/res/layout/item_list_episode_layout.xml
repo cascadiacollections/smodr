@@ -1,40 +1,52 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingRight="16dp"
 	android:paddingLeft="16dp"
 	android:paddingTop="16dp"
+	android:paddingRight="16dp"
 	android:paddingBottom="16dp"
-	android:orientation="vertical"
 	android:background="?android:attr/colorBackground">
 
 	<TextView
 		android:id="@+id/title"
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textSize="16sp"
 		android:textColor="?android:attr/textColorPrimary"
+		android:textSize="16sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
 		tools:text="SModcast 241: Another Episode" />
 
 	<TextView
 		android:id="@+id/metadata"
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textSize="12sp"
-		android:textColor="?android:attr/textColorPrimary"
+		android:layout_marginTop="8dp"
 		android:textAllCaps="true"
+		android:textColor="?android:attr/textColorPrimary"
+		android:textSize="12sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/title"
 		tools:text="Oct 10 • 1:10:21" />
 
 	<TextView
 		android:id="@+id/description"
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textSize="12sp"
-		android:textColor="?android:attr/textColorPrimary"
-		android:maxLines="1"
+		android:layout_marginTop="8dp"
 		android:ellipsize="end"
+		android:maxLines="1"
+		android:textColor="?android:attr/textColorPrimary"
+		android:textSize="12sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/metadata"
 		tools:text="Episode description." />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
