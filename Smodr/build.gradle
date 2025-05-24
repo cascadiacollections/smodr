@@ -40,6 +40,7 @@ android {
         // Configure missing library stubs
         aarMetadata {
             minCompileSdk = 33
+            minCompileSdkExtension = 33
         }
     }
     buildFeatures {
@@ -91,8 +92,6 @@ dependencies {
     implementation 'androidx.window:window:1.2.0'
     implementation 'androidx.window:window-java:1.2.0'
     implementation 'androidx.window:window-rxjava3:1.2.0'
-    implementation 'androidx.window:window-extensions:1.2.0'
-    implementation 'androidx.window:window-core:1.2.0'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     testImplementation 'androidx.room:room-testing:2.6.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
