@@ -47,6 +47,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Add this to prevent R8 optimization issues
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     lint {
@@ -81,6 +83,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
     implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'com.google.guava:guava:31.1-android'
+    implementation 'androidx.window:window:1.2.0'
+    implementation 'androidx.window:window-java:1.2.0'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     testImplementation 'androidx.room:room-testing:2.6.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'

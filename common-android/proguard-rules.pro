@@ -11,6 +11,11 @@
 -keep class androidx.core.** { *; }
 -keep interface androidx.core.** { *; }
 
+# Keep classes that are causing R8 compilation failures
+-keep class com.google.common.util.concurrent.ListenableFuture { *; }
+-keep class androidx.window.extensions.embedding.** { *; }
+-dontwarn androidx.window.extensions.embedding.**
+
 # --- Firebase Crashlytics ---
 # Keep necessary Firebase Crashlytics classes for crash reporting
 -keepattributes *Annotation*
