@@ -55,7 +55,7 @@ updates:
     # Grouping minor and patch updates
     groups:
       minor:
-        pattern: "^.*$"
+        patterns: ["^.*$"]
         update-types: ["minor", "patch"]
     # Auto-approve and merge configuration
     ignore:
@@ -66,4 +66,4 @@ updates:
       prefix: "deps"
       include: "scope"
 
-merge-strategy: "squash"
+
