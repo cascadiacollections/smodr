@@ -11,6 +11,8 @@ updates:
       interval: "daily"
     reviewers:
       - "KevinTCoughlin"
+    assignees:
+      - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "github-actions"
@@ -36,6 +38,8 @@ updates:
     schedule:
       interval: "daily"
     reviewers:
+      - "KevinTCoughlin"
+    assignees:
       - "KevinTCoughlin"
     labels:
       - "dependencies"
