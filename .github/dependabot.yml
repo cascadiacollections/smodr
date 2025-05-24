@@ -11,6 +11,8 @@ updates:
       interval: "daily"
     reviewers:
       - "KevinTCoughlin"
+    assignees:
+      - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "github-actions"
@@ -18,15 +20,10 @@ updates:
       prefix: "build(deps)"
     pull-request-branch-name:
       separator: "-"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "all"
-    # Auto-approve and merge configuration
+    # Auto-approve configuration
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    automerge: true
     commit-message:
       prefix: "deps"
       include: "scope"
@@ -37,6 +34,8 @@ updates:
       interval: "daily"
     reviewers:
       - "KevinTCoughlin"
+    assignees:
+      - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "gradle"
@@ -44,22 +43,17 @@ updates:
       prefix: "build(deps)"
     pull-request-branch-name:
       separator: "-"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "all"
     # Grouping minor and patch updates
     groups:
       minor:
-        pattern: "^.*$"
+        patterns: ["^.*$"]
         update-types: ["minor", "patch"]
-    # Auto-approve and merge configuration
+    # Auto-approve configuration
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    automerge: true
     commit-message:
       prefix: "deps"
       include: "scope"
 
-merge-strategy: "squash"
+
