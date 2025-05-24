@@ -40,7 +40,6 @@ android {
         // Configure missing library stubs
         aarMetadata {
             minCompileSdk = 33
-            minCompileSdkExtension = 33
         }
     }
     buildFeatures {
@@ -64,6 +63,11 @@ android {
 configurations {
     compile.exclude group: 'stax'
     compile.exclude group: 'xpp3'
+    // Exclude the problematic window-extensions artifact from all configurations
+    all {
+        exclude group: 'androidx.window', module: 'window-extensions'
+        exclude group: 'androidx.window', module: 'window-core'
+    }
 }
 
 configurations.configureEach {
@@ -89,9 +93,13 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'com.google.guava:guava:31.1-android'
-    implementation 'androidx.window:window:1.2.0'
-    implementation 'androidx.window:window-java:1.2.0'
-    implementation 'androidx.window:window-rxjava3:1.2.0'
+    
+    // Window library dependencies - use stable 1.1.0 version
+    implementation 'androidx.window:window:1.1.0'
+    
+    // Use compileOnly for stub libraries that will be provided at runtime
+    compileOnly 'androidx.window:window-java:1.1.0'
+    
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     testImplementation 'androidx.room:room-testing:2.6.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'

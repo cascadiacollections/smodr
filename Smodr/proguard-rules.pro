@@ -14,9 +14,15 @@
 # Keep classes that are causing R8 compilation failures
 -keep class com.google.common.util.concurrent.ListenableFuture { *; }
 
-# Window Extensions - these classes are provided by stubs at runtime
+# androidx.window extensions and core - special handling for system stub libraries
 -dontwarn androidx.window.**
 -keep class androidx.window.** { *; }
+
+# Explicitly handle all the missing class references from androidx.window.extensions
+-dontwarn androidx.window.extensions.**
+-dontwarn androidx.window.extensions.embedding.**
+-dontwarn androidx.window.extensions.layout.**
+-dontwarn androidx.window.sidecar.**
 
 # Keep Firebase classes if needed
 -keep class com.google.firebase.** { *; }

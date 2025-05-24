@@ -24,7 +24,6 @@ android {
         // Configure missing library stubs
         aarMetadata {
             minCompileSdk = 33
-            minCompileSdkExtension = 33
         }
     }
     buildTypes {
@@ -57,9 +56,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.guava:guava:31.1-android'
-    implementation 'androidx.window:window:1.2.0'
-    implementation 'androidx.window:window-java:1.2.0'
-    implementation 'androidx.window:window-rxjava3:1.2.0'
+    
+    // Window library dependencies
+    implementation 'androidx.window:window:1.1.0'
+    
+    // Use compileOnly for stub libraries that will be provided at runtime
+    compileOnly 'androidx.window:window-java:1.1.0'
+    
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
