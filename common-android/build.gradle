@@ -21,6 +21,10 @@ android {
         minSdkVersion 33
         targetSdkVersion 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Configure missing library stubs
+        aarMetadata {
+            minCompileSdk = 33
+        }
     }
     buildTypes {
         release {
@@ -54,6 +58,9 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-android'
     implementation 'androidx.window:window:1.2.0'
     implementation 'androidx.window:window-java:1.2.0'
+    implementation 'androidx.window:window-rxjava3:1.2.0'
+    implementation 'androidx.window:window-extensions:1.2.0'
+    implementation 'androidx.window:window-core:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

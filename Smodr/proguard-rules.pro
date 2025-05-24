@@ -14,7 +14,11 @@
 # Keep classes that are causing R8 compilation failures
 -keep class com.google.common.util.concurrent.ListenableFuture { *; }
 -keep class androidx.window.extensions.embedding.** { *; }
+-keep class androidx.window.extensions.layout.** { *; }
+-keep class androidx.window.sidecar.** { *; }
 -dontwarn androidx.window.extensions.embedding.**
+-dontwarn androidx.window.extensions.layout.**
+-dontwarn androidx.window.sidecar.**
 
 # Keep Firebase classes if needed
 -keep class com.google.firebase.** { *; }
