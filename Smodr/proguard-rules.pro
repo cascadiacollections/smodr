@@ -11,6 +11,33 @@
 -keep class androidx.core.** { *; }
 -keep interface androidx.core.** { *; }
 
+# Keep classes that are causing R8 compilation failures
+-keep class com.google.common.util.concurrent.ListenableFuture { *; }
+-keepnames class com.google.common.util.concurrent.ListenableFuture
+
+# Completely disable class merging for problematic classes to prevent R8 issues
+-optimizations !class/merging/vertical,!class/merging/horizontal
+
+# androidx.window extensions and core - special handling for system stub libraries
+-dontwarn androidx.window.**
+-keep class androidx.window.** { *; }
+
+# Explicitly keep all the missing reference classes
+-keep class androidx.window.extensions.embedding.ActivityEmbeddingComponent { *; }
+-keep class androidx.window.extensions.layout.WindowLayoutComponent { *; }
+-keep class androidx.window.sidecar.SidecarDeviceState { *; }
+-keep class androidx.window.sidecar.SidecarInterface { *; }
+
+# Explicitly handle all the missing class references from androidx.window.extensions
+-dontwarn androidx.window.extensions.**
+-dontwarn androidx.window.extensions.embedding.**
+-dontwarn androidx.window.extensions.layout.**
+-dontwarn androidx.window.sidecar.**
+
+# Keep all interfaces and abstract methods from these packages
+-keep interface androidx.window.extensions.** { *; }
+-keep interface androidx.window.sidecar.** { *; }
+
 # Keep Firebase classes if needed
 -keep class com.google.firebase.** { *; }
 -dontwarn com.google.firebase.**
@@ -51,7 +78,7 @@
 -dontwarn io.reactivex.rxjava3.**
 
 # --- Common Annotations ---
--keepattributes *Annotation*
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,Exceptions
 -keepclassmembers class ** {
     @androidx.annotation.Keep *;
 }
@@ -71,3 +98,6 @@
 # Keep BinderRecyclerFragment and its inner classes
 -keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
 -keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$OnItemSelected { *; }
+
+# Keep all attributes to avoid issues with R8 optimizations
+-keepattributes *
