@@ -11,6 +11,19 @@
 -keep class androidx.core.** { *; }
 -keep interface androidx.core.** { *; }
 
+# Keep classes that are causing R8 compilation failures
+-keep class com.google.common.util.concurrent.ListenableFuture { *; }
+
+# androidx.window extensions and core - special handling for system stub libraries
+-dontwarn androidx.window.**
+-keep class androidx.window.** { *; }
+
+# Explicitly handle all the missing class references from androidx.window.extensions
+-dontwarn androidx.window.extensions.**
+-dontwarn androidx.window.extensions.embedding.**
+-dontwarn androidx.window.extensions.layout.**
+-dontwarn androidx.window.sidecar.**
+
 # --- Firebase Crashlytics ---
 # Keep necessary Firebase Crashlytics classes for crash reporting
 -keepattributes *Annotation*
