@@ -29,9 +29,9 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro', 'r8-keep-rules.txt'
             // Add this to prevent R8 optimization issues
-            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro', 'r8-keep-rules.txt'
         }
     }
     compileOptions {
@@ -65,6 +65,12 @@ dependencies {
     
     // Add explicit dependency for ListenableFuture
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    
+    // Exclude all known stub packages that cause R8 issues
+    configurations.all {
+        exclude group: 'androidx.window', module: 'window-extensions'
+        exclude group: 'androidx.window', module: 'window-sidecar'
+    }
     
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'

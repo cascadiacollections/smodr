@@ -1,0 +1,41 @@
+# R8 specific rules for handling stubbed classes
+# This file contains configurations to properly handle missing classes that are provided at runtime
+
+# Explicitly keep missing classes that cause R8 errors
+-keep class com.google.common.util.concurrent.ListenableFuture { *; }
+-keep class androidx.window.extensions.embedding.ActivityEmbeddingComponent { *; }
+-keep class androidx.window.extensions.layout.WindowLayoutComponent { *; }
+-keep class androidx.window.sidecar.SidecarDeviceState { *; }
+-keep class androidx.window.sidecar.SidecarInterface { *; }
+
+# Keep all interfaces from these packages
+-keep interface androidx.window.** { *; }
+-keep interface androidx.window.extensions.** { *; }
+-keep interface androidx.window.sidecar.** { *; }
+
+# Don't warn about missing classes from known stub libraries
+-dontwarn androidx.window.**
+-dontwarn androidx.window.extensions.**
+-dontwarn androidx.window.sidecar.**
+-dontwarn com.google.common.util.concurrent.ListenableFuture
+
+# Fix ActionBarDrawerToggle issues
+-keep class androidx.appcompat.graphics.drawable.DrawerArrowDrawable { *; }
+
+# Turn off optimizations that might cause issues with stub classes
+-optimizations !class/unboxing/enum,!code/allocation/variable,!field/propagation/value,!method/propagation/parameter,!method/propagation/returnvalue
+
+# Disable class merging for problematic classes
+-keepnames class androidx.window.** { *; }
+-keepnames class androidx.window.extensions.** { *; }
+-keepnames class androidx.window.sidecar.** { *; }
+-keepnames class com.google.common.util.concurrent.** { *; }
+
+# Prevent R8 from removing classes needed by reflection
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,Exceptions
+
+# Explicitly add missing class references
+-assumevalues class * extends androidx.window.sidecar.SidecarDeviceState { }
+-assumevalues class * extends androidx.window.sidecar.SidecarInterface { }
+-assumevalues class * extends androidx.window.extensions.embedding.ActivityEmbeddingComponent { }
+-assumevalues class * extends androidx.window.extensions.layout.WindowLayoutComponent { }
