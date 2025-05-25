@@ -29,9 +29,9 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
             // Add this to prevent R8 optimization issues
-            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
         }
     }
     compileOptions {
@@ -62,6 +62,9 @@ dependencies {
     
     // Use compileOnly for stub libraries that will be provided at runtime
     compileOnly 'androidx.window:window-java:1.1.0'
+    
+    // Add explicit dependency for ListenableFuture
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'

@@ -21,4 +21,20 @@ allprojects {
     tasks.withType(JavaCompile).configureEach {
         options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
     }
+    
+    // Apply R8 configuration for all Android projects
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                buildTypes {
+                    release {
+                        // Load R8 configuration from file
+                        if (file("${rootDir}/gradle/r8-disables.properties").exists()) {
+                            project.android.buildTypes.release.proguardFile "${rootDir}/gradle/r8-disables.properties"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

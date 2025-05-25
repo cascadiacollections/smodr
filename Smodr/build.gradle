@@ -50,9 +50,9 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
             // Add this to prevent R8 optimization issues
-            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'window-extensions-keep.pro'
         }
     }
     lint {
@@ -99,6 +99,9 @@ dependencies {
     
     // Use compileOnly for stub libraries that will be provided at runtime
     compileOnly 'androidx.window:window-java:1.1.0'
+    
+    // Add explicit dependency for ListenableFuture
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     testImplementation 'androidx.room:room-testing:2.6.1'
