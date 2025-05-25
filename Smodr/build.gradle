@@ -94,9 +94,7 @@ dependencies {
     
     // Window library dependencies - use stable 1.1.0 version
     implementation 'androidx.window:window:1.1.0'
-    
-    // Use compileOnly for stub libraries that will be provided at runtime
-    compileOnly 'androidx.window:window-java:1.1.0'
+    implementation 'androidx.window:window-java:1.1.0'
     
     // Add explicit dependency for ListenableFuture
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
