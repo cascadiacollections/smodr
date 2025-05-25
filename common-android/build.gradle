@@ -1,57 +1,47 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-try {
-    apply plugin: 'com.android.library'
-    apply plugin: 'kotlin-android'
-} catch (Exception e) {
-    println "Warning: Could not apply Android plugins due to: ${e.message}"
-    // Fallback to java to have at least some successful build
-    apply plugin: 'java-library'
-    apply plugin: 'kotlin'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 buildscript {
     ext.kotlin_version = '1.9.20'
     repositories {
+        google()
         mavenCentral()
         maven { url "https://repo1.maven.org/maven2/" }
-        maven { url uri('../localrepo') }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-// Set up common Android configurations if plugin is available
-try {
-    android {
-        compileSdk 33
-        defaultConfig {
-            minSdkVersion 33
-            targetSdkVersion 33
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        }
-        buildTypes {
-            release {
-                minifyEnabled false
-            }
-            debug {
-                minifyEnabled false
-            }
-        }
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-        }
-        namespace 'com.cascadiacollections.jamoka'
-        lintOptions {
-            abortOnError false
-            quiet true
-            checkReleaseBuilds false
+android {
+    compileSdk 34
+    defaultConfig {
+        minSdkVersion 33
+        targetSdkVersion 34
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Configure missing library stubs
+        aarMetadata {
+            minCompileSdk = 33
         }
     }
-} catch (Exception e) {
-    println "Warning: Could not configure Android due to: ${e.message}"
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Add this to prevent R8 optimization issues
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    namespace 'com.cascadiacollections.jamoka'
+    lint {
+        abortOnError false
+    }
 }
 
 tasks.withType(KotlinCompile).configureEach {
@@ -60,20 +50,22 @@ tasks.withType(KotlinCompile).configureEach {
     }
 }
 
-// Disable any task that might fail due to network issues
-tasks.configureEach { task ->
-    if (task.name.toLowerCase().contains('lint') || 
-        task.name.toLowerCase().contains('check') ||
-        task.name.toLowerCase().contains('minify') ||
-        task.name.toLowerCase().contains('r8') ||
-        task.name.toLowerCase().contains('proguard')) {
-        task.enabled = false
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.guava:guava:31.1-android'
+    
+    // Window library dependencies
+    implementation 'androidx.window:window:1.1.0'
+    
+    // Use compileOnly for stub libraries that will be provided at runtime
+    compileOnly 'androidx.window:window-java:1.1.0'
+    
     testImplementation 'junit:junit:4.13.2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    api 'androidx.recyclerview:recyclerview:1.3.2'
 }

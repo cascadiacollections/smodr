@@ -1,74 +1,82 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-try {
-    apply plugin: 'com.android.application'
-    apply plugin: 'kotlin-android'
-    
-    // Skip these plugins if not available
-    try {
-        apply plugin: 'com.google.gms.google-services'
-        apply plugin: 'com.google.firebase.crashlytics'
-        apply plugin: 'com.google.firebase.firebase-perf'
-    } catch (Exception e) {
-        println "Warning: Could not apply Google plugins due to: ${e.message}"
-    }
-} catch (Exception e) {
-    println "Warning: Could not apply Android plugins due to: ${e.message}"
-    // Fallback to java to have at least some successful build
-    apply plugin: 'java-library'
-    apply plugin: 'kotlin'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 buildscript {
     repositories {
+        google()
         mavenCentral()
         maven { url "https://repo1.maven.org/maven2/" }
-        maven { url uri('../localrepo') }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
+        classpath 'com.google.firebase:perf-plugin:1.4.2'
     }
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
-// Set up common Android configurations if plugin is available
-try {
-    android {
-        namespace 'com.kevintcoughlin.smodr'
-        compileSdk 33
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_17
-            targetCompatibility JavaVersion.VERSION_17
-        }
-        defaultConfig {
-            minSdkVersion 33
-            targetSdk 33
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        }
-        
-        buildTypes {
-            release {
-                minifyEnabled false
-                shrinkResources false
-            }
-            debug {
-                minifyEnabled false
-                shrinkResources false
+android {
+    namespace 'com.kevintcoughlin.smodr'
+    compileSdk 34
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    defaultConfig {
+        minSdkVersion 33
+        targetSdk 34
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
-        
-        lintOptions {
-            abortOnError false
-            quiet true
-            checkReleaseBuilds false
+        // Configure missing library stubs
+        aarMetadata {
+            minCompileSdk = 33
         }
     }
-    
-    configurations {
-        all {
-            exclude group: 'androidx.window', module: 'window-extensions'
-            exclude group: 'androidx.window', module: 'window-core'
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Add this to prevent R8 optimization issues
+            testProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-} catch (Exception e) {
-    println "Warning: Could not configure Android due to: ${e.message}"
+    lint {
+        abortOnError false
+    }
+}
+
+configurations {
+    compile.exclude group: 'stax'
+    compile.exclude group: 'xpp3'
+    // Exclude the problematic window-extensions artifact from all configurations
+    all {
+        exclude group: 'androidx.window', module: 'window-extensions'
+        exclude group: 'androidx.window', module: 'window-core'
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == "androidx.annotation" && details.requested.name == "annotation") {
+            details.useVersion("1.9.1")
+            details.because("Resolve version conflicts for androidx.annotation")
+        }
+    }
 }
 
 // Set kotlinOptions for all Kotlin compilation tasks
@@ -78,30 +86,46 @@ tasks.withType(KotlinCompile).configureEach {
     }
 }
 
-// Disable any task that might fail due to network issues
-tasks.configureEach { task ->
-    if (task.name.toLowerCase().contains('lint') || 
-        task.name.toLowerCase().contains('check') ||
-        task.name.toLowerCase().contains('minify') ||
-        task.name.toLowerCase().contains('r8') ||
-        task.name.toLowerCase().contains('proguard')) {
-        task.enabled = false
-    }
-}
-
 dependencies {
-    try {
-        // Core Kotlin dependencies
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
-        implementation fileTree(dir: 'libs', include: ['*.jar'])
-        implementation 'com.google.guava:guava:31.1-android'
-        testImplementation 'junit:junit:4.13.2'
-        
-        // Common-Android module dependency
-        if (project.findProject(':common-android') != null) {
-            implementation project(path: ':common-android')
-        }
-    } catch (Exception e) {
-        println "Warning: Could not resolve dependencies due to: ${e.message}"
-    }
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'com.google.guava:guava:31.1-android'
+    
+    // Window library dependencies - use stable 1.1.0 version
+    implementation 'androidx.window:window:1.1.0'
+    
+    // Use compileOnly for stub libraries that will be provided at runtime
+    compileOnly 'androidx.window:window-java:1.1.0'
+    
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    testImplementation 'androidx.room:room-testing:2.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.7.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    api 'androidx.preference:preference-ktx:1.2.1'
+    api 'androidx.browser:browser:1.7.0'
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    api 'androidx.recyclerview:recyclerview:1.3.2'
+    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'com.google.android.material:material:1.11.0'
+    api 'com.squareup.okhttp:okhttp:2.7.5'
+    api 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+    api 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.6.0'
+    api 'com.google.firebase:firebase-crash:16.2.1'
+    api 'com.google.android.gms:play-services-measurement-base:21.3.0'
+    api 'com.google.firebase:firebase-appindexing:20.0.0'
+    implementation 'com.google.firebase:firebase-ads:22.4.0'
+    implementation 'com.google.firebase:firebase-perf:20.4.1'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
+    api project(path: ':common-android')
+    implementation 'androidx.annotation:annotation-experimental:1.3.1'
 }
