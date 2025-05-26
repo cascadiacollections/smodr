@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
-    testImplementation 'androidx.room:room-testing:2.6.1'
+    testImplementation 'androidx.room:room-testing:2.7.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.annotation:annotation:1.9.1'
