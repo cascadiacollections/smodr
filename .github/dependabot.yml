@@ -9,8 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "KevinTCoughlin"
     assignees:
       - "KevinTCoughlin"
     labels:
@@ -32,8 +30,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "KevinTCoughlin"
     assignees:
       - "KevinTCoughlin"
     labels:
