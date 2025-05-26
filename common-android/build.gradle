@@ -56,8 +56,8 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-android'
     
     // Window library dependencies
-    implementation 'androidx.window:window:1.1.0'
-    implementation 'androidx.window:window-java:1.1.0'
+    implementation 'androidx.window:window:1.4.0'
+    implementation 'androidx.window:window-java:1.4.0'
     
     // Add explicit dependency for ListenableFuture
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
