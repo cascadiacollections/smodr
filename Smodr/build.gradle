@@ -122,7 +122,7 @@ dependencies {
     api 'com.google.firebase:firebase-crash:16.2.1'
     api 'com.google.android.gms:play-services-measurement-base:21.3.0'
     api 'com.google.firebase:firebase-appindexing:20.0.0'
-    implementation 'com.google.firebase:firebase-ads:22.4.0'
+    implementation 'com.google.firebase:firebase-ads:22.6.0'
     implementation 'com.google.firebase:firebase-perf:20.4.1'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
     api project(path: ':common-android')
