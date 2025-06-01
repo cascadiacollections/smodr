@@ -1,55 +1,81 @@
 # To get started with Dependabot version updates, you'll need to specify which
 # package ecosystems to update and where the package manifests are located.
 # Please see the documentation for all configuration options:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
     assignees:
+      - "KevinTCoughlin"
+    reviewers:
       - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "github-actions"
     commit-message:
       prefix: "build(deps)"
+      include: "scope"
     pull-request-branch-name:
       separator: "-"
     # Auto-approve configuration
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    commit-message:
-      prefix: "deps"
-      include: "scope"
+    # Allow security updates for all dependencies
+    allow:
+      - dependency-type: "all"
+    open-pull-requests-limit: 10
 
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "tuesday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
     assignees:
+      - "KevinTCoughlin"
+    reviewers:
       - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "gradle"
     commit-message:
       prefix: "build(deps)"
+      include: "scope"
     pull-request-branch-name:
       separator: "-"
     # Grouping minor and patch updates
     groups:
-      minor:
-        patterns: ["^.*$"]
+      minor-and-patch:
+        patterns: 
+          - "*"
+        update-types: ["minor", "patch"]
+      # Separate group for Android-specific dependencies
+      android:
+        patterns:
+          - "com.android.*"
+          - "androidx.*"
+          - "com.google.android.*"
+        update-types: ["minor", "patch"]
+      # Separate group for Kotlin dependencies
+      kotlin:
+        patterns:
+          - "org.jetbrains.kotlin*"
+          - "org.jetbrains.kotlinx*"
         update-types: ["minor", "patch"]
     # Auto-approve configuration
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    commit-message:
-      prefix: "deps"
-      include: "scope"
-
-
+    # Allow security updates for all dependencies
+    allow:
+      - dependency-type: "all"
+    open-pull-requests-limit: 10
