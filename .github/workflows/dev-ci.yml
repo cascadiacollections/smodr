@@ -1,0 +1,86 @@
+name: Development CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate Development Environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Validate Gradle wrapper
+        run: ./gradlew wrapper --gradle-version 8.11.1 --distribution-type all
+
+      - name: Check devcontainer configuration
+        run: |
+          if [ ! -f ".devcontainer/devcontainer.json" ]; then
+            echo "❌ devcontainer.json not found"
+            exit 1
+          fi
+          echo "✅ devcontainer.json found"
+
+      - name: Check VS Code workspace
+        run: |
+          if [ ! -f "smodr.code-workspace" ]; then
+            echo "❌ VS Code workspace not found"
+            exit 1
+          fi
+          echo "✅ VS Code workspace found"
+
+      - name: Check VS Code settings
+        run: |
+          if [ ! -f ".vscode/settings.json" ] || [ ! -f ".vscode/extensions.json" ]; then
+            echo "❌ VS Code settings not found"
+            exit 1
+          fi
+          echo "✅ VS Code settings found"
+
+      - name: Validate project structure
+        run: |
+          if [ -f "verify.sh" ]; then
+            chmod +x verify.sh
+            ./verify.sh
+          else
+            echo "⚠️ verify.sh not found, skipping structure validation"
+          fi
+
+      - name: Run quick build check
+        run: ./gradlew assembleDebug --dry-run
+
+      - name: Summary
+        run: |
+          echo "🎉 Development environment validation completed successfully!"
+          echo ""
+          echo "📁 Available configurations:"
+          echo "  - devcontainer for containerized development"
+          echo "  - VS Code workspace with recommended extensions"
+          echo "  - GitHub Actions for CI/CD"
+          echo "  - Dependabot for dependency updates"

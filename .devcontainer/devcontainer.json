@@ -1,0 +1,65 @@
+{
+    "name": "Smodr Android Development",
+    "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+    "features": {
+        "ghcr.io/devcontainers/features/android-sdk:1": {
+            "version": "latest",
+            "buildToolsVersion": "34.0.0",
+            "platformVersion": "34"
+        },
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.vscode-kotlin",
+                "vscjava.vscode-java-pack",
+                "ms-vscode.gradle-for-java",
+                "mathiasfrohlich.kotlin",
+                "redhat.java",
+                "vscjava.vscode-gradle",
+                "ms-vscode.remote-containers",
+                "github.copilot",
+                "github.copilot-chat",
+                "ms-vsliveshare.vsliveshare",
+                "eamodio.gitlens",
+                "bradlc.vscode-tailwindcss",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-json"
+            ],
+            "settings": {
+                "java.configuration.runtimes": [
+                    {
+                        "name": "JavaSE-17",
+                        "path": "/usr/local/sdkman/candidates/java/current"
+                    }
+                ],
+                "java.compile.nullAnalysis.mode": "automatic",
+                "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
+                "gradle.nestedProjects": true,
+                "files.exclude": {
+                    "**/.gradle": true,
+                    "**/build": true,
+                    "**/.idea": true
+                },
+                "kotlin.suggest.autocomplete.showHighPriorityOnly": true,
+                "git.autofetch": true,
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": "explicit"
+                }
+            }
+        }
+    },
+    "forwardPorts": [8080, 5037],
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ]
+}
