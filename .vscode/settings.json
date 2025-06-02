@@ -1,0 +1,58 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "/usr/lib/jvm/temurin-17-jdk-amd64",
+            "default": true
+        }
+    ],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
+    "java.saveActions.organizeImports": true,
+    "gradle.nestedProjects": true,
+    "gradle.javaDebug": true,
+    "files.exclude": {
+        "**/.gradle": true,
+        "**/build": true,
+        "**/.idea": true,
+        "**/local.properties": true,
+        "**/*.iml": true,
+        "**/.DS_Store": true
+    },
+    "files.watcherExclude": {
+        "**/.gradle/**": true,
+        "**/build/**": true,
+        "**/.idea/**": true
+    },
+    "search.exclude": {
+        "**/.gradle": true,
+        "**/build": true,
+        "**/.idea": true,
+        "**/node_modules": true
+    },
+    "kotlin.suggest.autocomplete.showHighPriorityOnly": true,
+    "kotlin.experimental.tryK2": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.gradle": "*.gradle.kts",
+        "build.gradle": "gradle.properties,gradlew,gradlew.bat,gradle.properties,settings.gradle",
+        "*.kt": "*.class",
+        "*.java": "*.class"
+    }
+}
