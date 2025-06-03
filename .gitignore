@@ -34,8 +34,11 @@ gen/
 *.o
 *.so
 
-# IDE-specific files
-.vscode/
+# IDE-specific files (exclude most VS Code settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!*.code-workspace
 *.suo
 *.ntvs*
 *.njsproj

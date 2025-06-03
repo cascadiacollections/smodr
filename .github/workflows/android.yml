@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: Smodr/build/outputs/apk/debug/*.apk
 
       - name: Build Bundle (Release)
         if: github.ref == 'refs/heads/main'
@@ -68,4 +68,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Release-Bundle
-          path: app/build/outputs/bundle/release/app-release.aab
+          path: Smodr/build/outputs/bundle/release/*.aab

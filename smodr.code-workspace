@@ -1,0 +1,192 @@
+{
+    "folders": [
+        {
+            "name": "Smodr",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "java.configuration.runtimes": [
+            {
+                "name": "JavaSE-17",
+                "path": "/usr/lib/jvm/temurin-17-jdk-amd64",
+                "default": true
+            }
+        ],
+        "java.compile.nullAnalysis.mode": "automatic",
+        "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
+        "java.saveActions.organizeImports": true,
+        "gradle.nestedProjects": true,
+        "gradle.javaDebug": true,
+        "files.exclude": {
+            "**/.gradle": true,
+            "**/build": true,
+            "**/.idea": true,
+            "**/local.properties": true,
+            "**/*.iml": true,
+            "**/.DS_Store": true
+        },
+        "files.watcherExclude": {
+            "**/.gradle/**": true,
+            "**/build/**": true,
+            "**/.idea/**": true
+        },
+        "search.exclude": {
+            "**/.gradle": true,
+            "**/build": true,
+            "**/.idea": true,
+            "**/node_modules": true
+        },
+        "kotlin.suggest.autocomplete.showHighPriorityOnly": true,
+        "kotlin.experimental.tryK2": false,
+        "git.autofetch": true,
+        "git.enableSmartCommit": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit"
+        },
+        "editor.rulers": [120],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.cwd": "${workspaceFolder}",
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.patterns": {
+            "*.gradle": "*.gradle.kts",
+            "build.gradle": "gradle.properties,gradlew,gradlew.bat,gradle.properties,settings.gradle",
+            "*.kt": "*.class",
+            "*.java": "*.class"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.vscode-kotlin",
+            "vscjava.vscode-java-pack",
+            "ms-vscode.gradle-for-java",
+            "mathiasfrohlich.kotlin",
+            "redhat.java",
+            "vscjava.vscode-gradle",
+            "github.copilot",
+            "github.copilot-chat",
+            "ms-vsliveshare.vsliveshare",
+            "eamodio.gitlens",
+            "esbenp.prettier-vscode",
+            "ms-vscode.vscode-json",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.remote-containers"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Build Debug",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["assembleDebug"],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Build Release",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["assembleRelease"],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Clean Build",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["clean", "build"],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Run Tests",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["test"],
+                "group": {
+                    "kind": "test",
+                    "isDefault": true
+                },
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Run Lint",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["lint"],
+                "group": "test",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Install Debug APK",
+                "type": "shell",
+                "command": "./gradlew",
+                "args": ["installDebug"],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "java",
+                "name": "Debug Android App",
+                "request": "attach",
+                "hostName": "localhost",
+                "port": 5005,
+                "timeout": 30000
+            }
+        ]
+    }
+}

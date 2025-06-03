@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        "ms-vscode.vscode-kotlin",
+        "vscjava.vscode-java-pack",
+        "ms-vscode.gradle-for-java",
+        "mathiasfrohlich.kotlin",
+        "redhat.java",
+        "vscjava.vscode-gradle",
+        "github.copilot",
+        "github.copilot-chat",
+        "ms-vsliveshare.vsliveshare",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-json",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.remote-containers"
+    ]
+}
