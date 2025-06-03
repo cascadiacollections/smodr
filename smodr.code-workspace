@@ -58,7 +58,7 @@
         "explorer.fileNesting.enabled": true,
         "explorer.fileNesting.patterns": {
             "*.gradle": "*.gradle.kts",
-            "build.gradle": "gradle.properties,gradlew,gradlew.bat,gradle.properties,settings.gradle",
+            "build.gradle": "gradle.properties,gradlew,gradlew.bat,settings.gradle",
             "*.kt": "*.class",
             "*.java": "*.class"
         }
@@ -151,7 +151,9 @@
                 "type": "shell",
                 "command": "./gradlew",
                 "args": ["lint"],
-                "group": "test",
+                "group": {
+                    "kind": "test"
+                },
                 "presentation": {
                     "echo": true,
                     "reveal": "always",
