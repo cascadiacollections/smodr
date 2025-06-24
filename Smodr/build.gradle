@@ -89,7 +89,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.16.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.1.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.10'
-    implementation 'androidx.room:room-runtime:2.7.1'
+    implementation 'androidx.room:room-runtime:2.7.2'
     implementation 'com.google.guava:guava:31.1-android'
     
     // Window library dependencies - use stable 1.1.0 version
@@ -99,8 +99,8 @@ dependencies {
     // Add explicit dependency for ListenableFuture
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     
-    annotationProcessor 'androidx.room:room-compiler:2.7.1'
-    testImplementation 'androidx.room:room-testing:2.7.1'
+    annotationProcessor 'androidx.room:room-compiler:2.7.2'
+    testImplementation 'androidx.room:room-testing:2.7.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation 'androidx.annotation:annotation:1.9.1'
