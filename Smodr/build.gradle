@@ -13,7 +13,7 @@ buildscript {
         maven { url "https://repo1.maven.org/maven2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.0'
+        classpath 'com.android.tools.build:gradle:8.11.1'
         classpath 'com.google.gms:google-services:4.4.3'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
         classpath 'com.google.firebase:perf-plugin:1.4.2'
@@ -87,7 +87,7 @@ tasks.withType(KotlinCompile).configureEach {
 dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.8'
     implementation("androidx.core:core-ktx:1.16.0")
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.2.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.2.1'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.11'
     implementation 'androidx.room:room-runtime:2.7.2'
     implementation 'com.google.guava:guava:31.1-android'
@@ -126,5 +126,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:20.5.2'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.25"
     api project(path: ':common-android')
-    implementation 'androidx.annotation:annotation-experimental:1.5.0'
+    implementation 'androidx.annotation:annotation-experimental:1.5.1'
 }
