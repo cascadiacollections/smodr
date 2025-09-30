@@ -88,7 +88,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation("androidx.core:core-ktx:1.17.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.3.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.11'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
     implementation 'androidx.room:room-runtime:2.8.0'
     implementation 'com.google.guava:guava:31.1-android'
     
