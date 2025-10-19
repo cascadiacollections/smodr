@@ -9,15 +9,12 @@ buildscript {
         classpath 'com.google.gms:google-services:4.4.4'
         classpath 'com.android.tools.build:gradle:8.13.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.google.firebase:perf-plugin:1.4.2'
     }
 }
 
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
     tasks.withType(JavaCompile).configureEach {
         options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
     }

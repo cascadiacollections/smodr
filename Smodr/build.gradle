@@ -6,21 +6,6 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://repo1.maven.org/maven2/" }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.0'
-        classpath 'com.google.gms:google-services:4.4.4'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
-        classpath 'com.google.firebase:perf-plugin:1.4.2'
-    }
-    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
-}
-
 android {
     namespace 'com.kevintcoughlin.smodr'
     compileSdk 34
