@@ -25,9 +25,31 @@ if [ -f "./gradlew" ]; then
     chmod +x ./gradlew
 fi
 
+# Verify Gradle version and wrapper
+echo "🔍 Verifying Gradle 8.x setup..."
+./gradlew --version | grep "Gradle 8" > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "✅ Gradle 8.x detected"
+else
+    echo "⚠️  Warning: Expected Gradle 8.x, please verify gradle-wrapper.properties"
+fi
+
+# Enable Gradle configuration cache
+echo "⚡ Configuring Gradle for optimal performance..."
+if [ ! -f "gradle.properties" ]; then
+    echo "org.gradle.configuration-cache=true" >> gradle.properties
+    echo "org.gradle.daemon=true" >> gradle.properties
+fi
+
 # Install Gradle dependencies (this will also download and set up Gradle wrapper)
 echo "📥 Installing project dependencies..."
 ./gradlew dependencies --quiet > /dev/null 2>&1 || echo "⚠️  Dependencies installation completed with warnings (this is normal for first setup)"
+
+# Verify centralized dependency management
+echo "🔍 Verifying dependency management setup..."
+if grep -q "buildscript" build.gradle; then
+    echo "✅ Centralized dependency management detected in build.gradle"
+fi
 
 # Set up Git hooks if they exist
 if [ -d ".git/hooks" ]; then
@@ -35,6 +57,7 @@ if [ -d ".git/hooks" ]; then
     # This would be where we'd set up any pre-commit hooks, etc.
 fi
 
+echo ""
 echo "✅ Development environment setup complete!"
 echo ""
 echo "🎯 Quick start commands:"
@@ -43,4 +66,10 @@ echo "  ./gradlew lint           - Run Android lint"
 echo "  ./gradlew test           - Run tests"
 echo "  ./gradlew assembleDebug  - Build debug APK"
 echo ""
-echo "🔍 Check README.md for more detailed instructions."
+echo "📚 Documentation:"
+echo "  README.md          - Project overview"
+echo "  DEV_ENVIRONMENT.md - Development setup guide"
+echo "  COPILOT.md         - GitHub Copilot usage guide"
+echo ""
+echo "💡 Tip: GitHub Copilot is configured and ready to use!"
+echo "   Use Ctrl+I for inline suggestions and chat for help with Gradle/Android tasks."
