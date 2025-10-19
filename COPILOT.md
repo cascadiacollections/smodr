@@ -213,7 +213,7 @@ While the project currently uses centralized buildscript, Copilot can help migra
 If Copilot suggests outdated Gradle syntax:
 1. Specify "for Gradle 8.x" in your prompt
 2. Ask for "configuration cache compatible" implementations
-3. Verify against [Gradle 8.x documentation](https://docs.gradle.org/8.11.1/release-notes.html)
+3. Verify against [Gradle 8.x documentation](https://docs.gradle.org/8.13/release-notes.html)
 
 ## Privacy and Security
 
@@ -226,7 +226,7 @@ When using Copilot:
 ## Additional Resources
 
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
-- [Gradle 8.x Release Notes](https://docs.gradle.org/8.11.1/release-notes.html)
+- [Gradle 8.x Release Notes](https://docs.gradle.org/8.13/release-notes.html)
 - [Android Developer Guides](https://developer.android.com/docs)
 - [Kotlin Documentation](https://kotlinlang.org/docs/home.html)
 

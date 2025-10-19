@@ -17,7 +17,7 @@ The easiest way to get started is using the devcontainer:
 The devcontainer includes:
 - Java 17 (Temurin distribution)
 - Android SDK with API 34
-- Gradle 8.11.1
+- Gradle 8.13
 - All recommended VS Code extensions
 - Pre-configured development settings
 
@@ -100,7 +100,7 @@ The project includes several automated workflows:
 The project uses a centralized dependency management approach with Gradle 8.x:
 
 - **Centralized buildscript**: Root `build.gradle` contains shared dependencies and versions
-- **Gradle 8.11.1**: Modern Gradle features including configuration cache
+- **Gradle 8.13**: Modern Gradle features including configuration cache
 - **Kotlin version management**: Shared via `ext.kotlin_version` in root build script
 - **Configuration cache**: Enabled for faster builds (see `gradle.properties`)
 
@@ -139,6 +139,6 @@ The development environment is designed to provide a consistent, productive expe
 ## Additional Resources
 
 - **[COPILOT.md](COPILOT.md)**: Guide for using GitHub Copilot effectively
-- **[Gradle 8.x Documentation](https://docs.gradle.org/8.11.1/userguide/userguide.html)**: Official Gradle guide
+- **[Gradle 8.x Documentation](https://docs.gradle.org/8.13/userguide/userguide.html)**: Official Gradle guide
 - **[Android Developer Guides](https://developer.android.com/docs)**: Official Android documentation
 - **[Kotlin Documentation](https://kotlinlang.org/docs/home.html)**: Official Kotlin resources
