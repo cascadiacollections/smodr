@@ -3,18 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-buildscript {
-    ext.kotlin_version = '1.9.25'
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://repo1.maven.org/maven2/" }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 android {
     compileSdk 34
     defaultConfig {
