@@ -3,7 +3,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://repo1.maven.org/maven2/" }
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.4.4'
