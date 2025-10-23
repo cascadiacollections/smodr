@@ -12,6 +12,8 @@ SModcast Podcast Player for Android
 
 For detailed development environment setup instructions, see [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md).
 
+For GitHub Copilot usage guidelines, see [COPILOT.md](COPILOT.md).
+
 ### Quick Start
 
 1. **Using devcontainer (recommended)**: Open in VS Code with Dev Containers extension
@@ -23,3 +25,5 @@ The project includes modern development tooling:
 - 🚀 GitHub Actions CI/CD
 - 🤖 Dependabot dependency updates
 - 📝 EditorConfig for consistent formatting
+- 🤖 GitHub Copilot configuration and guides
+- ⚡ Gradle 8.x with configuration cache

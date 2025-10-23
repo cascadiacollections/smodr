@@ -12,6 +12,11 @@
         },
         "ghcr.io/devcontainers/features/node:1": {
             "version": "18"
+        },
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "configureZshAsDefaultShell": true,
+            "installOhMyZsh": true
         }
     },
     "customizations": {
@@ -42,16 +47,36 @@
                 "java.compile.nullAnalysis.mode": "automatic",
                 "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
                 "gradle.nestedProjects": true,
+                "gradle.javaDebug": true,
                 "files.exclude": {
                     "**/.gradle": true,
                     "**/build": true,
                     "**/.idea": true
                 },
+                "files.watcherExclude": {
+                    "**/.gradle/**": true,
+                    "**/build/**": true,
+                    "**/.idea/**": true
+                },
                 "kotlin.suggest.autocomplete.showHighPriorityOnly": true,
                 "git.autofetch": true,
                 "editor.formatOnSave": true,
                 "editor.codeActionsOnSave": {
-                    "source.organizeImports": "explicit"
+                    "source.organizeImports": "explicit",
+                    "source.fixAll": "explicit"
+                },
+                "github.copilot.enable": {
+                    "*": true,
+                    "yaml": true,
+                    "plaintext": false,
+                    "markdown": true,
+                    "gradle": true,
+                    "groovy": true,
+                    "kotlin": true,
+                    "java": true
+                },
+                "github.copilot.advanced": {
+                    "debug.overrideEngine": "gpt-4"
                 }
             }
         }

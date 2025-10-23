@@ -17,7 +17,7 @@ The easiest way to get started is using the devcontainer:
 The devcontainer includes:
 - Java 17 (Temurin distribution)
 - Android SDK with API 34
-- Gradle 8.11.1
+- Gradle 8.13
 - All recommended VS Code extensions
 - Pre-configured development settings
 
@@ -51,6 +51,17 @@ The following extensions are automatically suggested:
 - **Gradle for Java**: `ms-vscode.gradle-for-java`
 - **GitLens**: `eamodio.gitlens`
 - **GitHub Copilot**: `github.copilot` (if you have access)
+- **GitHub Copilot Chat**: `github.copilot-chat` (for interactive AI assistance)
+
+#### Using GitHub Copilot
+
+GitHub Copilot is fully configured and ready to use in the development environment. For detailed guidance on using Copilot effectively with this project's Gradle 8.x setup, see [COPILOT.md](COPILOT.md).
+
+Quick start:
+- Copilot provides AI-powered code suggestions as you type
+- Use `Ctrl+I` (or `Cmd+I`) for inline chat
+- Ask Copilot Chat for help with Gradle, Android, and Kotlin tasks
+- Copilot understands the project's centralized dependency management
 
 ### Build Tasks
 
@@ -86,6 +97,19 @@ The project includes several automated workflows:
 
 ## Dependency Management
 
+The project uses a centralized dependency management approach with Gradle 8.x:
+
+- **Centralized buildscript**: Root `build.gradle` contains shared dependencies and versions
+- **Gradle 8.13**: Modern Gradle features including configuration cache
+- **Kotlin version management**: Shared via `ext.kotlin_version` in root build script
+- **Configuration cache**: Enabled for faster builds (see `gradle.properties`)
+
+When adding dependencies:
+1. Build tool dependencies go in the root `build.gradle` buildscript block
+2. Module-specific dependencies go in module `build.gradle` files
+3. Check for version conflicts with existing dependencies
+4. Use GitHub Copilot for dependency suggestions (see [COPILOT.md](COPILOT.md))
+
 [Dependabot](https://github.com/dependabot) is configured to automatically:
 - Update GitHub Actions weekly (Mondays)
 - Update Gradle dependencies weekly (Tuesdays)
@@ -108,5 +132,13 @@ When contributing:
 2. Run `./gradlew lint` before submitting
 3. Ensure all GitHub Actions pass
 4. Follow the existing code style (enforced by EditorConfig)
+5. Leverage GitHub Copilot for code suggestions (see [COPILOT.md](COPILOT.md))
 
 The development environment is designed to provide a consistent, productive experience across all contributors.
+
+## Additional Resources
+
+- **[COPILOT.md](COPILOT.md)**: Guide for using GitHub Copilot effectively
+- **[Gradle 8.x Documentation](https://docs.gradle.org/8.13/userguide/userguide.html)**: Official Gradle guide
+- **[Android Developer Guides](https://developer.android.com/docs)**: Official Android documentation
+- **[Kotlin Documentation](https://kotlinlang.org/docs/home.html)**: Official Kotlin resources

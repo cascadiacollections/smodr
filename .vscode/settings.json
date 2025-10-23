@@ -39,6 +39,16 @@
         "source.organizeImports": "explicit",
         "source.fixAll": "explicit"
     },
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": false,
+        "markdown": true,
+        "gradle": true,
+        "groovy": true,
+        "kotlin": true,
+        "java": true
+    },
     "editor.rulers": [120],
     "editor.tabSize": 4,
     "editor.insertSpaces": true,

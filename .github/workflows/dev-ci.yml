@@ -16,12 +16,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
@@ -37,7 +43,26 @@ jobs:
         run: chmod +x gradlew
 
       - name: Validate Gradle wrapper
-        run: ./gradlew wrapper --gradle-version 8.11.1 --distribution-type all
+        run: ./gradlew wrapper --gradle-version 8.13 --distribution-type all
+
+      - name: Verify Gradle 8.x compatibility
+        run: |
+          echo "🔍 Verifying Gradle 8.x setup..."
+          ./gradlew --version | tee gradle-version.txt
+          grep "Gradle 8" gradle-version.txt || (echo "❌ Expected Gradle 8.x" && exit 1)
+          echo "✅ Gradle 8.x confirmed"
+
+      - name: Verify centralized dependency management
+        run: |
+          echo "🔍 Checking centralized dependency management..."
+          if grep -q "buildscript" build.gradle; then
+            echo "✅ Centralized buildscript configuration found in build.gradle"
+          else
+            echo "⚠️  Warning: No centralized buildscript found"
+          fi
+          if grep -q "ext.kotlin_version" build.gradle; then
+            echo "✅ Shared Kotlin version variable found"
+          fi
 
       - name: Check devcontainer configuration
         run: |
@@ -63,6 +88,14 @@ jobs:
           fi
           echo "✅ VS Code settings found"
 
+      - name: Check Copilot documentation
+        run: |
+          if [ -f "COPILOT.md" ]; then
+            echo "✅ COPILOT.md documentation found"
+          else
+            echo "⚠️  COPILOT.md not found (optional)"
+          fi
+
       - name: Validate project structure
         run: |
           if [ -f "verify.sh" ]; then
@@ -73,7 +106,13 @@ jobs:
           fi
 
       - name: Run quick build check
-        run: ./gradlew assembleDebug --dry-run
+        run: ./gradlew assembleDebug --dry-run --configuration-cache
+
+      - name: Test configuration cache
+        run: |
+          echo "🔍 Testing Gradle configuration cache..."
+          ./gradlew help --configuration-cache
+          echo "✅ Configuration cache compatible"
 
       - name: Summary
         run: |
@@ -84,3 +123,5 @@ jobs:
           echo "  - VS Code workspace with recommended extensions"
           echo "  - GitHub Actions for CI/CD"
           echo "  - Dependabot for dependency updates"
+          echo "  - Gradle 8.x with configuration cache support"
+          echo "  - Centralized dependency management"
