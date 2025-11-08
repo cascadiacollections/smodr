@@ -1,65 +1,56 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# Dependabot configuration for automated dependency updates
+# Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
+  # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     reviewers:
       - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "github-actions"
     commit-message:
-      prefix: "build(deps)"
+      prefix: "chore(deps)"
+      include: "scope"
     pull-request-branch-name:
       separator: "-"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "all"
-    # Auto-approve and merge configuration
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-    automerge: true
-    commit-message:
-      prefix: "deps"
-      include: "scope"
+    open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
+  # Gradle dependencies
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     reviewers:
       - "KevinTCoughlin"
     labels:
       - "dependencies"
       - "gradle"
     commit-message:
-      prefix: "build(deps)"
+      prefix: "chore(deps)"
+      include: "scope"
     pull-request-branch-name:
       separator: "-"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "all"
-    # Grouping minor and patch updates
+    open-pull-requests-limit: 10
+    # Group non-major updates together
     groups:
-      minor:
-        pattern: "^.*$"
-        update-types: ["minor", "patch"]
-    # Auto-approve and merge configuration
+      gradle-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore major version updates (review manually)
     ignore:
       - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-    automerge: true
-    commit-message:
-      prefix: "deps"
-      include: "scope"
-
-merge-strategy: "squash"
+        update-types: [ "version-update:semver-major" ]

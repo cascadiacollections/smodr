@@ -1,0 +1,130 @@
+# Label configuration for automatic syncing
+# Documentation: https://github.com/EndBug/label-sync
+
+labels:
+  # Type labels
+  - name: bug
+    color: d73a4a
+    description: Something isn't working correctly
+
+  - name: enhancement
+    color: a2eeef
+    description: New feature or request
+
+  - name: documentation
+    color: 0075ca
+    description: Improvements or additions to documentation
+
+  - name: refactoring
+    color: fbca04
+    description: Code improvements without functional changes
+
+  - name: performance
+    color: 0e8a16
+    description: Performance improvements
+
+  # Priority labels
+  - name: 'priority: critical'
+    color: b60205
+    description: Critical priority
+
+  - name: 'priority: high'
+    color: d93f0b
+    description: High priority
+
+  - name: 'priority: medium'
+    color: fbca04
+    description: Medium priority
+
+  - name: 'priority: low'
+    color: 0e8a16
+    description: Low priority
+
+  # Status labels
+  - name: 'status: blocked'
+    color: d73a4a
+    description: Blocked by another issue or PR
+
+  - name: 'status: in progress'
+    color: 0052cc
+    description: Work in progress
+
+  - name: 'status: needs review'
+    color: fbca04
+    description: Awaiting code review
+
+  - name: 'status: ready'
+    color: 0e8a16
+    description: Ready to be worked on
+
+  - name: 'status: wontfix'
+    color: ffffff
+    description: This will not be worked on
+
+  # Area labels
+  - name: 'area: ui'
+    color: 1d76db
+    description: User interface changes
+
+  - name: 'area: player'
+    color: 1d76db
+    description: Podcast player functionality
+
+  - name: 'area: feed'
+    color: 1d76db
+    description: RSS feed handling
+
+  - name: 'area: database'
+    color: 1d76db
+    description: Database and persistence
+
+  - name: 'area: networking'
+    color: 1d76db
+    description: Network operations
+
+  - name: 'area: build'
+    color: 1d76db
+    description: Build system and configuration
+
+  # Dependencies
+  - name: dependencies
+    color: 0366d6
+    description: Dependency updates
+
+  - name: github-actions
+    color: 000000
+    description: GitHub Actions related
+
+  - name: gradle
+    color: 02303a
+    description: Gradle related
+
+  # Special labels
+  - name: 'good first issue'
+    color: 7057ff
+    description: Good for newcomers
+
+  - name: 'help wanted'
+    color: 008672
+    description: Extra attention is needed
+
+  - name: triage
+    color: fef2c0
+    description: Needs triage
+
+  - name: duplicate
+    color: cfd3d7
+    description: This issue or PR already exists
+
+  - name: invalid
+    color: e4e669
+    description: This doesn't seem right
+
+  - name: question
+    color: d876e3
+    description: Further information is requested
+
+  - name: breaking
+    color: d73a4a
+    description: Breaking change
+

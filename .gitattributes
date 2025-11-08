@@ -1,0 +1,60 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Source code
+*.java text diff=java
+*.kt text diff=kotlin
+*.kts text diff=kotlin
+*.gradle text diff=gradle
+*.xml text
+*.json text
+*.properties text
+
+# Documentation
+*.md text diff=markdown
+*.txt text
+LICENSE text
+
+# Scripts
+*.sh text eol=lf
+*.bat text eol=crlf
+gradlew text eol=lf
+*.ps1 text eol=crlf
+
+# Graphics
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+*.webp binary
+
+# Archives
+*.jar binary
+*.war binary
+*.aar binary
+*.apk binary
+*.aab binary
+*.zip binary
+*.tar binary
+*.gz binary
+
+# Fonts
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+
+# Other
+*.pdf binary
+
+# Gradle wrapper
+gradle-wrapper.jar binary
+
+# Linguist overrides for GitHub language detection
+*.kt linguist-language=Kotlin
+*.gradle linguist-language=Gradle
+build.gradle linguist-vendored=false
+*.xml linguist-detectable=true
+

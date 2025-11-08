@@ -1,0 +1,27 @@
+# Code Owners
+# This file defines individuals or teams responsible for code in this repository
+# Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @KevinTCoughlin
+
+# Android application code
+/Smodr/ @KevinTCoughlin
+
+# Common Android library
+/common-android/ @KevinTCoughlin
+
+# Build configuration
+*.gradle @KevinTCoughlin
+gradle.properties @KevinTCoughlin
+settings.gradle @KevinTCoughlin
+
+# ProGuard rules
+**/proguard-rules.pro @KevinTCoughlin
+
+# GitHub Actions and workflows
+/.github/ @KevinTCoughlin
+
+# Documentation
+*.md @KevinTCoughlin
+
