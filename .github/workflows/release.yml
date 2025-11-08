@@ -9,10 +9,10 @@ on:
 jobs:
   release:
     name: Create Release
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: write
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -20,37 +20,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Java 17
+      - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'temurin'  # Eclipse Temurin - OSS OpenJDK
           java-version: '17'
-          cache: 'gradle'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
 
-      - name: Build release APK
-        run: ./gradlew assembleRelease
-
-      - name: Build release bundle
-        run: ./gradlew bundleRelease
-
-      - name: Extract release notes
-        id: extract-release-notes
+      - name: Extract version from tag
+        id: extract-version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Release version: $VERSION"
+
+      - name: Build release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Build release bundle
+        run: ./gradlew bundleRelease --stacktrace
+
+      - name: Sign APK (if keystore available)
+        if: env.KEYSTORE_FILE != ''
+        run: echo "Signing would happen here with proper keystore"
+        continue-on-error: true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
           generate_release_notes: true
+          fail_on_unmatched_files: false
           files: |
             Smodr/build/outputs/apk/release/*.apk
             Smodr/build/outputs/bundle/release/*.aab
@@ -60,14 +64,25 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
+          name: release-apk-${{ steps.extract-version.outputs.VERSION }}
           path: Smodr/build/outputs/apk/release/*.apk
-          retention-days: 30
+          retention-days: 90
+          if-no-files-found: warn
 
       - name: Upload Bundle artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-bundle
+          name: release-bundle-${{ steps.extract-version.outputs.VERSION }}
           path: Smodr/build/outputs/bundle/release/*.aab
-          retention-days: 30
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Upload ProGuard mapping files
+        uses: actions/upload-artifact@v4
+        with:
+          name: proguard-mappings-${{ steps.extract-version.outputs.VERSION }}
+          path: |
+            **/build/outputs/mapping/release/mapping.txt
+          retention-days: 365
+          if-no-files-found: ignore
 

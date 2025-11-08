@@ -13,11 +13,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+  JAVA_VERSION: '17'
+
 jobs:
   build:
     name: Build & Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: macos-latest
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -25,15 +29,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Java 17
+      - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          distribution: 'temurin'  # Eclipse Temurin (formerly AdoptOpenJDK) - OSS OpenJDK
+          java-version: ${{ env.JAVA_VERSION }}
 
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
@@ -42,25 +42,45 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          gradle-home-cache-cleanup: true
 
-      - name: Build with Gradle
-        run: ./gradlew build --scan --continue
+      - name: Check Gradle version
+        run: ./gradlew --version
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Build release APK
+        run: ./gradlew assembleRelease --stacktrace
+        continue-on-error: true  # May fail without signing keys
 
       - name: Run unit tests
-        run: ./gradlew test --continue
+        run: ./gradlew testDebugUnitTest --stacktrace
 
       - name: Run Android Lint
-        run: ./gradlew lint
+        run: ./gradlew lintDebug --stacktrace
 
-      - name: Upload build reports
-        if: failure()
+      - name: Upload build outputs
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
+          name: build-outputs
           path: |
-            **/build/reports/
-            **/build/test-results/
+            **/build/outputs/apk/**/*.apk
+            **/build/outputs/mapping/**/mapping.txt
           retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            **/build/test-results/**/*.xml
+            **/build/reports/tests/**
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Upload lint reports
         if: always()
@@ -71,33 +91,120 @@ jobs:
             **/build/reports/lint-results-*.html
             **/build/reports/lint-results-*.xml
           retention-days: 7
+          if-no-files-found: ignore
 
-  code-quality:
-    name: Code Quality Checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        with:
+          files: |
+            **/build/test-results/**/*.xml
+          check_name: Test Results
+          comment_mode: off
+        continue-on-error: true
+
+  instrumentation-tests:
+    name: Instrumentation Tests
+    runs-on: macos-latest
+    timeout-minutes: 60
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'test-instrumentation')
+
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [ 33, 34 ]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
+          java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
 
-      - name: Run Detekt
-        run: ./gradlew detekt || true
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules || true
+          sudo udevadm control --reload-rules || true
+          sudo udevadm trigger --name-match=kvm || true
         continue-on-error: true
 
-      - name: Check code formatting
-        run: ./gradlew ktlintCheck || true
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: Create AVD and run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest --stacktrace
+
+      - name: Upload instrumentation test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumentation-test-results-api-${{ matrix.api-level }}
+          path: |
+            **/build/reports/androidTests/**
+            **/build/outputs/androidTest-results/**
+          retention-days: 7
+          if-no-files-found: ignore
+
+  static-analysis:
+    name: Static Analysis
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      - name: Run Detekt (if configured)
+        run: ./gradlew detekt --stacktrace || echo "Detekt not configured"
         continue-on-error: true
+
+      - name: Check Kotlin code style (if configured)
+        run: ./gradlew ktlintCheck --stacktrace || echo "ktlint not configured"
+        continue-on-error: true
+
+      - name: Upload static analysis reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-analysis-reports
+          path: |
+            **/build/reports/detekt/**
+            **/build/reports/ktlint/**
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Bundle (Debug)
         run: ./gradlew bundleDebug

@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "CodeQL Security Analysis"
 
 on:
   push:
@@ -7,11 +7,13 @@ on:
     branches: [ main ]
   schedule:
     - cron: '44 6 * * 0'  # Runs every Sunday at 6:44 AM
+  workflow_dispatch:
 
 jobs:
   analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
+    name: Analyze (${{ matrix.language }})
+    runs-on: macos-latest
+    timeout-minutes: 45
     permissions:
       actions: read
       contents: read
@@ -20,25 +22,39 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java' ]
+        language: [ 'java-kotlin' ]
+        # CodeQL supports 'java-kotlin' as a combined language identifier
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4.2.2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+      - name: Setup Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'  # Eclipse Temurin - OSS OpenJDK
+          java-version: '17'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
+          # If you want to specify custom queries:
+          # config-file: ./.github/codeql/codeql-config.yml
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+          upload: true
