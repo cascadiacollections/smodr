@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
-import com.kevintcoughlin.smodr.models.Item
-import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapterConfig
+import com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment
+import com.kevintcoughlin.smodr.models.Item
 import com.kevintcoughlin.smodr.viewholders.EpisodeView
+import com.kevintcoughlin.smodr.viewholders.EpisodeViewHolder
 
 class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>() {
     override val adapter: BinderRecyclerAdapter<Item, EpisodeViewHolder> by lazy {
         BinderRecyclerAdapter(
             binder = EpisodeView(), // Use the new binder
-            config = BinderRecyclerAdapterConfig.Builder<Item>()
+            config = BinderRecyclerAdapterConfig.Builder<Item, EpisodeViewHolder>()
                 .enableDiffUtil(true) // Re-enable DiffUtil
                 .build()
         )

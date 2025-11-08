@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
     private val binder: ViewHolderBinder<T, VH>,
-    private val config: BinderRecyclerAdapterConfig<T> = BinderRecyclerAdapterConfig.Builder<T>().build()
+    private val config: BinderRecyclerAdapterConfig<T, VH> = BinderRecyclerAdapterConfig.Builder<T, VH>()
+        .build()
 ) : RecyclerView.Adapter<VH>() {
 
     /**
@@ -84,6 +85,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
             items = newItems
             notifyDataSetChanged()
         }
+
     }
 
     /**
@@ -158,7 +160,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      *
      * @param item The item to remove
      */
-    fun removeItem(item: T){
+    fun removeItem(item: T) {
         val updatedItems = items.toMutableList().apply { remove(item) }
         updateItems(updatedItems)
     }
@@ -229,43 +231,30 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
  * Uses the Builder pattern for better readability with multiple options.
  *
  * @param T The type of the data model.
+ * @param VH The ViewHolder type, must extend RecyclerView.ViewHolder.
  */
-class BinderRecyclerAdapterConfig<T> private constructor(
+class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private constructor(
+    val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, VH>?,
+    val viewTypeResolver: ((T) -> Int)?,
     val enableDiffUtil: Boolean,
-    val diffUtilCallback: DiffUtil.Callback?,
-    val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>?,
-    val viewTypeResolver: ((T) -> Int)?
+    val diffUtilCallback: DiffUtil.Callback?
 ) {
 
     /**
      * Builder class for creating BinderRecyclerAdapterConfig instances.
      */
-    class Builder<T>(
+    class Builder<T, VH : RecyclerView.ViewHolder>(
+        private var adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, VH>? = null,
+        private var viewTypeResolver: ((T) -> Int)? = null,
         private var enableDiffUtil: Boolean = true,
-        private var diffUtilCallback: DiffUtil.Callback? = null,
-        private var adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>? = null,
-        private var viewTypeResolver: ((T) -> Int)? = null
+        private var diffUtilCallback: DiffUtil.Callback? = null
     ) {
-        /**
-         * Enables or disables the use of DiffUtil for item updates.
-         *
-         * @param enable True to enable DiffUtil, false otherwise.
-         */
-        fun enableDiffUtil(enable: Boolean) = apply { this.enableDiffUtil = enable }
-
-        /**
-         * Sets a custom DiffUtil.Callback implementation.
-         *
-         * @param callback The custom DiffUtil.Callback.
-         */
-        fun diffUtilCallback(callback: DiffUtil.Callback?) = apply { this.diffUtilCallback = callback }
-
         /**
          * Sets an optional AdapterCallback for lifecycle events.
          *
          * @param callback The AdapterCallback.
          */
-        fun adapterCallback(callback: BinderRecyclerAdapter.AdapterCallback<T, RecyclerView.ViewHolder>?) =
+        fun adapterCallback(callback: BinderRecyclerAdapter.AdapterCallback<T, VH>?) =
             apply { this.adapterCallback = callback }
 
         /**
@@ -276,12 +265,32 @@ class BinderRecyclerAdapterConfig<T> private constructor(
         fun viewTypeResolver(resolver: ((T) -> Int)?) = apply { this.viewTypeResolver = resolver }
 
         /**
+         * Enables or disables DiffUtil for efficient list updates.
+         *
+         * @param enable Whether to enable DiffUtil.
+         */
+        fun enableDiffUtil(enable: Boolean) = apply { this.enableDiffUtil = enable }
+
+        /**
+         * Sets a custom DiffUtil.Callback for item comparison.
+         *
+         * @param callback The custom DiffUtil.Callback.
+         */
+        fun diffUtilCallback(callback: DiffUtil.Callback?) =
+            apply { this.diffUtilCallback = callback }
+
+        /**
          * Builds the BinderRecyclerAdapterConfig instance.
          *
          * @return The created BinderRecyclerAdapterConfig.
          */
-        fun build(): BinderRecyclerAdapterConfig<T> =
-            BinderRecyclerAdapterConfig(enableDiffUtil, diffUtilCallback, adapterCallback, viewTypeResolver)
+        fun build(): BinderRecyclerAdapterConfig<T, VH> =
+            BinderRecyclerAdapterConfig(
+                adapterCallback,
+                viewTypeResolver,
+                enableDiffUtil,
+                diffUtilCallback
+            )
     }
 }
 

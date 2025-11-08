@@ -8,6 +8,9 @@
 #   public *;
 #}
 
+# Suppress warnings for Java 9+ string concatenation factory not available on Android
+-dontwarn java.lang.invoke.StringConcatFactory
+
 -keep class androidx.core.** { *; }
 -keep interface androidx.core.** { *; }
 
@@ -51,16 +54,12 @@
 
 # Keep BinderRecyclerAdapter and all its inner classes
 -keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter { *; }
--keepclassmembers class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter$Binder { *; }
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter$** { *; }
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapterConfig { *; }
+-keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapterConfig$** { *; }
+-keep class com.cascadiacollections.jamoka.adapter.DefaultBinder { *; }
 
 # Keep BinderRecyclerFragment and all its inner classes
 -keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
--keepclassmembers class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$OnItemSelected { *; }
+-keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$** { *; }
 
-# Keep BinderRecyclerAdapter and its inner classes
--keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter { *; }
--keep class com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter$Binder { *; }
-
-# Keep BinderRecyclerFragment and its inner classes
--keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
--keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$OnItemSelected { *; }
