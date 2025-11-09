@@ -207,22 +207,23 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-      - name: Bundle (Debug)
-        run: ./gradlew bundleDebug
+      # Temporarily disabled - needs path corrections (app -> Smodr)
+      # - name: Bundle (Debug)
+      #   run: ./gradlew bundleDebug
 
-      - name: Upload APK (Debug)
-        uses: actions/upload-artifact@v5
-        with:
-          name: Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+      # - name: Upload APK (Debug)
+      #   uses: actions/upload-artifact@v5
+      #   with:
+      #     name: Debug-APK
+      #     path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Build Bundle (Release)
-        if: github.ref == 'refs/heads/main'
-        run: ./gradlew bundleRelease
+      # - name: Build Bundle (Release)
+      #   if: github.ref == 'refs/heads/main'
+      #   run: ./gradlew bundleRelease
 
-      - name: Upload Bundle (Release)
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v5
-        with:
-          name: Release-Bundle
-          path: app/build/outputs/bundle/release/app-release.aab
+      # - name: Upload Bundle (Release)
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: actions/upload-artifact@v5
+      #   with:
+      #     name: Release-Bundle
+      #     path: app/build/outputs/bundle/release/app-release.aab
