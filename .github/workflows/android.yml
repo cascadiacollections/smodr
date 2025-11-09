@@ -26,8 +26,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v5
@@ -44,14 +42,8 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           gradle-home-cache-cleanup: true
 
-      - name: Build debug APK and run tests
-        run: ./gradlew assembleDebug testDebugUnitTest lintDebug --parallel --stacktrace
-
-      - name: Run static analysis (if configured)
-        run: |
-          ./gradlew detekt --parallel --stacktrace || echo "Detekt not configured"
-          ./gradlew ktlintCheck --parallel --stacktrace || echo "ktlint not configured"
-        continue-on-error: true
+      - name: Build, test and analyze
+        run: ./gradlew assembleDebug testDebugUnitTest lintDebug detekt ktlintCheck --parallel --stacktrace --continue
 
       - name: Upload build outputs
         if: success()
