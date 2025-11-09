@@ -9,6 +9,9 @@ import android.os.IBinder
 import android.util.Log
 import kotlin.math.min
 
+/**
+ * Interface defining media service operations.
+ */
 interface IMediaService {
     fun seekTo(milliseconds: Int)
     val isPlaying: Boolean
@@ -23,9 +26,16 @@ interface IMediaService {
     fun setPlaybackListener(listener: MediaService.IPlaybackListener?)
 }
 
+/**
+ * Service for managing media playback with MediaPlayer.
+ * Implements playback controls, seeking, and listener notifications.
+ */
 class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener,
     MediaPlayer.OnCompletionListener, IMediaService {
 
+    /**
+     * Interface for playback lifecycle callbacks.
+     */
     interface IPlaybackListener {
         fun onStartPlayback()
         fun onStopPlayback()
@@ -85,7 +95,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPrepa
         get() = mediaPlayer.isPlaying
 
     override val duration: Int
-        get() = mediaPlayer.duration // Exposing the duration property
+        get() = mediaPlayer.duration
 
     override fun seekTo(milliseconds: Int) {
         mediaPlayer.seekTo(milliseconds)
@@ -107,16 +117,16 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPrepa
     }
 
     override fun forward() {
-        mediaPlayer.let {
-            val newPosition = min(it.currentPosition + SEEK_INTERVAL, it.duration)
-            it.seekTo(newPosition)
+        mediaPlayer.run {
+            val newPosition = min(currentPosition + SEEK_INTERVAL, duration)
+            seekTo(newPosition)
         }
     }
 
     override fun rewind() {
-        mediaPlayer.let {
-            val newPosition = (it.currentPosition - SEEK_INTERVAL).coerceAtLeast(0)
-            it.seekTo(newPosition)
+        mediaPlayer.run {
+            val newPosition = (currentPosition - SEEK_INTERVAL).coerceAtLeast(0)
+            seekTo(newPosition)
         }
     }
 
@@ -137,11 +147,17 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPrepa
         resumePlayback()
     }
 
+    /**
+     * Starts playback of media from the given URL.
+     *
+     * @param url The URI of the media to play
+     */
     fun startPlayback(url: Uri?) {
+        url ?: return
         try {
             if (mediaPlayer.isPlaying) stopPlayback()
             mediaPlayer.reset()
-            mediaPlayer.setDataSource(this, url ?: return)
+            mediaPlayer.setDataSource(this, url)
             mediaPlayer.prepareAsync()
         } catch (e: Exception) {
             Log.e(TAG, "Error starting playback: ${e.message}", e)
