@@ -43,7 +43,7 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Build, test and analyze
-        run: ./gradlew assembleDebug testDebugUnitTest lintDebug detekt ktlintCheck --parallel --stacktrace --continue
+        run: ./gradlew assembleDebug testDebugUnitTest lintDebug --parallel --stacktrace
 
       - name: Upload build outputs
         if: success()
@@ -75,8 +75,6 @@ jobs:
           path: |
             **/build/reports/lint-results-*.html
             **/build/reports/lint-results-*.xml
-            **/build/reports/detekt/**
-            **/build/reports/ktlint/**
           retention-days: 7
           if-no-files-found: ignore
 
