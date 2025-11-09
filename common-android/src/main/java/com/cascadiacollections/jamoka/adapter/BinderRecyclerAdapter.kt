@@ -48,6 +48,9 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
 
     /**
      * Optional callbacks for lifecycle events.
+     * 
+     * This interface provides hooks for monitoring adapter lifecycle events.
+     * Both methods have default implementations, making the interface optional to implement.
      */
     interface AdapterCallback<T, VH : RecyclerView.ViewHolder> {
         /**
@@ -70,22 +73,32 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
     private var items: List<T> = emptyList()
 
     /**
+     * Returns a read-only view of the current items in the adapter.
+     * 
+     * @return An immutable list of items.
+     */
+    val currentItems: List<T>
+        get() = items
+
+    /**
      * Updates the adapter's data set and uses DiffUtil for efficient rendering if enabled.
      *
      * @param newItems The new list of items.
      */
     @SuppressLint("NotifyDataSetChanged")
     fun updateItems(newItems: List<T>) {
-        if (config.enableDiffUtil) {
-            val diffCallback = config.diffUtilCallback ?: DefaultDiffUtilCallback(items, newItems)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            items = newItems
-            diffResult.dispatchUpdatesTo(this)
-        } else {
-            items = newItems
-            notifyDataSetChanged()
+        when {
+            config.enableDiffUtil -> {
+                val diffCallback = config.diffUtilCallback ?: DefaultDiffUtilCallback(items, newItems)
+                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                items = newItems
+                diffResult.dispatchUpdatesTo(this)
+            }
+            else -> {
+                items = newItems
+                notifyDataSetChanged()
+            }
         }
-
     }
 
     /**
@@ -104,9 +117,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      * @throws IndexOutOfBoundsException if the index is out of range.
      */
     fun addItem(item: T, index: Int) {
-        if (index < 0 || index > items.size) {
-            throw IndexOutOfBoundsException("Invalid index: $index, size: ${items.size}")
-        }
+        require(index in 0..items.size) { "Invalid index: $index, size: ${items.size}" }
         val updatedItems = items.toMutableList().apply { add(index, item) }
         updateItems(updatedItems)
     }
@@ -124,12 +135,10 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      * Inserts multiple items at a specific index in the list and notifies the adapter.
      * @param newItems The new items to add.
      * @param index The index to add the item
-     * @throws IndexOutOfBoundsException if the index is out of range.
+     * @throws IllegalArgumentException if the index is out of range.
      */
     fun addItems(newItems: List<T>, index: Int) {
-        if (index < 0 || index > items.size) {
-            throw IndexOutOfBoundsException("Invalid index: $index, size: ${items.size}")
-        }
+        require(index in 0..items.size) { "Invalid index: $index, size: ${items.size}" }
         val updatedItems = items.toMutableList().apply { addAll(index, newItems) }
         updateItems(updatedItems)
     }
@@ -145,12 +154,10 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
      * Removes an item at the specified position.
      *
      * @param position The position of the item to remove.
-     * @throws IndexOutOfBoundsException if the position is out of range.
+     * @throws IllegalArgumentException if the position is out of range.
      */
     fun removeItemAt(position: Int) {
-        if (position !in items.indices) {
-            throw IndexOutOfBoundsException("Invalid position: $position, size: ${items.size}")
-        }
+        require(position in items.indices) { "Invalid position: $position, size: ${items.size}" }
         val updatedItems = items.toMutableList().apply { removeAt(position) }
         updateItems(updatedItems)
     }
@@ -195,6 +202,7 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
 
     /**
      * Default implementation of DiffUtil.Callback for basic comparisons.
+     * Uses Kotlin's null-safe operators for concise equality checks.
      */
     private class DefaultDiffUtilCallback<T>(
         private val oldList: List<T>,
@@ -204,44 +212,35 @@ class BinderRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
         override fun getOldListSize(): Int = oldList.size
         override fun getNewListSize(): Int = newList.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList.getOrNull(oldItemPosition)
-            val newItem = newList.getOrNull(newItemPosition)
-            return if (oldItem != null && newItem != null) {
-                oldItem == newItem
-            } else {
-                oldItem == null && newItem == null
-            }
-        }
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList.getOrNull(oldItemPosition)
-            val newItem = newList.getOrNull(newItemPosition)
-            return if (oldItem != null && newItem != null) {
-                oldItem == newItem // Rely on equals() for content comparison
-            } else {
-                oldItem == null && newItem == null
-            }
-        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
     }
 }
 
 /**
  * Configuration class for BinderRecyclerAdapter to customize behavior.
- * Uses the Builder pattern for better readability with multiple options.
+ * Uses modern Kotlin data class pattern with default parameters for better ergonomics.
  *
  * @param T The type of the data model.
  * @param VH The ViewHolder type, must extend RecyclerView.ViewHolder.
+ * @property adapterCallback Optional callback for lifecycle events.
+ * @property viewTypeResolver Optional lambda to resolve item view types.
+ * @property enableDiffUtil Whether to use DiffUtil for efficient list updates. Defaults to true.
+ * @property diffUtilCallback Optional custom DiffUtil.Callback for item comparison.
  */
-class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private constructor(
-    val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, VH>?,
-    val viewTypeResolver: ((T) -> Int)?,
-    val enableDiffUtil: Boolean,
-    val diffUtilCallback: DiffUtil.Callback?
+data class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder>(
+    val adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, VH>? = null,
+    val viewTypeResolver: ((T) -> Int)? = null,
+    val enableDiffUtil: Boolean = true,
+    val diffUtilCallback: DiffUtil.Callback? = null
 ) {
 
     /**
      * Builder class for creating BinderRecyclerAdapterConfig instances.
+     * Retained for backward compatibility with existing code.
      */
     class Builder<T, VH : RecyclerView.ViewHolder>(
         private var adapterCallback: BinderRecyclerAdapter.AdapterCallback<T, VH>? = null,
@@ -253,6 +252,7 @@ class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private const
          * Sets an optional AdapterCallback for lifecycle events.
          *
          * @param callback The AdapterCallback.
+         * @return This builder for chaining.
          */
         fun adapterCallback(callback: BinderRecyclerAdapter.AdapterCallback<T, VH>?) =
             apply { this.adapterCallback = callback }
@@ -261,6 +261,7 @@ class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private const
          * Sets a lambda function to resolve item view types based on the data model.
          *
          * @param resolver The view type resolver lambda.
+         * @return This builder for chaining.
          */
         fun viewTypeResolver(resolver: ((T) -> Int)?) = apply { this.viewTypeResolver = resolver }
 
@@ -268,6 +269,7 @@ class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private const
          * Enables or disables DiffUtil for efficient list updates.
          *
          * @param enable Whether to enable DiffUtil.
+         * @return This builder for chaining.
          */
         fun enableDiffUtil(enable: Boolean) = apply { this.enableDiffUtil = enable }
 
@@ -275,6 +277,7 @@ class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private const
          * Sets a custom DiffUtil.Callback for item comparison.
          *
          * @param callback The custom DiffUtil.Callback.
+         * @return This builder for chaining.
          */
         fun diffUtilCallback(callback: DiffUtil.Callback?) =
             apply { this.diffUtilCallback = callback }
@@ -286,10 +289,10 @@ class BinderRecyclerAdapterConfig<T, VH : RecyclerView.ViewHolder> private const
          */
         fun build(): BinderRecyclerAdapterConfig<T, VH> =
             BinderRecyclerAdapterConfig(
-                adapterCallback,
-                viewTypeResolver,
-                enableDiffUtil,
-                diffUtilCallback
+                adapterCallback = adapterCallback,
+                viewTypeResolver = viewTypeResolver,
+                enableDiffUtil = enableDiffUtil,
+                diffUtilCallback = diffUtilCallback
             )
     }
 }
