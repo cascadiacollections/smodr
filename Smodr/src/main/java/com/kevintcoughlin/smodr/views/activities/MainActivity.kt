@@ -23,6 +23,10 @@ import com.kevintcoughlin.smodr.services.MediaService
 import com.kevintcoughlin.smodr.services.MediaService.IPlaybackListener
 import com.kevintcoughlin.smodr.views.setElapsedTime
 
+/**
+ * Main activity for the Smodr podcast player.
+ * Manages media playback UI and controls.
+ */
 class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private lateinit var binding: ActivityMainLayoutBinding
     private var mediaService: MediaService? = null
@@ -101,22 +105,21 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     private fun startProgressUpdater() {
-        val updateProgress = object : Runnable {
+        handler.post(object : Runnable {
             override fun run() {
                 updateSeekProgress()
-                handler.postDelayed(this, ONE_SECOND_MS.toLong())
+                handler.postDelayed(this, ONE_SECOND_MS)
             }
-        }
-        handler.post(updateProgress)
+        })
     }
 
     private fun updateSeekProgress() {
-        mediaService?.let { service ->
-            with(binding) {
-                seekbar.progress = service.currentTime
+        mediaService?.run {
+            binding.apply {
+                seekbar.progress = currentTime
                 listOf(
-                    currentTime to service.currentTime,
-                    remainingTime to service.remainingTime
+                    currentTime to this@run.currentTime,
+                    remainingTime to this@run.remainingTime
                 ).forEach { (textView, time) ->
                     textView.setElapsedTime(time.toLong())
                 }
@@ -125,12 +128,12 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     private fun onTogglePlaybackClick() {
-        mediaService?.let { service ->
-            if (service.isPlaying) {
-                service.pausePlayback()
+        mediaService?.run {
+            if (isPlaying) {
+                pausePlayback()
                 logEvent("pause_playback", safeGetEventBundle(currentItem))
             } else {
-                service.resumePlayback()
+                resumePlayback()
                 logEvent("resume_playback", safeGetEventBundle(currentItem))
             }
         }
@@ -180,11 +183,11 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     private fun openUrl(url: String) {
-        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     companion object {
-        private const val ONE_SECOND_MS = 1000
+        private const val ONE_SECOND_MS = 1000L
         private const val PRIVACY_POLICY_URL = "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html"
         private const val FEEDBACK_URL = "https://github.com/cascadiacollections/SModr/issues/new"
     }
