@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         override fun onCompletion() {
             binding.seekbar.progress = 0
             updatePlayButtonState(R.drawable.ic_round_play_arrow_24)
-            currentItem?.completed = true
+            currentItem = currentItem?.copy(completed = true)
+            logEvent("complete_playback", safeGetEventBundle(currentItem))
             currentItem = null
         }
     }
