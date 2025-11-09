@@ -33,8 +33,7 @@ inline fun <reified T> T.toBundle(mapper: Bundle.(T) -> Unit): Bundle {
  * @property origEnclosureLink URL to the media file
  * @property completed Whether the episode has been fully played
  */
-@JvmOverloads
-data class Item(
+data class Item @JvmOverloads constructor(
     val guid: String = "",
     val title: String? = null,
     val pubDate: String? = null,

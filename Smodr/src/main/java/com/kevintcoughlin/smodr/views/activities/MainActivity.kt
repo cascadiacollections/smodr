@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private fun updateSeekProgress() {
         mediaService?.run {
             binding.apply {
-                seekbar.progress = currentTime
+                seekbar.progress = this@run.currentTime
                 listOf(
                     currentTime to this@run.currentTime,
                     remainingTime to this@run.remainingTime
