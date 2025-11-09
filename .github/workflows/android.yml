@@ -14,14 +14,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.parallel=true -Dorg.gradle.caching=true
   JAVA_VERSION: '17'
 
 jobs:
   build:
-    name: Build & Test
-    runs-on: macos-latest
-    timeout-minutes: 45
+    name: Build, Test & Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -44,21 +44,14 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
           gradle-home-cache-cleanup: true
 
-      - name: Check Gradle version
-        run: ./gradlew --version
+      - name: Build debug APK and run tests
+        run: ./gradlew assembleDebug testDebugUnitTest lintDebug --parallel --stacktrace
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
-
-      - name: Build release APK
-        run: ./gradlew assembleRelease --stacktrace
-        continue-on-error: true  # May fail without signing keys
-
-      - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --stacktrace
-
-      - name: Run Android Lint
-        run: ./gradlew lintDebug --stacktrace
+      - name: Run static analysis (if configured)
+        run: |
+          ./gradlew detekt --parallel --stacktrace || echo "Detekt not configured"
+          ./gradlew ktlintCheck --parallel --stacktrace || echo "ktlint not configured"
+        continue-on-error: true
 
       - name: Upload build outputs
         if: success()
@@ -90,12 +83,14 @@ jobs:
           path: |
             **/build/reports/lint-results-*.html
             **/build/reports/lint-results-*.xml
+            **/build/reports/detekt/**
+            **/build/reports/ktlint/**
           retention-days: 7
           if-no-files-found: ignore
 
       - name: Publish test results
         if: always()
-        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
         with:
           files: |
             **/build/test-results/**/*.xml
@@ -167,63 +162,3 @@ jobs:
             **/build/outputs/androidTest-results/**
           retention-days: 7
           if-no-files-found: ignore
-
-  static-analysis:
-    name: Static Analysis
-    runs-on: macos-latest
-    timeout-minutes: 20
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup Java 17 (Temurin)
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: true
-
-      - name: Run Detekt (if configured)
-        run: ./gradlew detekt --stacktrace || echo "Detekt not configured"
-        continue-on-error: true
-
-      - name: Check Kotlin code style (if configured)
-        run: ./gradlew ktlintCheck --stacktrace || echo "ktlint not configured"
-        continue-on-error: true
-
-      - name: Upload static analysis reports
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: static-analysis-reports
-          path: |
-            **/build/reports/detekt/**
-            **/build/reports/ktlint/**
-          retention-days: 7
-          if-no-files-found: ignore
-
-      # Temporarily disabled - needs path corrections (app -> Smodr)
-      # - name: Bundle (Debug)
-      #   run: ./gradlew bundleDebug
-
-      # - name: Upload APK (Debug)
-      #   uses: actions/upload-artifact@v5
-      #   with:
-      #     name: Debug-APK
-      #     path: app/build/outputs/apk/debug/app-debug.apk
-
-      # - name: Build Bundle (Release)
-      #   if: github.ref == 'refs/heads/main'
-      #   run: ./gradlew bundleRelease
-
-      # - name: Upload Bundle (Release)
-      #   if: github.ref == 'refs/heads/main'
-      #   uses: actions/upload-artifact@v5
-      #   with:
-      #     name: Release-Bundle
-      #     path: app/build/outputs/bundle/release/app-release.aab
