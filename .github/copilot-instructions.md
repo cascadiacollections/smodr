@@ -88,3 +88,77 @@ BinderRecyclerAdapterConfig.Builder<ItemType, ViewHolderType>()
 - Follow Material Design guidelines for UI suggestions
 - Suggest Kotlin Coroutines for async operations instead of callbacks
 
+## Development Setup
+
+### Requirements
+
+- **Java**: JDK 17 (Eclipse Temurin distribution recommended)
+- **Android SDK**: Compile SDK 35, Min SDK 33, Target SDK 35
+- **Build Tool**: Gradle 8.11.1+ (wrapper included)
+- **IDE**: Android Studio or IntelliJ IDEA with Android plugin
+
+### Building the Project
+
+Build commands using Gradle wrapper:
+
+```bash
+# Build debug APK
+./gradlew assembleDebug --stacktrace
+
+# Build release APK (may require signing keys)
+./gradlew assembleRelease --stacktrace
+
+# Clean build
+./gradlew clean build --stacktrace
+```
+
+### Running Tests
+
+```bash
+# Run unit tests
+./gradlew testDebugUnitTest --stacktrace
+
+# Run instrumentation tests (requires emulator or device)
+./gradlew connectedDebugAndroidTest --stacktrace
+
+# Run all checks
+./gradlew check --stacktrace
+```
+
+### Linting and Code Quality
+
+```bash
+# Run Android Lint
+./gradlew lintDebug --stacktrace
+
+# Run Detekt (static analysis)
+./gradlew detekt --stacktrace
+
+# Run ktlint (code style)
+./gradlew ktlintCheck --stacktrace
+```
+
+## CI/CD Information
+
+- **Primary CI**: GitHub Actions (`.github/workflows/android.yml`)
+- **Build Environment**: macOS runner with Java 17
+- **Automated Checks**: Build, unit tests, lint, static analysis
+- **Timeout**: 45 minutes for main build job
+- **Test Strategy**: Unit tests always run; instrumentation tests currently disabled
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Gradle sync failures**: Ensure Java 17 is installed and `JAVA_HOME` is set correctly
+2. **Build failures**: Run `./gradlew clean` before rebuilding
+3. **Dependency conflicts**: Check `build.gradle` for resolution strategies
+4. **ProGuard issues**: Verify keep rules in `proguard-rules.pro`
+5. **Room schema changes**: Schema files are stored in `Smodr/schemas/`
+
+### Memory Settings
+
+The project requires significant memory for builds:
+- Gradle JVM args: `-Xmx4g -XX:MaxMetaspaceSize=512m`
+- These are configured in CI and may need to be set locally for large builds
+
