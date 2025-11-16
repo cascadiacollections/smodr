@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import androidx.core.net.toUri
 import kotlin.math.min
 
 /**
@@ -66,7 +67,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPrepa
     override fun onBind(intent: Intent): IBinder = binder
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val url = intent.getStringExtra(INTENT_EPISODE_URL)?.let { Uri.parse(it) }
+        val url = intent.getStringExtra(INTENT_EPISODE_URL)?.toUri()
         handleAction(intent.action, url)
         return START_REDELIVER_INTENT
     }

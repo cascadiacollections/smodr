@@ -2,6 +2,7 @@ package com.kevintcoughlin.smodr.models
 
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 
 /**
  * Sealed interface representing any media that can be played.
@@ -41,9 +42,9 @@ data class Item @JvmOverloads constructor(
     val duration: String? = null,
     val summary: String? = null,
     val origEnclosureLink: String? = null,
-    val completed: Boolean = false
+    val completed: Boolean = false,
 ) : MediaPlayback {
-    
+
     /**
      * Parses the origEnclosureLink and returns a valid HTTPS Uri, or null if invalid.
      * HTTP links are automatically upgraded to HTTPS.
@@ -51,8 +52,8 @@ data class Item @JvmOverloads constructor(
     override val uri: Uri?
         get() = origEnclosureLink?.run {
             when {
-                startsWith("https://") -> Uri.parse(this)
-                startsWith("http://") -> Uri.parse("https://${substring(7)}")
+                startsWith("https://") -> this.toUri()
+                startsWith("http://") -> "https://${substring(7)}".toUri()
                 else -> null
             }
         }
