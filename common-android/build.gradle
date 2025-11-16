@@ -16,7 +16,7 @@ buildscript {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         minSdkVersion 33
         targetSdkVersion 35

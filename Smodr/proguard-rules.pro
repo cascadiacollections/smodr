@@ -70,3 +70,32 @@
 -keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment { *; }
 -keep class com.cascadiacollections.jamoka.fragment.BinderRecyclerFragment$** { *; }
 
+# --- Room Database & Entities ---
+# Keep Room database and entity classes to avoid stripping schema-required members
+-keep class com.kevintcoughlin.smodr.database.AppDatabase { *; }
+-keep class com.kevintcoughlin.smodr.database.** { *; }
+-dontwarn androidx.room.**
+
+# --- Models (data classes) ---
+# Keep model data classes if they are referenced reflectively (e.g., JSON, adapters)
+-keep class com.kevintcoughlin.smodr.models.** { *; }
+
+# --- View Holders / Adapter Binders ---
+-keep class com.kevintcoughlin.smodr.viewholders.** { *; }
+-keep class com.cascadiacollections.jamoka.adapter.** { *; }
+
+# --- ViewBinding Generated Classes ---
+# Keep view binding classes if reflection or R8 stripping causes issues
+-keep class **Binding { *; }
+
+# --- Coroutines (already kept) & Lifecycle ---
+-keep class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
+-keep class androidx.lifecycle.** { *; }
+-dontwarn androidx.lifecycle.**
+
+# --- Activity KTX / Fragment KTX ---
+-keep class androidx.activity.** { *; }
+-dontwarn androidx.activity.**
+-keep class androidx.fragment.app.** { *; }
+-dontwarn androidx.fragment.app.**

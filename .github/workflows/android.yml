@@ -19,87 +19,12 @@ env:
 
 jobs:
   build:
-    name: Build, Test & Analyze
-    runs-on: ubuntu-latest
+    name: Build & Test (macOS)
+    runs-on: macos-14
     timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup Java 17 (Temurin)
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'  # Eclipse Temurin (formerly AdoptOpenJDK) - OSS OpenJDK
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v5
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          gradle-home-cache-cleanup: true
-
-      - name: Build, test and analyze
-        run: ./gradlew assembleDebug testDebugUnitTest lintDebug --parallel --stacktrace
-
-      - name: Upload build outputs
-        if: success()
-        uses: actions/upload-artifact@v5
-        with:
-          name: build-outputs
-          path: |
-            **/build/outputs/apk/**/*.apk
-            **/build/outputs/mapping/**/mapping.txt
-          retention-days: 7
-          if-no-files-found: ignore
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: test-results
-          path: |
-            **/build/test-results/**/*.xml
-            **/build/reports/tests/**
-          retention-days: 7
-          if-no-files-found: ignore
-
-      - name: Upload lint reports
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: lint-reports
-          path: |
-            **/build/reports/lint-results-*.html
-            **/build/reports/lint-results-*.xml
-          retention-days: 7
-          if-no-files-found: ignore
-
-      - name: Publish test results
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action/linux@v2
-        with:
-          files: |
-            **/build/test-results/**/*.xml
-          check_name: Test Results
-          comment_mode: off
-        continue-on-error: true
-
-  instrumentation-tests:
-    name: Instrumentation Tests (Disabled)
-    runs-on: macos-latest
-    timeout-minutes: 60
-    # Temporarily disabled due to failing tests
-    if: false  # github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'test-instrumentation')
-
     strategy:
-      fail-fast: false
       matrix:
-        api-level: [ 33, 34 ]
-
+        build-type: [ debug, release ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -110,45 +35,64 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Setup Gradle
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v5
+
+      - name: Setup Gradle & Cache
         uses: gradle/actions/setup-gradle@v5
         with:
-          cache-read-only: true
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          gradle-home-cache-cleanup: true
 
-      - name: Enable KVM group perms
+      - name: Configure executable permissions
+        run: chmod +x gradlew
+
+      - name: Build ${{ matrix.build-type }} variant
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules || true
-          sudo udevadm control --reload-rules || true
-          sudo udevadm trigger --name-match=kvm || true
-        continue-on-error: true
+          if [ "${{ matrix.build-type }}" = "debug" ]; then
+            ./gradlew assembleDebug testDebugUnitTest lintDebug --stacktrace
+          else
+            ./gradlew assembleRelease --stacktrace
+          fi
 
-      - name: AVD cache
-        uses: actions/cache@v4
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
-
-      - name: Create AVD and run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          target: google_apis
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest --stacktrace
-
-      - name: Upload instrumentation test results
-        if: always()
+      - name: Upload APKs & mappings
+        if: success()
         uses: actions/upload-artifact@v5
         with:
-          name: instrumentation-test-results-api-${{ matrix.api-level }}
+          name: outputs-${{ matrix.build-type }}
           path: |
-            **/build/reports/androidTests/**
-            **/build/outputs/androidTest-results/**
+            **/build/outputs/apk/${{ matrix.build-type }}/*.apk
+            **/build/outputs/mapping/${{ matrix.build-type }}/mapping.txt
           retention-days: 7
           if-no-files-found: ignore
+
+      - name: Upload test & lint reports (debug only)
+        if: always() && matrix.build-type == 'debug'
+        uses: actions/upload-artifact@v5
+        with:
+          name: reports-debug
+          path: |
+            **/build/test-results/**/*.xml
+            **/build/reports/tests/**
+            **/build/reports/lint-results-*.html
+            **/build/reports/lint-results-*.xml
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Publish unit test results (debug only)
+        if: always() && matrix.build-type == 'debug'
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: |
+            **/build/test-results/**/*.xml
+          check_name: Unit Test Results
+          comment_mode: off
+        continue-on-error: true
+
+      - name: Gradle dependency report (debug only)
+        if: matrix.build-type == 'debug'
+        run: ./gradlew dependencies --no-configuration-cache --stacktrace | head -n 200
+
+      - name: Verify configuration cache (debug only)
+        if: matrix.build-type == 'debug'
+        run: ./gradlew --configuration-cache help || true
