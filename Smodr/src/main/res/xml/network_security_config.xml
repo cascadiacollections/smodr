@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Network Security Configuration for Smodr.
+  Allows cleartext traffic for specific domains (RSS feeds).
+
+  For production, consider migrating all network traffic to HTTPS.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">feeds.feedburner.com</domain>
+    </domain-config>
+</network-security-config>
+

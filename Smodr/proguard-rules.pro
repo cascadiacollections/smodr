@@ -32,10 +32,19 @@
 -keep class com.google.firebase.analytics.** { *; }
 -dontwarn com.google.firebase.analytics.**
 
-# --- Retrofit ---
-# If using Retrofit for networking, keep generated adapters and Gson support
--keep class com.squareup.retrofit2.** { *; }
--dontwarn com.squareup.retrofit2.**
+# --- Retrofit (package is retrofit2) ---
+# Keep Retrofit2 generated classes and interfaces
+-keep class retrofit2.** { *; }
+-dontwarn retrofit2.**
+
+# --- OkHttp3 ---
+# Keep OkHttp3 classes if you're using OkHttp3 for networking
+-keep class okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# --- App Network Layer ---
+# Keep app-specific network layer classes
+-keep class com.kevintcoughlin.smodr.network.** { *; }
 
 # --- LeakCanary (for Debug Builds) ---
 # Keep LeakCanary if it's enabled for debugging

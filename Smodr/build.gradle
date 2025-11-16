@@ -26,6 +26,15 @@ android {
     namespace 'com.kevintcoughlin.smodr'
     // Updated to 36 to satisfy dependency requirements (browser:1.9.0, core-ktx:1.17.0)
     compileSdkVersion 36
+    // TODO(Android 15 Migration): Review and adapt to API 36 behavior changes before release:
+    //  - Foreground service types & user-initiated data transfer restrictions
+    //  - Exact alarm permission (USE_EXACT_ALARM) review if scheduling alarms
+    //  - Background sensors & microphone access nuances
+    //  - Implicit broadcast limitations & exported receiver security
+    //  - Notification behavior & post notifications permission flows
+    //  - Power management changes (cached + background restrictions)
+    //  - Storage / media access updates (scoped storage edge cases)
+    //  - Consider adopting Predictive Back via AndroidX APIs
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -91,6 +100,8 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.8.3'
     annotationProcessor 'androidx.room:room-compiler:2.8.3'
     testImplementation 'androidx.room:room-testing:2.8.3'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.2.21'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Instrumentation tests disabled for now; dependencies removed
@@ -100,16 +111,16 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.4.0'
     api 'androidx.appcompat:appcompat:1.7.1'
     api 'com.google.android.material:material:1.13.0'
-    api 'com.squareup.okhttp:okhttp:2.7.5'
-    api 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
-    api 'com.squareup.retrofit:retrofit:1.9.0'
+    // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
+    // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
     implementation platform('com.google.firebase:firebase-bom:34.6.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
-    implementation 'com.google.firebase:firebase-ads'
-    implementation 'com.google.firebase:firebase-appindexing'
+    // Ads & App Indexing are not provided via Firebase BOM; use explicit Google Play Services / Firebase versions
+    implementation 'com.google.android.gms:play-services-ads:24.7.0'
+    implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     // Removed deprecated firebase-core and firebase-crash (Crashlytics supersedes)
     api 'com.google.android.gms:play-services-measurement-base:23.0.0'
     // Kotlin stdlib artifact is added by plugin; remove deprecated jdk7 variant
@@ -117,6 +128,17 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.4'
     implementation 'androidx.activity:activity-ktx:1.11.0'
+    // BEGIN Modern Networking (incremental migration)
+    api 'com.squareup.okhttp3:okhttp:4.12.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    api 'com.squareup.retrofit2:retrofit:2.11.0'
+    api 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation 'com.google.code.gson:gson:2.11.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
+    // TODO(Network Migration): Replace usages of com.squareup.retrofit.* with retrofit2.* and
+    // com.squareup.okhttp.OkHttpClient with okhttp3.OkHttpClient. Remove legacy deps after migration.
+    // END Modern Networking
     api project(path: ':common-android')
     implementation 'androidx.annotation:annotation-experimental:1.5.1'
 }

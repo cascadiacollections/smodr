@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Google Mobile Ads (GMA) Ad Services configuration.
+  This file configures privacy and ad personalization settings for the Privacy Sandbox on Android.
+
+  For more information, see:
+  https://developer.android.com/design-for-safety/privacy-sandbox/setup
+-->
+<ad-services-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      Enable or disable ad services.
+      Set to true to opt-in to Privacy Sandbox features.
+    -->
+    <include-sdk-library android:name="com.google.android.gms.ads" />
+</ad-services-config>
+
