@@ -78,18 +78,18 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private val playbackListener = object : IPlaybackListener {
         override fun onStartPlayback() {
             updatePlaybackState(PlaybackState.Playing)
-            logAnalyticsEvent(AnalyticsEvent.StartPlayback(currentItem))
+            logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Start(currentItem))
         }
 
         override fun onStopPlayback() {
             updatePlaybackState(PlaybackState.Paused)
-            logAnalyticsEvent(AnalyticsEvent.StopPlayback(currentItem))
+            logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Stop(currentItem))
         }
 
         override fun onCompletion() {
             updatePlaybackState(PlaybackState.Completed)
             currentItem = currentItem?.copy(completed = true)
-            logAnalyticsEvent(AnalyticsEvent.CompletePlayback(currentItem))
+            logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Complete(currentItem))
             currentItem = null
         }
     }
@@ -208,12 +208,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     private fun updateSeekProgress() {
-        mediaService?.run {
-            binding.apply {
-                seekbar.progress = currentTime
-                current_time.setElapsedTime(this@run.currentTime.toLong())
-                remaining_time.setElapsedTime(this@run.remainingTime.toLong())
-            }
+        mediaService?.let { service ->
+            binding.seekbar.progress = service.currentTime
+            binding.currentTime.setElapsedTime(service.currentTime.toLong())
+            binding.remainingTime.setElapsedTime(service.remainingTime.toLong())
         }
     }
 
@@ -223,10 +221,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         mediaService?.let { service ->
             if (service.isPlaying) {
                 service.pausePlayback()
-                logAnalyticsEvent(AnalyticsEvent.PausePlayback(currentItem))
+                logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Pause(currentItem))
             } else {
                 service.resumePlayback()
-                logAnalyticsEvent(AnalyticsEvent.ResumePlayback(currentItem))
+                logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Resume(currentItem))
             }
         }
     }
@@ -234,13 +232,13 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private fun handleForwardClick() {
         mediaService?.forward()
         updateSeekProgress()
-        logAnalyticsEvent(AnalyticsEvent.ForwardPlayback(currentItem))
+        logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Forward(currentItem))
     }
 
     private fun handleRewindClick() {
         mediaService?.rewind()
         updateSeekProgress()
-        logAnalyticsEvent(AnalyticsEvent.RewindPlayback(currentItem))
+        logAnalyticsEvent(AnalyticsEvent.PlaybackEvent.Rewind(currentItem))
     }
 
     // SeekBar.OnSeekBarChangeListener Implementation
@@ -248,7 +246,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         if (fromUser) {
             mediaService?.seekTo(progress)
-            logAnalyticsEvent(AnalyticsEvent.SeekPlayback(progress, fromUser))
+            logAnalyticsEvent(AnalyticsEvent.Seek(progress, fromUser))
         }
     }
 
@@ -287,29 +285,68 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Analytics
 
     /**
-     * Sealed class for type-safe analytics events.
+     * Sealed interface representing type-safe analytics events.
+     *
+     * Using sealed interface instead of sealed class provides:
+     * - Better flexibility for implementation
+     * - Cleaner separation between data and behavior
+     * - Ability to implement multiple interfaces if needed
      */
-    private sealed class AnalyticsEvent(val eventName: String, val bundle: Bundle) {
-        class StartPlayback(item: Item?) : AnalyticsEvent("start_playback", item.toBundle())
-        class StopPlayback(item: Item?) : AnalyticsEvent("stop_playback", item.toBundle())
-        class CompletePlayback(item: Item?) : AnalyticsEvent("complete_playback", item.toBundle())
-        class PausePlayback(item: Item?) : AnalyticsEvent("pause_playback", item.toBundle())
-        class ResumePlayback(item: Item?) : AnalyticsEvent("resume_playback", item.toBundle())
-        class ForwardPlayback(item: Item?) : AnalyticsEvent("forward_playback", item.toBundle())
-        class RewindPlayback(item: Item?) : AnalyticsEvent("rewind_playback", item.toBundle())
-        class SeekPlayback(progress: Int, fromUser: Boolean) : AnalyticsEvent(
-            "seek_playback",
-            Bundle().apply {
-                putInt("progress", progress)
-                putBoolean("fromUser", fromUser)
-            },
-        )
+    private sealed interface AnalyticsEvent {
+        val eventName: String
+        val bundle: Bundle
+
+        /**
+         * Playback lifecycle events that include item metadata.
+         */
+        sealed class PlaybackEvent(item: Item?, override val eventName: String) : AnalyticsEvent {
+            override val bundle: Bundle = item?.toEventBundle() ?: Bundle()
+
+            data class Start(val item: Item?) : PlaybackEvent(item, EVENT_START_PLAYBACK)
+            data class Stop(val item: Item?) : PlaybackEvent(item, EVENT_STOP_PLAYBACK)
+            data class Complete(val item: Item?) : PlaybackEvent(item, EVENT_COMPLETE_PLAYBACK)
+            data class Pause(val item: Item?) : PlaybackEvent(item, EVENT_PAUSE_PLAYBACK)
+            data class Resume(val item: Item?) : PlaybackEvent(item, EVENT_RESUME_PLAYBACK)
+            data class Forward(val item: Item?) : PlaybackEvent(item, EVENT_FORWARD_PLAYBACK)
+            data class Rewind(val item: Item?) : PlaybackEvent(item, EVENT_REWIND_PLAYBACK)
+        }
+
+        /**
+         * Seek event with progress information.
+         *
+         * @property progress Current seekbar position
+         * @property fromUser Whether the seek was user-initiated
+         */
+        data class Seek(val progress: Int, val fromUser: Boolean) : AnalyticsEvent {
+            override val eventName: String = EVENT_SEEK_PLAYBACK
+            override val bundle: Bundle = Bundle().apply {
+                putInt(PARAM_PROGRESS, progress)
+                putBoolean(PARAM_FROM_USER, fromUser)
+            }
+        }
 
         companion object {
-            private fun Item?.toBundle(): Bundle = this?.toEventBundle() ?: Bundle()
+            // Event names
+            private const val EVENT_START_PLAYBACK = "start_playback"
+            private const val EVENT_STOP_PLAYBACK = "stop_playback"
+            private const val EVENT_COMPLETE_PLAYBACK = "complete_playback"
+            private const val EVENT_PAUSE_PLAYBACK = "pause_playback"
+            private const val EVENT_RESUME_PLAYBACK = "resume_playback"
+            private const val EVENT_FORWARD_PLAYBACK = "forward_playback"
+            private const val EVENT_REWIND_PLAYBACK = "rewind_playback"
+            private const val EVENT_SEEK_PLAYBACK = "seek_playback"
+
+            // Parameter names
+            private const val PARAM_PROGRESS = "progress"
+            private const val PARAM_FROM_USER = "from_user"
         }
     }
 
+    /**
+     * Logs an analytics event to Firebase.
+     *
+     * @param event The type-safe analytics event to log
+     */
     private fun logAnalyticsEvent(event: AnalyticsEvent) {
         analytics.logEvent(event.eventName, event.bundle)
     }
