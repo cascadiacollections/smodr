@@ -355,7 +355,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     companion object {
         private const val PROGRESS_UPDATE_INTERVAL_MS = 1000L
-        private const val PRIVACY_POLICY_URL = "https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html"
+        private const val PRIVACY_POLICY_URL = "https://cascadiacollections.github.io/smodr/privacy_policy.html"
         private const val FEEDBACK_URL = "https://github.com/cascadiacollections/SModr/issues/new"
     }
 }

@@ -11,6 +11,6 @@
         android:title="@string/privacy_policy">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://kevintcoughlin.blob.core.windows.net/smodr/privacy_policy.html" />
+            android:data="https://cascadiacollections.github.io/smodr/privacy_policy.html" />
     </Preference>
 </PreferenceScreen>

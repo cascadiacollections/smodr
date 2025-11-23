@@ -1,0 +1,13 @@
+# GitHub Pages configuration for Smodr documentation
+# This enables GitHub Pages to serve the privacy policy and other docs
+
+# Theme (using default GitHub Pages theme)
+theme: minima
+
+# Site settings
+title: Smodr Documentation
+description: Privacy policy and documentation for Smodr podcast player
+
+# Exclude these from the site
+exclude:
+  - README.md
