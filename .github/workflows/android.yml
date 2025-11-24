@@ -27,7 +27,7 @@ jobs:
         build-type: [ debug, release ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v5
