@@ -97,9 +97,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.17.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.3.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
-    implementation 'androidx.room:room-runtime:2.8.3'
-    annotationProcessor 'androidx.room:room-compiler:2.8.3'
-    testImplementation 'androidx.room:room-testing:2.8.3'
+    implementation 'androidx.room:room-runtime:2.8.4'
+    annotationProcessor 'androidx.room:room-compiler:2.8.4'
+    testImplementation 'androidx.room:room-testing:2.8.4'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.2.21'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
@@ -119,21 +119,21 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
     // Ads & App Indexing are not provided via Firebase BOM; use explicit Google Play Services / Firebase versions
-    implementation 'com.google.android.gms:play-services-ads:24.7.0'
+    implementation 'com.google.android.gms:play-services-ads:24.8.0'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     // Removed deprecated firebase-core and firebase-crash (Crashlytics supersedes)
     api 'com.google.android.gms:play-services-measurement-base:23.0.0'
     // Kotlin stdlib artifact is added by plugin; remove deprecated jdk7 variant
     // Add coroutines & lifecycle for modern async & lifecycle handling
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.4'
-    implementation 'androidx.activity:activity-ktx:1.11.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
+    implementation 'androidx.activity:activity-ktx:1.12.0'
     // BEGIN Modern Networking (incremental migration)
     api 'com.squareup.okhttp3:okhttp:4.12.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    api 'com.squareup.retrofit2:retrofit:2.11.0'
-    api 'com.squareup.retrofit2:converter-gson:2.11.0'
-    implementation 'com.google.code.gson:gson:2.11.0'
+    api 'com.squareup.retrofit2:retrofit:2.12.0'
+    api 'com.squareup.retrofit2:converter-gson:2.12.0'
+    implementation 'com.google.code.gson:gson:2.13.2'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
     // TODO(Network Migration): Replace usages of com.squareup.retrofit.* with retrofit2.* and
