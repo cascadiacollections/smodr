@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: release-apk-${{ steps.extract-version.outputs.VERSION }}
           path: Smodr/build/outputs/apk/release/*.apk
@@ -70,7 +70,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Upload Bundle artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: release-bundle-${{ steps.extract-version.outputs.VERSION }}
           path: Smodr/build/outputs/bundle/release/*.aab
@@ -78,7 +78,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Upload ProGuard mapping files
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: proguard-mappings-${{ steps.extract-version.outputs.VERSION }}
           path: |
