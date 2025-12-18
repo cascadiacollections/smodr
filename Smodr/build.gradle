@@ -14,7 +14,7 @@ buildscript {
         maven { url "https://repo1.maven.org/maven2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.1'
+        classpath 'com.android.tools.build:gradle:8.13.2'
         classpath 'com.google.gms:google-services:4.4.4'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.6'
         classpath 'com.google.firebase:perf-plugin:2.0.2'
@@ -114,12 +114,12 @@ dependencies {
     // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
     // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
-    implementation platform('com.google.firebase:firebase-bom:34.6.0')
+    implementation platform('com.google.firebase:firebase-bom:34.7.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
     // Ads & App Indexing are not provided via Firebase BOM; use explicit Google Play Services / Firebase versions
-    implementation 'com.google.android.gms:play-services-ads:24.8.0'
+    implementation 'com.google.android.gms:play-services-ads:24.9.0'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     // Removed deprecated firebase-core and firebase-crash (Crashlytics supersedes)
     api 'com.google.android.gms:play-services-measurement-base:23.0.0'
