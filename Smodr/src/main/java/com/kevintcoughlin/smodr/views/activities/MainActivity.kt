@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         if (fromUser) {
             mediaService?.seekTo(progress)
-            logAnalyticsEvent(AnalyticsEvent.Seek(progress, fromUser))
+            logAnalyticsEvent(AnalyticsEvent.Seek(progress, true))
         }
     }
 
