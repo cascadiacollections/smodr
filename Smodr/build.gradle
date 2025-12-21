@@ -101,7 +101,7 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.8.4'
     testImplementation 'androidx.room:room-testing:2.8.4'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.2.21'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.3.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Instrumentation tests disabled for now; dependencies removed
