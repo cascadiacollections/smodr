@@ -16,8 +16,7 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>() {
         BinderRecyclerAdapter(
             binder = EpisodeView(), // Use the new binder
             config = BinderRecyclerAdapterConfig.Builder<Item, EpisodeViewHolder>()
-                .enableDiffUtil(true) // Re-enable DiffUtil
-                .build()
+                .build(),
         )
     }
 
@@ -41,14 +40,14 @@ class EpisodesFragment : BinderRecyclerFragment<Item, EpisodeViewHolder>() {
                 title = "Fetched Episode 1",
                 summary = "<p>This is the first fetched episode.</p>",
                 pubDate = "Mon, 15 Aug 2023 10:00:00 -0400",
-                duration = "30 min"
+                duration = "30 min",
             ),
             Item(
                 title = "Fetched Episode 2",
                 summary = "<p>This is the <b>second</b> fetched episode.</p>",
                 pubDate = "Tue, 16 Aug 2023 12:00:00 -0400",
-                duration = "45 min"
-            )
+                duration = "45 min",
+            ),
         )
         adapter.updateItems(episodes)
         swipeRefreshLayout.isRefreshing = false

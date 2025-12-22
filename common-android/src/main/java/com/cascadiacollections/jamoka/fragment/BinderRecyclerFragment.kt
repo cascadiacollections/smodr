@@ -14,16 +14,16 @@ import com.cascadiacollections.jamoka.adapter.BinderRecyclerAdapter
 /**
  * Generic fragment with RecyclerView and SwipeRefreshLayout integration.
  * Supports binding adapters, layout managers, and item selection callbacks.
- * 
+ *
  * This abstract base class provides a reusable pattern for creating list-based fragments
  * with pull-to-refresh functionality.
- * 
+ *
  * @param T The type of data items displayed in the RecyclerView.
  * @param VH The ViewHolder type, must extend RecyclerView.ViewHolder.
  * @param layoutResId The layout resource ID. Defaults to the standard fragment_recycler_layout.
  */
 abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
-    @LayoutRes private val layoutResId: Int = R.layout.fragment_recycler_layout
+    @param:LayoutRes private val layoutResId: Int = R.layout.fragment_recycler_layout,
 ) : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     /**
@@ -31,7 +31,7 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
      * Initialized in [onViewCreated].
      */
     protected lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    
+
     /**
      * The RecyclerView that displays the list of items.
      * Initialized in [onViewCreated].
@@ -47,7 +47,7 @@ abstract class BinderRecyclerFragment<T, VH : RecyclerView.ViewHolder>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? = inflater.inflate(layoutResId, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
