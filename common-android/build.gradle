@@ -18,8 +18,8 @@ buildscript {
 android {
     compileSdk 36
     defaultConfig {
-        minSdkVersion 33
-        targetSdkVersion 35
+        minSdk 33
+        targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }

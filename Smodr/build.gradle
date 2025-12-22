@@ -25,7 +25,7 @@ buildscript {
 android {
     namespace 'com.kevintcoughlin.smodr'
     // Updated to 36 to satisfy dependency requirements (browser:1.9.0, core-ktx:1.17.0)
-    compileSdkVersion 36
+    compileSdk 36
     // TODO(Android 15 Migration): Review and adapt to API 36 behavior changes before release:
     //  - Foreground service types & user-initiated data transfer restrictions
     //  - Exact alarm permission (USE_EXACT_ALARM) review if scheduling alarms
@@ -40,7 +40,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     defaultConfig {
-        minSdkVersion 33
+        minSdk 33
         targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
