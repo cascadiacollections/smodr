@@ -114,7 +114,7 @@ dependencies {
     // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
     // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
-    implementation platform('com.google.firebase:firebase-bom:34.7.0')
+    implementation platform('com.google.firebase:firebase-bom:34.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
