@@ -19,6 +19,10 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     strategy:
       matrix:
         build-type: [ debug, release ]
