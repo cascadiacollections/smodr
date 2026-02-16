@@ -42,6 +42,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
+          tools: latest
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
