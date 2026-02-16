@@ -1,127 +1,42 @@
-# Gradle files
-.gradle/
-build/
-*/build/
-
-# Local configuration file (sdk path, etc)
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
 local.properties
 
-# Log files
-*.log
-
-# Android Studio
-.idea/
-*.iml
-
-# Keystore files
-*.jks
-
-# Files for the dex VM
-*.dex
-
-# Java class files
-*.class
-
-# Generated files
-bin/
-gen/
-
-# Temporary files
-*.tmp
-*.temp
-
-# Compiled code
-*.o
-*.so
-
-# IDE-specific files
-.vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OSX files
-.DS_Store
-
-# Windows files
-Thumbs.db
-ehthumbs.db
-
-# Lint
-lint/reports/
-lint/vital/
-
-# Translations
-*.mo
-
-# Package files
-*.jar
-*.war
-*.ear
-
-# Cache files
-*.cache
-*.caches
-
-# Node.js files
-node_modules/
-
-# Coverage reports
-coverage/
-*.lcov
-
-# Test result files
-test-results/
-test-output/
-
-# Gradle Wrapper
-.gradle/
-.gradle-wrapper/
-gradle/wrapper/gradle-wrapper.properties
-gradlew
-gradlew.bat
-
-# Kotlin build artifacts
+# Kotlin
+.kotlin/
 *.kotlin_module
 
-# IntelliJ IDEA/Android Studio specific
-*.ipr
-*.iws
-out/
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
 
-# JetBrains
-.idea/
+# Android Studio
+*.hprof
+*.log
 
-# Ignore crashlytics/Google services files
+# Secrets
+secrets.properties
+google-services.json
+
+# Crashlytics / Firebase
 crashlytics.properties
 fabric.properties
 firebase-debug.log
-google-services.json
-GoogleService-Info.plist
 
 # macOS system files
-.DS_Store
 .AppleDouble
 .LSOverride
-
-# Thumbnails
 ._*
-
-# Files that might appear during debugging
-*.un~
-*.orig
-*.rej
-
-# Keystore files
-*.jks
-*.keystore
-
-# Miscellaneous
-*.log
-*.temp
-*.tmp
-
-# Ignore sensitive environment files
-.env

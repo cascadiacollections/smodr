@@ -12,7 +12,7 @@ on:
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
       actions: read
@@ -31,19 +31,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Java 17 (Temurin)
-        uses: actions/setup-java@v5
+      - name: Set up mise
+        uses: jdx/mise-action@v2
         with:
-          distribution: 'temurin'  # Eclipse Temurin - OSS OpenJDK
-          java-version: '17'
+          install: true
+          cache: true
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
-          # If you want to specify custom queries:
-          # config-file: ./.github/codeql/codeql-config.yml
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
@@ -51,7 +49,7 @@ jobs:
           cache-read-only: true
 
       - name: Build with Gradle
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --parallel --build-cache --stacktrace
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
