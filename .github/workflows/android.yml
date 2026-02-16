@@ -9,19 +9,20 @@ on:
       - main
   workflow_dispatch:
 
+# Cancel in-progress runs for the same branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.parallel=true -Dorg.gradle.caching=true
-  JAVA_VERSION: '17'
-
 jobs:
   build:
-    name: Build & Test (macOS)
-    runs-on: macos-14
+    name: Build & Test
+    runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     strategy:
       matrix:
         build-type: [ debug, release ]
@@ -29,30 +30,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup Java 17 (Temurin)
-        uses: actions/setup-java@v5
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Set up mise
+        uses: jdx/mise-action@v2
         with:
-          distribution: 'temurin'
-          java-version: ${{ env.JAVA_VERSION }}
+          install: true
+          cache: true
 
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v5
-
-      - name: Setup Gradle & Cache
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          gradle-home-cache-cleanup: true
-
-      - name: Configure executable permissions
-        run: chmod +x gradlew
 
       - name: Build ${{ matrix.build-type }} variant
         run: |
           if [ "${{ matrix.build-type }}" = "debug" ]; then
-            ./gradlew assembleDebug testDebugUnitTest lintDebug --stacktrace
+            ./gradlew assembleDebug testDebugUnitTest lintDebug --no-daemon --parallel --build-cache --stacktrace
           else
-            ./gradlew assembleRelease --stacktrace
+            ./gradlew assembleRelease --no-daemon --parallel --build-cache --stacktrace
           fi
 
       - name: Upload APKs & mappings
@@ -88,11 +85,3 @@ jobs:
           check_name: Unit Test Results
           comment_mode: off
         continue-on-error: true
-
-      - name: Gradle dependency report (debug only)
-        if: matrix.build-type == 'debug'
-        run: ./gradlew dependencies --no-configuration-cache --stacktrace | head -n 200
-
-      - name: Verify configuration cache (debug only)
-        if: matrix.build-type == 'debug'
-        run: ./gradlew --configuration-cache help || true

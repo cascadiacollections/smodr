@@ -22,3 +22,14 @@ allprojects {
         options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
     }
 }
+
+// Configure Java toolchain for all subprojects
+subprojects {
+    plugins.withType(JavaBasePlugin).configureEach {
+        java.toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+            // Use Eclipse Adoptium Temurin - OSS JDK with enterprise-grade support
+            vendor.set(JvmVendorSpec.ADOPTIUM)
+        }
+    }
+}

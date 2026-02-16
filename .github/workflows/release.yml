@@ -9,7 +9,7 @@ on:
 jobs:
   release:
     name: Create Release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     timeout-minutes: 45
@@ -20,11 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Java 17 (Temurin)
-        uses: actions/setup-java@v5
+      - name: Set up mise
+        uses: jdx/mise-action@v2
         with:
-          distribution: 'temurin'  # Eclipse Temurin - OSS OpenJDK
-          java-version: '17'
+          install: true
+          cache: true
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
