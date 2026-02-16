@@ -26,12 +26,10 @@ allprojects {
 // Configure Java toolchain for all subprojects
 subprojects {
     plugins.withType(JavaBasePlugin).configureEach {
-        extensions.configure(JavaPluginExtension) {
-            toolchain {
-                languageVersion.set(JavaLanguageVersion.of(17))
-                // Use Eclipse Adoptium Temurin - OSS JDK with enterprise-grade support
-                vendor.set(JvmVendorSpec.ADOPTIUM)
-            }
+        java.toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+            // Use Eclipse Adoptium Temurin - OSS JDK with enterprise-grade support
+            vendor.set(JvmVendorSpec.ADOPTIUM)
         }
     }
 }
