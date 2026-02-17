@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kevintcoughlin.smodr.R
 import com.kevintcoughlin.smodr.databinding.ActivityMainLayoutBinding
