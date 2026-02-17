@@ -148,9 +148,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
      * Sealed class representing possible playback states.
      */
     private sealed class PlaybackState {
-        object Playing : PlaybackState()
-        object Paused : PlaybackState()
-        object Completed : PlaybackState()
+        data object Playing : PlaybackState()
+        data object Paused : PlaybackState()
+        data object Completed : PlaybackState()
     }
 
     private fun updatePlaybackState(state: PlaybackState) {

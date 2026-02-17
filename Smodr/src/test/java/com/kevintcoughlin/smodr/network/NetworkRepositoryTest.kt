@@ -1,6 +1,5 @@
 package com.kevintcoughlin.smodr.network
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -15,7 +14,6 @@ private class FakeApiService(
     override suspend fun getEpisode(id: String): Response<String> = nextResponse
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class NetworkRepositoryTest {
 
     @Test

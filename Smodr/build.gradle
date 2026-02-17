@@ -72,8 +72,8 @@ android {
 }
 
 configurations {
-    compile.exclude group: 'stax'
-    compile.exclude group: 'xpp3'
+    implementation.exclude group: 'stax'
+    implementation.exclude group: 'xpp3'
 }
 
 configurations.configureEach {
