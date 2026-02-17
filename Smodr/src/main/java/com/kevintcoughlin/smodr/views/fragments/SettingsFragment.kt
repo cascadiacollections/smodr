@@ -11,7 +11,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(): SettingsFragment {
             return SettingsFragment()
         }
