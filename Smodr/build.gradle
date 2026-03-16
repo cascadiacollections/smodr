@@ -94,14 +94,14 @@ tasks.withType(KotlinCompile).configureEach {
 
 dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
-    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.core:core-ktx:1.18.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.4.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
     implementation 'androidx.room:room-runtime:2.8.4'
     annotationProcessor 'androidx.room:room-compiler:2.8.4'
     testImplementation 'androidx.room:room-testing:2.8.4'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.3.10'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.3.20'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Instrumentation tests disabled for now; dependencies removed
@@ -127,7 +127,7 @@ dependencies {
     // Add coroutines & lifecycle for modern async & lifecycle handling
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
-    implementation 'androidx.activity:activity-ktx:1.12.4'
+    implementation 'androidx.activity:activity-ktx:1.13.0'
     // BEGIN Modern Networking (incremental migration)
     api 'com.squareup.okhttp3:okhttp:4.12.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.12.0'

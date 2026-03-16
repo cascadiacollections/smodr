@@ -5,7 +5,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 buildscript {
-    ext.kotlin_version = '2.3.10'
+    ext.kotlin_version = '2.3.20'
     repositories {
         google()
         mavenCentral()
@@ -50,7 +50,7 @@ tasks.withType(KotlinCompile).configureEach {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.core:core-ktx:1.18.0")
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0'
     implementation 'androidx.databinding:viewbinding:8.13.2'
