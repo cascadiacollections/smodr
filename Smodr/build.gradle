@@ -114,7 +114,7 @@ dependencies {
     // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
     // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
-    implementation platform('com.google.firebase:firebase-bom:34.10.0')
+    implementation platform('com.google.firebase:firebase-bom:34.11.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
@@ -122,7 +122,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:24.9.0'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     // Removed deprecated firebase-core and firebase-crash (Crashlytics supersedes)
-    api 'com.google.android.gms:play-services-measurement-base:23.0.0'
+    api 'com.google.android.gms:play-services-measurement-base:23.2.0'
     // Kotlin stdlib artifact is added by plugin; remove deprecated jdk7 variant
     // Add coroutines & lifecycle for modern async & lifecycle handling
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
