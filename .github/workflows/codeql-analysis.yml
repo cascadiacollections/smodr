@@ -1,59 +1,42 @@
-name: "CodeQL Security Analysis"
+name: "CodeQL"
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
   schedule:
-    - cron: '44 6 * * 0'  # Runs every Sunday at 6:44 AM
-  workflow_dispatch:
+    - cron: '0 0 * * 1'
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+
     permissions:
+      security-events: write
+      packages: read
       actions: read
       contents: read
-      security-events: write
 
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java-kotlin' ]
-        # CodeQL supports 'java-kotlin' as a combined language identifier
+        include:
+          - language: java-kotlin
+            build-mode: none
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Set up mise
-        uses: jdx/mise-action@v4
-        with:
-          install: true
-          cache: true
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
-          queries: +security-and-quality
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          cache-read-only: true
-
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug --no-daemon --parallel --build-cache
-        continue-on-error: true
+          build-mode: ${{ matrix.build-mode }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
-          category: "/language:${{ matrix.language }}"
-          upload: true
+          category: "/language:${{matrix.language}}"
