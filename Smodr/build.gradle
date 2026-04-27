@@ -95,13 +95,13 @@ tasks.withType(KotlinCompile).configureEach {
 dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation("androidx.core:core-ktx:1.18.0")
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.5.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.5.1'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
     implementation 'androidx.room:room-runtime:2.8.4'
     annotationProcessor 'androidx.room:room-compiler:2.8.4'
     testImplementation 'androidx.room:room-testing:2.8.4'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.3.20'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:2.3.21'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Instrumentation tests disabled for now; dependencies removed
@@ -133,7 +133,7 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     api 'com.squareup.retrofit2:retrofit:2.12.0'
     api 'com.squareup.retrofit2:converter-gson:2.12.0'
-    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'com.google.code.gson:gson:2.14.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
     // TODO(Network Migration): Replace usages of com.squareup.retrofit.* with retrofit2.* and
