@@ -6,8 +6,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import androidx.core.net.toUri
+import com.kevintcoughlin.smodr.AppLogger
 import kotlin.math.min
 
 /**
@@ -161,7 +161,7 @@ class MediaService : Service(), MediaPlayer.OnErrorListener, MediaPlayer.OnPrepa
             mediaPlayer.setDataSource(this, url)
             mediaPlayer.prepareAsync()
         } catch (e: Exception) {
-            Log.e(TAG, "Error starting playback: ${e.message}", e)
+            AppLogger.error(TAG, "Error starting playback: ${e.message}", e)
         }
     }
 

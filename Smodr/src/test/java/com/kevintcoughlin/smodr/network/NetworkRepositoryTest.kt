@@ -44,5 +44,14 @@ class NetworkRepositoryTest {
         val result = repo.fetchEpisode("null")
         assertTrue(result is NetworkResult.SerializationError)
     }
+
+    @Test
+    fun `ACCEPT_HEADER includes RSS and XML media types`() {
+        val header = RetrofitClient.ACCEPT_HEADER
+        assertTrue("ACCEPT_HEADER must include application/rss+xml", header.contains("application/rss+xml"))
+        assertTrue("ACCEPT_HEADER must include application/xml", header.contains("application/xml"))
+        assertTrue("ACCEPT_HEADER must include text/xml", header.contains("text/xml"))
+    }
 }
+
 
