@@ -114,7 +114,7 @@ dependencies {
     // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
     // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
-    implementation platform('com.google.firebase:firebase-bom:34.12.0')
+    implementation platform('com.google.firebase:firebase-bom:34.13.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
@@ -125,7 +125,7 @@ dependencies {
     api 'com.google.android.gms:play-services-measurement-base:23.2.0'
     // Kotlin stdlib artifact is added by plugin; remove deprecated jdk7 variant
     // Add coroutines & lifecycle for modern async & lifecycle handling
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
     implementation 'androidx.activity:activity-ktx:1.13.0'
     // BEGIN Modern Networking (incremental migration)
@@ -135,7 +135,7 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.12.0'
     implementation 'com.google.code.gson:gson:2.14.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0'
     // TODO(Network Migration): Replace usages of com.squareup.retrofit.* with retrofit2.* and
     // com.squareup.okhttp.OkHttpClient with okhttp3.OkHttpClient. Remove legacy deps after migration.
     // END Modern Networking
