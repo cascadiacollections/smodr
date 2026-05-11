@@ -13,11 +13,13 @@ object AppLogger {
 
     fun info(tag: String, message: String) {
         Log.i(tag, message)
+        CrashReporter.log("I/$tag: $message")
     }
 
     fun info(tag: String, event: Event, message: String) {
         val payload = format(event, message)
         Log.i(tag, payload)
+        CrashReporter.log("I/$tag: $payload")
     }
 
     fun warn(tag: String, message: String) {

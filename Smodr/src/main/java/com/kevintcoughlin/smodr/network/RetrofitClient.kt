@@ -28,18 +28,21 @@ object RetrofitClient {
     }
 
     /**
-     * Interceptor that ensures every outgoing request carries the correct
-     * `Accept` header for RSS/podcast feed negotiation.
+     * Interceptor that sets the RSS/podcast feed `Accept` header when the
+     * caller has not already specified one.
      *
-     * Without this, different call-sites (or future Coil/image loads) could
-     * omit or override the header, producing inconsistent caching behaviour.
+     * Using a conditional check instead of always overwriting allows call-sites
+     * to specify a different `Accept` value for non-feed endpoints (e.g. image
+     * downloads) without interference from this interceptor.
      */
     private val acceptHeaderInterceptor: Interceptor = Interceptor { chain ->
         val request = chain.request()
-            .newBuilder()
-            .header("Accept", ACCEPT_HEADER)
-            .build()
-        chain.proceed(request)
+        val newRequest = if (request.header("Accept") == null) {
+            request.newBuilder().header("Accept", ACCEPT_HEADER).build()
+        } else {
+            request
+        }
+        chain.proceed(newRequest)
     }
 
     private val okHttpClient: OkHttpClient by lazy {

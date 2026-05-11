@@ -14,7 +14,7 @@ import com.kevintcoughlin.smodr.network.RetrofitClient
  * The [app] context is retained for future context-dependent dependencies
  * (e.g. Room database, OkHttp disk cache directory).
  */
-@Suppress("UnusedPrivateProperty")
+@Suppress("unused")
 class AppContainer(private val app: Application) {
     val networkRepository: NetworkRepository = NetworkRepository(RetrofitClient.apiService)
 }
