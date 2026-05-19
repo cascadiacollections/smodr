@@ -110,7 +110,7 @@ dependencies {
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'androidx.recyclerview:recyclerview:1.4.0'
     api 'androidx.appcompat:appcompat:1.7.1'
-    api 'com.google.android.material:material:1.13.0'
+    api 'com.google.android.material:material:1.14.0'
     // Removed legacy OkHttp 2.x & Retrofit 1.x; migrated to OkHttp3 & Retrofit2
     // (If any legacy usages remain they must be refactored before removing these lines permanently.)
     // Firebase BOM for consistent versions
