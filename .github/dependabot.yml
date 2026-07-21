@@ -54,3 +54,9 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
+      # androidx.core 1.19.0+ requires compileSdk 37 + AGP 9.1.0, which are
+      # not yet buildable here (API 37 is unpublished). Hold at 1.18.x.
+      - dependency-name: "androidx.core:core"
+        versions: [ ">=1.19.0" ]
+      - dependency-name: "androidx.core:core-ktx"
+        versions: [ ">=1.19.0" ]

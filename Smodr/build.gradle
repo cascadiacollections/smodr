@@ -94,7 +94,7 @@ tasks.withType(KotlinCompile).configureEach {
 
 dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
-    implementation("androidx.core:core-ktx:1.19.0")
+    implementation("androidx.core:core-ktx:1.18.0")
     implementation 'com.google.android.gms:play-services-oss-licenses:17.5.1'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.12'
     implementation 'androidx.room:room-runtime:2.8.4'
