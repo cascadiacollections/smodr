@@ -126,7 +126,7 @@ dependencies {
     // Kotlin stdlib artifact is added by plugin; remove deprecated jdk7 variant
     // Add coroutines & lifecycle for modern async & lifecycle handling
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
     implementation 'androidx.activity:activity-ktx:1.13.0'
     // BEGIN Modern Networking (incremental migration)
     api 'com.squareup.okhttp3:okhttp:4.12.0'

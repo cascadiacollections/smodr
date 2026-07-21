@@ -60,3 +60,6 @@ updates:
         versions: [ ">=1.19.0" ]
       - dependency-name: "androidx.core:core-ktx"
         versions: [ ">=1.19.0" ]
+      # androidx.lifecycle 2.11.0+ also requires compileSdk 37 / AGP 9.1.0.
+      - dependency-name: "androidx.lifecycle:*"
+        versions: [ ">=2.11.0" ]

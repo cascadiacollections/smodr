@@ -32,4 +32,18 @@ subprojects {
             vendor.set(JvmVendorSpec.ADOPTIUM)
         }
     }
+
+    // androidx.lifecycle 2.11.0 requires compileSdk 37 + AGP 9.1.0; this project
+    // builds against compileSdk 36 / AGP 8.13.2. Because the lifecycle artifacts
+    // form an atomic version group and play-services-oss-licenses pulls in the
+    // Compose lifecycle variants transitively, a direct-dependency pin isn't
+    // enough — force the whole group to the newest 36-compatible release.
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.lifecycle') {
+                details.useVersion '2.10.0'
+                details.because 'lifecycle 2.11.0 requires compileSdk 37 / AGP 9.1.0'
+            }
+        }
+    }
 }

@@ -18,8 +18,9 @@ object RetrofitClient {
      * Accept header value for RSS/podcast feed requests.
      *
      * Listing `application/rss+xml` first signals preference for RSS 2.0;
-     * fallbacks cover Atom and generic XML. The wildcard `*/*` ensures servers
-     * that ignore `Accept` still respond rather than returning 406.
+     * fallbacks cover Atom and generic XML. The trailing catch-all wildcard
+     * entry ensures servers that ignore `Accept` still respond rather than
+     * returning 406.
      */
     internal const val ACCEPT_HEADER = "application/rss+xml, application/atom+xml, application/xml, text/xml, */*"
 
