@@ -129,12 +129,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
     implementation 'androidx.activity:activity-ktx:1.13.0'
     // BEGIN Modern Networking (incremental migration)
-    api 'com.squareup.okhttp3:okhttp:4.12.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    api 'com.squareup.okhttp3:okhttp:4.12.1'
+    api 'com.squareup.okhttp3:logging-interceptor:4.12.1'
     api 'com.squareup.retrofit2:retrofit:2.12.0'
     api 'com.squareup.retrofit2:converter-gson:2.12.0'
     implementation 'com.google.code.gson:gson:2.14.0'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.1'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0'
     // TODO(Network Migration): Replace usages of com.squareup.retrofit.* with retrofit2.* and
     // com.squareup.okhttp.OkHttpClient with okhttp3.OkHttpClient. Remove legacy deps after migration.
