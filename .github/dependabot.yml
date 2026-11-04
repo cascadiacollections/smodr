@@ -24,6 +24,8 @@ updates:
       github-actions:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
 
   # Gradle dependencies
   - package-ecosystem: "gradle"
@@ -69,3 +71,5 @@ updates:
       # which builds against compileSdk 36 / AGP 8.13.2.
       - dependency-name: "com.google.android.gms:play-services-oss-licenses"
         versions: [ ">=17.5.3" ]
+    cooldown:
+      default-days: 7
