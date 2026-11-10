@@ -34,7 +34,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v6.4.1
 
       - name: Set up mise
-        uses: jdx/mise-action@v5.2.4
+        uses: jdx/mise-action@v5.2.6
         with:
           install: true
           cache: true
