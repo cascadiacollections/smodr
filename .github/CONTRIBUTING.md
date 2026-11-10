@@ -29,7 +29,7 @@ Please read [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) before contributing.
    ```
 3. **Add the upstream repository**
    ```bash
-   git remote add upstream https://github.com/KevinTCoughlin/smodr.git
+   git remote add upstream https://github.com/cascadiacollections/smodr.git
    ```
 4. **Create a feature branch**
    ```bash
@@ -42,7 +42,7 @@ Please read [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) before contributing.
 
 - **Android Studio**: Latest stable version
 - **JDK**: Version 17 or higher
-- **Android SDK**: API level 21 or higher
+- **Android SDK**: compileSdk 36 (the app's minSdk is 33)
 - **Kotlin**: Latest stable version
 
 ### Building the Project
@@ -202,7 +202,7 @@ Fixes #456
 
 ## Reporting Bugs
 
-Use the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.yml) to report bugs. Include:
+Use the [Bug Report template](ISSUE_TEMPLATE/bug_report.yml) to report bugs. Include:
 
 - Clear description of the bug
 - Steps to reproduce
@@ -212,7 +212,7 @@ Use the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.yml) to report b
 
 ## Suggesting Features
 
-Use the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.yml) to suggest features.
+Use the [Feature Request template](ISSUE_TEMPLATE/feature_request.yml) to suggest features.
 Include:
 
 - Problem statement
@@ -224,7 +224,7 @@ Include:
 
 If you have questions about contributing, feel free to:
 
-- Open a [Discussion](https://github.com/KevinTCoughlin/smodr/discussions)
+- Open an [issue](https://github.com/cascadiacollections/smodr/issues)
 - Reach out to the maintainers
 
 Thank you for contributing to Smodr! 🎉
